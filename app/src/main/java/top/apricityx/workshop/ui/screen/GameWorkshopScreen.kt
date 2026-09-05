@@ -488,10 +488,14 @@ private fun WorkshopItemCard(
     onOpenDetail: () -> Unit,
     onDownload: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val sizeLabel = item.fileSizeBytes?.let { sizeBytes ->
-        context.getString(R.string.items_size, formatBinaryFileSize(sizeBytes))
+    val fileSizeBytes = item.fileSizeBytes
+    val sizeLabel = if (fileSizeBytes != null) {
+        stringResource(R.string.items_size, formatBinaryFileSize(fileSizeBytes))
+    } else {
+        null
     }
+    val unknownAuthorLabel = stringResource(R.string.common_unknown_author)
+    val authorLine = stringResource(R.string.by_author, item.authorName.ifBlank { unknownAuthorLabel })
 
     WorkshopPanelCard(
         modifier = Modifier.clickable(onClick = onOpenDetail),
@@ -522,7 +526,7 @@ private fun WorkshopItemCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = context.getString(R.string.by_author, item.authorName.ifBlank { context.getString(R.string.common_unknown_author) }),
+                    text = authorLine,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
