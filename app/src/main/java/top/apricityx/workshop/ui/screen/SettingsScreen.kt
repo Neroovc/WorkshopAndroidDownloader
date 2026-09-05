@@ -174,12 +174,13 @@ fun SettingsScreen(
                         text = stringResource(R.string.current_account),
                         style = MaterialTheme.typography.titleMedium,
                     )
+                    val anonymousLabel = stringResource(R.string.common_anonymous)
                     SettingsChoiceDropdown(
                         selectedOption = selectedSteamAccount,
                         options = steamAccountItems,
                         optionLabel = { account ->
                             if (account.accountName == "anonymous") {
-                                stringResource(R.string.common_anonymous)
+                                anonymousLabel
                             } else {
                                 account.accountName
                             }
