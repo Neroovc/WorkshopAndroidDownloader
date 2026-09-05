@@ -735,4 +735,4 @@
     <!-- Google quirk: keep format placeholders aligned -->
     <string name="format_filtered_metric">%1$s</string>
 
-    
+</resources>

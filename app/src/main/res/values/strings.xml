@@ -735,6 +735,4 @@
     <!-- Google quirk: keep format placeholders aligned -->
     <string name="format_filtered_metric">%1$s</string>
 
-    <!-- Captive-portal detection keywords (literal HTML markers on portal networks) -->
-    
 </resources>
