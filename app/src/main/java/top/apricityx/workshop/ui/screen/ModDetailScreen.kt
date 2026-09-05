@@ -87,7 +87,7 @@ fun ModDetailScreen(
             subtitle = group.gameTitle,
             metrics = listOf(
                 stringResource(R.string.appid_metric, group.appId),
-                stringResource(R.string.metric_mod, group.publishedFileId),
+                stringResource(R.string.metric_mod, group.publishedFileId.toString()),
                 stringResource(R.string.metric_version_count, group.versionCount()),
                 stringResource(R.string.metric_files, group.totalFileCount()),
             ),

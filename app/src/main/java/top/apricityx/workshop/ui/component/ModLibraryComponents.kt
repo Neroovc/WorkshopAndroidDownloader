@@ -23,7 +23,7 @@ private val modLibraryTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH
 internal fun buildModEntryMetrics(context: Context, entry: DownloadedModEntry): List<String> =
     listOf(
         "AppID ${entry.appId}",
-        context.getString(R.string.metric_mod, entry.publishedFileId),
+        context.getString(R.string.metric_mod, entry.publishedFileId.toString()),
         context.getString(R.string.metric_files, entry.files.size),
         context.getString(R.string.metric_synced, formatModLibraryTimestamp(entry.storedAtMillis)),
     )
