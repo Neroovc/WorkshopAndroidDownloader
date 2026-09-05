@@ -46,7 +46,7 @@ class DownloadForegroundService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        val snapshot = downloadCenterManager.uiState.value.toForegroundNotificationSnapshot()
+        val snapshot = downloadCenterManager.uiState.value.toForegroundNotificationSnapshot(this)
         if (!snapshot.isActive) {
             stopForegroundAndSelf()
             return START_NOT_STICKY
@@ -73,7 +73,7 @@ class DownloadForegroundService : Service() {
 
         observationJob = serviceScope.launch {
             downloadCenterManager.uiState
-                .map(DownloadCenterUiState::toForegroundNotificationSnapshot)
+                .map { state -> state.toForegroundNotificationSnapshot(this@DownloadForegroundService) }
                 .distinctUntilChanged()
                 .sample(NOTIFICATION_UPDATE_INTERVAL_MILLIS)
                 .collect { snapshot ->
@@ -168,10 +168,10 @@ class DownloadForegroundService : Service() {
         val manager = getSystemService(NotificationManager::class.java) ?: return
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
-            "后台下载",
+            getString(R.string.notif_channel_name),
             NotificationManager.IMPORTANCE_LOW,
         ).apply {
-            description = "显示创意工坊下载进度并保持后台下载"
+            description = getString(R.string.notif_channel_description)
             setShowBadge(false)
         }
         manager.createNotificationChannel(channel)

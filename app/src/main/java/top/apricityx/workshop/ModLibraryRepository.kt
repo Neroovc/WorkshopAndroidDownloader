@@ -19,6 +19,7 @@ class ModLibraryRepository(
     private val previewImageCache: WorkshopPreviewImageCache = WorkshopPreviewImageCache(application),
     private val nowMillis: () -> Long = { System.currentTimeMillis() },
 ) {
+    private val appContext: Application = application
     suspend fun syncWithLocalStorage(): List<DownloadedModEntry> = withContext(Dispatchers.IO) {
         store.withFileLock {
             val indexed = store.loadEntries()
@@ -122,7 +123,7 @@ class ModLibraryRepository(
                 appId = appId,
                 publishedFileId = publishedFileId,
                 gameTitle = gameTitle.ifBlank { existingEntry?.gameTitle.orEmpty().ifBlank { "App $appId" } },
-                itemTitle = itemTitle.ifBlank { existingEntry?.itemTitle.orEmpty().ifBlank { "模组 $publishedFileId" } },
+                itemTitle = itemTitle.ifBlank { existingEntry?.itemTitle.orEmpty().ifBlank { "Mod $publishedFileId" } },
                 description = description.ifBlank { existingEntry?.description.orEmpty() },
                 changeNotes = changeNotes.takeIf { changeNotesFetched || it.isNotBlank() }
                     ?: existingEntry?.changeNotes.orEmpty(),
@@ -250,11 +251,11 @@ class ModLibraryRepository(
         newTitle: String,
     ): List<DownloadedModEntry> = withContext(Dispatchers.IO) {
         val normalizedTitle = newTitle.trim()
-        require(normalizedTitle.isNotBlank()) { "模组名称不能为空。" }
+        require(normalizedTitle.isNotBlank()) { appContext.getString(R.string.mod_name_required) }
         store.withFileLock {
             val currentEntries = store.loadEntries()
             require(currentEntries.any { it.appId == appId && it.publishedFileId == publishedFileId }) {
-                "没有找到要重命名的模组。"
+                appContext.getString(R.string.mod_not_found_to_rename)
             }
             val renamedEntries = currentEntries.map { entry ->
                 if (entry.appId == appId && entry.publishedFileId == publishedFileId) {
@@ -309,7 +310,7 @@ internal fun mergeIndexedAndLocalMods(
                 appId = local.appId,
                 publishedFileId = local.publishedFileId,
                 gameTitle = existing?.gameTitle ?: local.gameTitle.orEmpty().ifBlank { "App ${local.appId}" },
-                itemTitle = existing?.itemTitle ?: local.itemTitle.orEmpty().ifBlank { "模组 ${local.publishedFileId}" },
+                itemTitle = existing?.itemTitle ?: local.itemTitle.orEmpty().ifBlank { "Mod ${local.publishedFileId}" },
                 description = existing?.description.orEmpty(),
                 changeNotes = existing?.changeNotes.orEmpty(),
                 changeNotesFetched = existing?.changeNotesFetched ?: false,

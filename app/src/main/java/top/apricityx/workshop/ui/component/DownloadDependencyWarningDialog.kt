@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import top.apricityx.workshop.R
 import top.apricityx.workshop.data.WorkshopBrowseItem
 import top.apricityx.workshop.data.WorkshopRequiredItem
 
@@ -22,7 +24,7 @@ fun DownloadDependencyWarningDialog(
 ) {
     WorkshopDialog(
         onDismissRequest = onDismissRequest,
-        title = { Text("还有前置未下载") },
+        title = { Text(stringResource(R.string.dialog_dependencies_title)) },
         buttons = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -33,25 +35,25 @@ fun DownloadDependencyWarningDialog(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onDownloadAllWithDependencies,
                 ) {
-                    Text("下载所有前置并下载模组")
+                    Text(stringResource(R.string.btn_download_all_with_dependencies))
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
                 ) {
                     WorkshopTextButton(onClick = onDismissRequest) {
-                        Text("取消")
+                        Text(stringResource(R.string.btn_cancel))
                     }
                     WorkshopOutlinedButton(onClick = onDownloadOnlyCurrent) {
-                        Text("只下载模组")
+                        Text(stringResource(R.string.btn_download_only_current))
                     }
                 }
             }
         },
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("「${item.title}」还有 ${requiredItems.size} 个前置工坊物品未下载。")
-            Text("你可以选择下载所有前置后再下载模组，或者只下载当前模组。")
+            Text(stringResource(R.string.dialog_dependencies_body, item.title, requiredItems.size))
+            Text(stringResource(R.string.dialog_dependencies_hint))
             Text(
                 text = requiredItems.joinToString(separator = "\n") { "• ${it.title}" },
             )

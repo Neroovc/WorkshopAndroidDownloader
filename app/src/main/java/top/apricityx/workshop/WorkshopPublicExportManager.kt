@@ -31,7 +31,7 @@ class WorkshopPublicExportManager(
         log: suspend (String) -> Unit,
     ): List<ExportedDownloadFile> = withContext(Dispatchers.IO) {
         if (files.isEmpty()) {
-            log("没有可导出的文件。")
+            log(application.getString(R.string.export_no_files))
             return@withContext emptyList()
         }
 
@@ -86,27 +86,27 @@ class WorkshopPublicExportManager(
         }
 
         log(
-            "导出计划已生成。files=${exportPlan.size} sdk=${Build.VERSION.SDK_INT} release=${Build.VERSION.RELEASE}",
+            application.getString(R.string.export_plan_generated, exportPlan.size, Build.VERSION.SDK_INT, Build.VERSION.RELEASE),
         )
         return@withContext when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
-                log("选择导出策略：MediaStore.Downloads")
+                log(application.getString(R.string.export_strategy_mediastore))
                 try {
                     exportToMediaStore(exportPlan, log)
                 } catch (error: Throwable) {
                     log(
-                        "MediaStore 导出失败，回退到应用专用下载目录。reason=${error.toDebugString()}",
+                        application.getString(R.string.export_mediastore_fallback, error.toDebugString()),
                     )
                     exportToAppSpecificDownloads(exportPlan, log)
                 }
             }
             hasLegacyExternalStoragePermission() && isLegacyExternalStorageWritable() -> {
-                log("选择导出策略：旧版公共下载目录")
+                log(application.getString(R.string.export_strategy_legacy))
                 exportToLegacyPublicDownloads(exportPlan, log)
             }
 
             else -> {
-                log("选择导出策略：应用专用下载目录")
+                log(application.getString(R.string.export_strategy_app_specific))
                 exportToAppSpecificDownloads(exportPlan, log)
             }
         }
@@ -119,7 +119,7 @@ class WorkshopPublicExportManager(
     ): List<ExportedDownloadFile> {
         val resolver = application.contentResolver
         exportPlan.map(ExportTarget::mediaStoreModRelativePath).distinct().forEach { relativePath ->
-            log("MediaStore 清理旧目录：$relativePath")
+            log(application.getString(R.string.export_mediastore_cleanup, relativePath))
             deleteExistingFolderEntriesRecursively(resolver, relativePath)
         }
 
@@ -200,7 +200,7 @@ class WorkshopPublicExportManager(
     ): List<ExportedDownloadFile> {
         val downloadsRoot = legacyPublicDownloadsRoot()
             ?: return exportToAppSpecificDownloads(exportPlan, log)
-        log("旧版公共下载目录：${downloadsRoot.absolutePath}")
+        log(application.getString(R.string.export_legacy_root, downloadsRoot.absolutePath))
 
         return exportToFileSystem(
             exportPlan = exportPlan,
@@ -223,7 +223,7 @@ class WorkshopPublicExportManager(
         log: suspend (String) -> Unit,
     ): List<ExportedDownloadFile> {
         val downloadsRoot = appSpecificDownloadsRoot()
-        log("应用专用下载目录：${downloadsRoot.absolutePath}")
+        log(application.getString(R.string.export_app_root, downloadsRoot.absolutePath))
         log("Legacy storage permission unavailable; exported files to app-specific storage.")
         return exportToFileSystem(
             exportPlan = exportPlan,
@@ -242,7 +242,7 @@ class WorkshopPublicExportManager(
         log: suspend (String) -> Unit,
     ): List<ExportedDownloadFile> {
         deleteExistingDirectories(rootDir, exportPlan.map(ExportTarget::modSubdirectoryPath).distinct())
-        log("文件系统导出根目录：${rootDir.absolutePath}")
+        log(application.getString(R.string.export_fs_root, rootDir.absolutePath))
 
         val exportedFiles = mutableListOf<ExportedDownloadFile>()
         exportPlan.forEach { target ->
@@ -252,14 +252,14 @@ class WorkshopPublicExportManager(
             }
 
             val destinationFile = File(destinationDir, target.displayName)
-            log("文件系统写入开始：${destinationFile.absolutePath}")
+            log(application.getString(R.string.export_fs_write_start, destinationFile.absolutePath))
             target.source.inputStream().buffered().use { input ->
                 destinationFile.outputStream().buffered().use { output ->
                     input.copyTo(output)
                 }
             }
             destinationFile.setLastModified(target.file.modifiedEpochMillis)
-            log("文件系统写入完成：${destinationFile.absolutePath} bytes=${destinationFile.length()}")
+            log(application.getString(R.string.export_fs_write_done, destinationFile.absolutePath, destinationFile.length()))
 
             val mimeType = URLConnection.guessContentTypeFromName(target.displayName) ?: "application/octet-stream"
             onFileExported?.invoke(destinationFile, mimeType)

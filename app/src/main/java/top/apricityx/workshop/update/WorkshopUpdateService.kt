@@ -1,5 +1,6 @@
 package top.apricityx.workshop.update
 
+import android.content.Context
 import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,14 +11,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import top.apricityx.workshop.BuildConfig
 import top.apricityx.workshop.ExperimentalGithubDirectAccessRuntime
+import top.apricityx.workshop.R
 import top.apricityx.workshop.addExperimentalGithubDirectAccess
 import top.apricityx.workshop.steam.protocol.applyDefaultHttpTimeouts
 
 internal class WorkshopUpdateService(
+    context: Context,
     baseClient: OkHttpClient,
     directAccessRuntime: ExperimentalGithubDirectAccessRuntime? = null,
     private val json: Json = Json { ignoreUnknownKeys = true },
 ) {
+    private val context = context.applicationContext
     private val client = baseClient.newBuilder()
         .applyDefaultHttpTimeouts()
         .followRedirects(true)
@@ -33,7 +37,7 @@ internal class WorkshopUpdateService(
         currentVersion: String,
         preferredUserSource: UpdateSource,
     ): UpdateCheckExecutionResult = withContext(Dispatchers.IO) {
-        var lastErrorSummary = "无法连接任何更新源。"
+        var lastErrorSummary = context.getString(R.string.update_err_no_source_reachable)
         var successfulMetadataSource: UpdateSource? = null
         var releaseInfo: UpdateReleaseInfo? = null
 
@@ -42,7 +46,7 @@ internal class WorkshopUpdateService(
             try {
                 val responseText = requestText(requestUrl)
                 val parsed = parseLatestRelease(responseText)
-                    ?: throw IOException("更新元数据格式无效。")
+                    ?: throw IOException(context.getString(R.string.update_err_invalid_metadata))
                 successfulMetadataSource = source
                 releaseInfo = parsed
                 break
@@ -80,7 +84,7 @@ internal class WorkshopUpdateService(
         )
         if (downloadResolution == null) {
             return@withContext UpdateCheckExecutionResult.Failure(
-                errorSummary = "无法解析可访问的 APK 下载地址。",
+                errorSummary = context.getString(R.string.update_err_no_download_url),
                 release = release,
                 metadataSource = metadataSource,
             )

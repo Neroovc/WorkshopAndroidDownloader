@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -34,13 +35,14 @@ fun evaluateModUpdate(
     entry: DownloadedModEntry,
     remoteUpdatedEpochSeconds: Long?,
     checkedAtMillis: Long,
+    context: Context,
 ): ModUpdateCheckResult {
     val remoteUpdatedAtMillis = remoteUpdatedEpochSeconds?.times(1000L)
     if (remoteUpdatedAtMillis == null) {
         return ModUpdateCheckResult(
             status = ModUpdateCheckStatus.Failed,
             checkedAtMillis = checkedAtMillis,
-            message = "创意工坊未返回更新时间。",
+            message = context.getString(R.string.mod_update_no_time),
         )
     }
 
@@ -57,19 +59,26 @@ fun evaluateModUpdate(
 
 fun buildModUpdateCheckSummary(
     results: Collection<ModUpdateCheckResult>,
+    context: Context,
 ): String {
     if (results.isEmpty()) {
-        return "没有可检查的模组。"
+        return context.getString(R.string.mod_update_no_mods)
     }
 
     val availableCount = results.count { it.status == ModUpdateCheckStatus.UpdateAvailable }
     val upToDateCount = results.count { it.status == ModUpdateCheckStatus.UpToDate }
     val failedCount = results.count { it.status == ModUpdateCheckStatus.Failed }
-    return "模组更新检查完成：$availableCount 个模组可更新，$upToDateCount 个模组已最新，$failedCount 个模组失败。"
+    return context.getString(
+        R.string.mod_update_summary,
+        availableCount,
+        upToDateCount,
+        failedCount,
+    )
 }
 
 fun ModLibraryUpdateCheckState.filterForEntries(
     entries: List<DownloadedModEntry>,
+    context: Context,
 ): ModLibraryUpdateCheckState {
     val validKeys = entries.map(DownloadedModEntry::modLibraryKey).toSet()
     val filteredResults = results.filterKeys(validKeys::contains)
@@ -78,7 +87,7 @@ fun ModLibraryUpdateCheckState.filterForEntries(
             isChecking -> summaryMessage
             filteredResults.isEmpty() -> null
             summaryMessage == null -> null
-            else -> buildModUpdateCheckSummary(filteredResults.values)
+            else -> buildModUpdateCheckSummary(filteredResults.values, context)
         },
         results = filteredResults,
     )

@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -28,6 +29,7 @@ data class BaiduTranslationCredentials(
 }
 
 class BaiduAiTextTranslationClient(
+    context: Context,
     private val client: OkHttpClient = OkHttpClient.Builder()
         .applyDefaultHttpTimeouts()
         .applyAppNetworkLogging("baidu-translate")
@@ -35,6 +37,8 @@ class BaiduAiTextTranslationClient(
     private val json: Json = Json { ignoreUnknownKeys = true },
     private val baseUrl: HttpUrl = "https://fanyi-api.baidu.com/".toHttpUrl(),
 ) {
+    private val context = context.applicationContext
+
     suspend fun translate(
         text: String,
         sourceLanguage: String,
@@ -43,7 +47,7 @@ class BaiduAiTextTranslationClient(
         reference: String? = null,
     ): String = withContext(Dispatchers.IO) {
         require(credentials.isConfigured()) {
-            "请先在设置中配置百度大模型文本翻译的 AppID 和 API Key。"
+            context.getString(R.string.error_baidu_not_configured)
         }
 
         val normalizedText = text.trim()
@@ -85,18 +89,18 @@ class BaiduAiTextTranslationClient(
                 return@withContext translatedText
             }
 
-            throw IllegalStateException("百度大模型文本翻译返回了无法识别的结果。")
+            throw IllegalStateException(context.getString(R.string.error_baidu_unrecognized))
         }
     }
 
     private fun parsePayload(payload: String): JsonObject {
         if (payload.isBlank()) {
-            throw IllegalStateException("百度大模型文本翻译返回了空响应。")
+            throw IllegalStateException(context.getString(R.string.error_baidu_empty_response))
         }
         return runCatching {
             json.parseToJsonElement(payload).jsonObject
         }.getOrElse {
-            throw IllegalStateException("百度大模型文本翻译返回了无法解析的响应。")
+            throw IllegalStateException(context.getString(R.string.error_baidu_unparseable))
         }
     }
 
@@ -104,11 +108,11 @@ class BaiduAiTextTranslationClient(
         errorCode: String?,
         errorMessage: String?,
     ): String {
-        val normalizedMessage = errorMessage?.takeIf(String::isNotBlank) ?: "请求失败"
+        val normalizedMessage = errorMessage?.takeIf(String::isNotBlank) ?: context.getString(R.string.error_baidu_request_failed)
         return if (errorCode.isNullOrBlank()) {
-            "百度大模型文本翻译失败：$normalizedMessage。"
+            context.getString(R.string.error_baidu_translation_failed, normalizedMessage)
         } else {
-            "百度大模型文本翻译失败：$normalizedMessage（错误码：$errorCode）。"
+            context.getString(R.string.error_baidu_code_failed, normalizedMessage, errorCode.toIntOrNull() ?: 0)
         }
     }
 

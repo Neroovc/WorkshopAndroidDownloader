@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import java.text.DecimalFormat
 import kotlinx.serialization.Serializable
 import top.apricityx.workshop.workshop.DownloadState
@@ -32,7 +33,7 @@ data class DownloadCenterTaskUiState(
     val gameTitle: String,
     val itemTitle: String,
     val boundAccountId: String? = null,
-    val boundAccountName: String = "匿名",
+    val boundAccountName: String = "anonymous",
     val status: DownloadCenterTaskStatus = DownloadCenterTaskStatus.Queued,
     val phase: DownloadState = DownloadState.Idle,
     val logs: List<String> = emptyList(),
@@ -92,23 +93,23 @@ fun DownloadCenterTaskUiState.canPause(): Boolean =
 fun DownloadCenterTaskUiState.canResume(): Boolean =
     status == DownloadCenterTaskStatus.Paused || status == DownloadCenterTaskStatus.Failed
 
-fun DownloadCenterTaskUiState.resumeActionLabel(): String =
+fun DownloadCenterTaskUiState.resumeActionLabel(context: Context): String =
     when (status) {
-        DownloadCenterTaskStatus.Failed -> "重试下载"
-        DownloadCenterTaskStatus.Paused -> "继续下载"
-        else -> "继续下载"
+        DownloadCenterTaskStatus.Failed -> context.getString(R.string.status_retry_download)
+        DownloadCenterTaskStatus.Paused -> context.getString(R.string.status_resume_download)
+        else -> context.getString(R.string.status_resume_download)
     }
 
-fun DownloadCenterTaskUiState.removeActionLabel(): String =
+fun DownloadCenterTaskUiState.removeActionLabel(context: Context): String =
     when (status) {
         DownloadCenterTaskStatus.Queued,
         DownloadCenterTaskStatus.Running,
         DownloadCenterTaskStatus.Paused,
-        -> "取消任务"
+        -> context.getString(R.string.btn_cancel)
 
         DownloadCenterTaskStatus.Success,
         DownloadCenterTaskStatus.Failed,
-        -> "删除任务"
+        -> context.getString(R.string.btn_delete)
     }
 
 fun DownloadCenterTaskUiState.hasDeterminateProgress(): Boolean =
@@ -130,40 +131,47 @@ fun DownloadCenterTaskUiState.progressFraction(): Float =
         -> progress.fraction ?: 0f
     }
 
-fun DownloadCenterTaskUiState.summaryText(): String =
+fun DownloadCenterTaskUiState.summaryText(context: Context): String =
     when (status) {
-        DownloadCenterTaskStatus.Queued -> "排队中，等待开始下载 · 账号 $boundAccountName"
+        DownloadCenterTaskStatus.Queued ->
+            context.getString(R.string.task_summary_queued, boundAccountName)
+
         DownloadCenterTaskStatus.Running -> listOfNotNull(
-            phase.displayName(),
+            phase.displayName(context),
             progress.percentText(),
             progress.bytesText(),
-            "账号 $boundAccountName",
-        ).joinToString(" · ").ifBlank { "正在下载" }
+            context.getString(R.string.metric_account, boundAccountName),
+        ).joinToString(" · ").ifBlank { context.getString(R.string.status_downloading) }
 
         DownloadCenterTaskStatus.Paused -> listOfNotNull(
-            "已暂停",
+            context.getString(R.string.status_paused),
             progress.percentText(),
             progress.bytesText(),
-            "账号 $boundAccountName",
-        ).joinToString(" · ").ifBlank { "已暂停，可继续下载" }
+            context.getString(R.string.metric_account, boundAccountName),
+        ).joinToString(" · ").ifBlank { context.getString(R.string.task_summary_paused) }
 
-        DownloadCenterTaskStatus.Success -> "已完成，可到模组库查看文件 · 账号 $boundAccountName"
-        DownloadCenterTaskStatus.Failed -> listOfNotNull(errorMessage ?: "下载失败，可重试下载", "账号 $boundAccountName").joinToString(" · ")
+        DownloadCenterTaskStatus.Success ->
+            context.getString(R.string.task_summary_success, boundAccountName)
+
+        DownloadCenterTaskStatus.Failed -> listOfNotNull(
+            errorMessage ?: context.getString(R.string.task_summary_failed_retry),
+            context.getString(R.string.metric_account, boundAccountName),
+        ).joinToString(" · ")
     }
 
-fun DownloadCenterTaskUiState.statusLabel(): String =
-    status.displayName()
+fun DownloadCenterTaskUiState.statusLabel(context: Context): String =
+    status.displayName(context)
 
-fun DownloadCenterTaskUiState.phaseLabel(): String =
-    phase.displayName()
+fun DownloadCenterTaskUiState.phaseLabel(context: Context): String =
+    phase.displayName(context)
 
-fun DownloadCenterTaskUiState.progressDetails(): List<String> =
+fun DownloadCenterTaskUiState.progressDetails(context: Context): List<String> =
     buildList {
-        progress.percentText()?.let { add("总进度 $it") }
-        progress.bytesText()?.let { add("数据 $it") }
-        progress.chunkText()?.let { add("分块 $it") }
-        progress.fileText()?.let { add("文件 $it") }
-        progress.speedText()?.let { add("速度 $it") }
+        progress.percentText()?.let { add(context.getString(R.string.metric_total_progress, it)) }
+        progress.bytesText()?.let { add(context.getString(R.string.metric_data, it)) }
+        progress.chunkText()?.let { add(context.getString(R.string.metric_chunks, it)) }
+        progress.fileText()?.let { add(context.getString(R.string.metric_file, it)) }
+        progress.speedText()?.let { add(context.getString(R.string.metric_speed, it)) }
     }
 
 private val DownloadCenterProgressSnapshot.fraction: Float?
@@ -200,24 +208,24 @@ private fun DownloadCenterProgressSnapshot.speedText(): String? =
         "${formatBinaryFileSize(speed)}/s"
     }
 
-private fun DownloadState.displayName(): String =
+private fun DownloadState.displayName(context: Context): String =
     when (this) {
-        DownloadState.Idle -> "等待中"
-        DownloadState.Resolving -> "解析元数据"
-        DownloadState.Connecting -> "连接内容服务器"
-        DownloadState.Downloading -> "下载中"
-        DownloadState.Paused -> "已暂停"
-        DownloadState.Success -> "已完成"
-        DownloadState.Failed -> "失败"
+        DownloadState.Idle -> context.getString(R.string.status_waiting)
+        DownloadState.Resolving -> context.getString(R.string.phase_resolving)
+        DownloadState.Connecting -> context.getString(R.string.phase_connecting)
+        DownloadState.Downloading -> context.getString(R.string.status_downloading)
+        DownloadState.Paused -> context.getString(R.string.status_paused)
+        DownloadState.Success -> context.getString(R.string.status_completed)
+        DownloadState.Failed -> context.getString(R.string.status_failed)
     }
 
-fun DownloadCenterTaskStatus.displayName(): String =
+fun DownloadCenterTaskStatus.displayName(context: Context): String =
     when (this) {
-        DownloadCenterTaskStatus.Queued -> "排队中"
-        DownloadCenterTaskStatus.Running -> "下载中"
-        DownloadCenterTaskStatus.Paused -> "已暂停"
-        DownloadCenterTaskStatus.Success -> "已完成"
-        DownloadCenterTaskStatus.Failed -> "失败"
+        DownloadCenterTaskStatus.Queued -> context.getString(R.string.status_queued)
+        DownloadCenterTaskStatus.Running -> context.getString(R.string.status_downloading)
+        DownloadCenterTaskStatus.Paused -> context.getString(R.string.status_paused)
+        DownloadCenterTaskStatus.Success -> context.getString(R.string.status_completed)
+        DownloadCenterTaskStatus.Failed -> context.getString(R.string.status_failed)
     }
 
 private fun DownloadCenterTaskStatus.sortOrder(): Int =

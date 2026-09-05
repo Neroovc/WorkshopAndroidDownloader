@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import top.apricityx.workshop.data.SteamGame
 import top.apricityx.workshop.data.WorkshopBrowseItem
 import top.apricityx.workshop.steam.protocol.STEAM_LANGUAGE_ENGLISH
@@ -128,6 +129,7 @@ data class AddGameUiState(
     val searchRequestFailed: Boolean = false,
     val featuredErrorMessage: String? = null,
     val message: String? = null,
+    val messageIsError: Boolean = false,
 )
 
 data class GameWorkshopUiState(
@@ -247,7 +249,7 @@ data class SettingsUiState(
     val preferredUpdateSource: UpdateSource = UpdateSource.DEFAULT_PREFERRED_USER_SOURCE,
     val availableUpdateSources: List<UpdateSource> = UpdateSource.userSelectableSources(),
     val currentVersionText: String = "",
-    val updateStatusSummary: String = "尚未执行过更新检查。",
+    val updateStatusSummary: String = "",
     val updateCheckInProgress: Boolean = false,
     val updatePromptState: UpdatePromptState? = null,
     val runtimeLogDirectoryPath: String = "",
@@ -270,8 +272,7 @@ data class SteamAuthUiState(
     val accounts: List<SteamAccountSummary> = emptyList(),
     val activeAccountId: String? = null,
     val isBrowsingUnauthenticated: Boolean = true,
-    val statusSummary: String =
-        "当前浏览账号：匿名。未登录时只能保证公开可见内容，部分成人内容或需要年龄确认的条目可能不会出现。",
+    val statusSummary: String = "",
     val loginDialogState: SteamLoginDialogUiState? = null,
 )
 
@@ -325,24 +326,24 @@ data class UpdateDownloadOptionState(
     val source: UpdateSource,
 )
 
-fun AppThemeMode.displayName(): String =
+fun AppThemeMode.displayName(context: Context): String =
     when (this) {
-        AppThemeMode.FollowSystem -> "跟随系统"
-        AppThemeMode.Light -> "亮色模式"
-        AppThemeMode.Dark -> "深色模式"
+        AppThemeMode.FollowSystem -> context.getString(R.string.theme_follow_system)
+        AppThemeMode.Light -> context.getString(R.string.theme_light)
+        AppThemeMode.Dark -> context.getString(R.string.theme_dark)
     }
 
-fun AppFrontendMode.displayName(): String =
+fun AppFrontendMode.displayName(context: Context): String =
     when (this) {
-        AppFrontendMode.LiquidGlass -> "液态玻璃"
-        AppFrontendMode.LiteLiquidGlass -> "轻量液态"
-        AppFrontendMode.Legacy -> "旧版经典"
+        AppFrontendMode.LiquidGlass -> context.getString(R.string.frontend_liquid_glass)
+        AppFrontendMode.LiteLiquidGlass -> context.getString(R.string.frontend_lite_liquid_glass)
+        AppFrontendMode.Legacy -> context.getString(R.string.frontend_legacy)
     }
 
-fun SteamLanguagePreference.displayName(): String =
+fun SteamLanguagePreference.displayName(context: Context): String =
     when (this) {
-        SteamLanguagePreference.SimplifiedChinese -> "简体中文"
-        SteamLanguagePreference.English -> "English"
+        SteamLanguagePreference.SimplifiedChinese -> context.getString(R.string.lang_simplified_chinese)
+        SteamLanguagePreference.English -> context.getString(R.string.lang_english)
     }
 
 fun SteamLanguagePreference.toSteamPublishedFileLanguage(): Int =
@@ -351,38 +352,32 @@ fun SteamLanguagePreference.toSteamPublishedFileLanguage(): Int =
         SteamLanguagePreference.English -> STEAM_LANGUAGE_ENGLISH
     }
 
-fun ModLibraryDisplayMode.screenSubtitle(): String =
+fun ModLibraryDisplayMode.screenSubtitle(context: Context): String =
     when (this) {
-        ModLibraryDisplayMode.LargePreview ->
-            "当前为大图显示，这里展示已经导出到本地的模组文件，会在启动和下载完成后自动同步。"
-        ModLibraryDisplayMode.CompactList ->
-            "当前为精简列表显示，这里展示已经导出到本地的模组文件，会在启动和下载完成后自动同步。"
-        ModLibraryDisplayMode.Overview ->
-            "当前为总览模式，这里会优先展示模组预览图，方便快速浏览本地模组。"
+        ModLibraryDisplayMode.LargePreview -> context.getString(R.string.mode_large_preview_desc)
+        ModLibraryDisplayMode.CompactList -> context.getString(R.string.mode_compact_list_desc)
+        ModLibraryDisplayMode.Overview -> context.getString(R.string.mode_overview_desc)
     }
 
-fun ModLibraryDisplayMode.sectionSubtitle(): String =
+fun ModLibraryDisplayMode.sectionSubtitle(context: Context): String =
     when (this) {
-        ModLibraryDisplayMode.LargePreview ->
-            "列表操作默认作用于主文件，进入详情后可以逐个文件处理。"
-        ModLibraryDisplayMode.CompactList ->
-            "点击条目进入详情后，可以打开、分享或删除文件。"
-        ModLibraryDisplayMode.Overview ->
-            "点击缩略图进入详情，长按可打开操作菜单。"
+        ModLibraryDisplayMode.LargePreview -> context.getString(R.string.mode_large_preview_section_hint)
+        ModLibraryDisplayMode.CompactList -> context.getString(R.string.mode_compact_list_section_hint)
+        ModLibraryDisplayMode.Overview -> context.getString(R.string.mode_overview_section_hint)
     }
 
-fun ModLibraryDisplayMode.toggleContentDescription(): String =
+fun ModLibraryDisplayMode.toggleContentDescription(context: Context): String =
     when (next()) {
-        ModLibraryDisplayMode.LargePreview -> "切换为大图显示"
-        ModLibraryDisplayMode.CompactList -> "切换为精简列表"
-        ModLibraryDisplayMode.Overview -> "切换为总览模式"
+        ModLibraryDisplayMode.LargePreview -> context.getString(R.string.mode_large_preview_toggle)
+        ModLibraryDisplayMode.CompactList -> context.getString(R.string.mode_compact_list_toggle)
+        ModLibraryDisplayMode.Overview -> context.getString(R.string.mode_overview_toggle)
     }
 
-fun ModLibrarySortOption.displayName(): String =
+fun ModLibrarySortOption.displayName(context: Context): String =
     when (this) {
-        ModLibrarySortOption.LatestSynced -> "最近同步"
-        ModLibrarySortOption.ModTitle -> "模组名称"
-        ModLibrarySortOption.GameTitle -> "游戏名称"
+        ModLibrarySortOption.LatestSynced -> context.getString(R.string.sort_latest_synced)
+        ModLibrarySortOption.ModTitle -> context.getString(R.string.sort_mod_title)
+        ModLibrarySortOption.GameTitle -> context.getString(R.string.sort_game_title)
     }
 
 fun ModLibraryFilterState.hasActiveFilters(): Boolean =
@@ -390,6 +385,7 @@ fun ModLibraryFilterState.hasActiveFilters(): Boolean =
         !selectedGameTitle.isNullOrBlank()
 
 fun SteamAccountsSnapshot.toUiState(
+    context: Context,
     loginDialogState: SteamLoginDialogUiState? = null,
 ): SteamAuthUiState =
     activeAccount.let { currentActiveAccount ->
@@ -399,24 +395,28 @@ fun SteamAccountsSnapshot.toUiState(
             isBrowsingUnauthenticated = currentActiveAccount?.requiresReauthentication != false,
             statusSummary = if (currentActiveAccount != null) {
                 if (currentActiveAccount.requiresReauthentication) {
-                    "当前浏览账号：${currentActiveAccount.accountName}。该账号需要重新认证，浏览将自动回退到匿名可见性。"
+                    context.getString(R.string.auth_status_needs_reauth, currentActiveAccount.accountName)
                 } else {
-                    "当前浏览账号：${currentActiveAccount.accountName}。工坊浏览会自动投影 Steam 登录态，下载任务会在入队时冻结当前账号。"
+                    context.getString(R.string.auth_status_active, currentActiveAccount.accountName)
                 }
             } else {
-                "当前浏览账号：匿名。未登录时只能保证公开可见内容，部分成人内容或需要年龄确认的条目可能不会出现。"
+                context.getString(R.string.auth_status_anonymous)
             },
             loginDialogState = loginDialogState,
         )
     }
 
-fun SteamAuthUiState.accountListItems(): List<SteamAccountListItemUiState> =
+fun SteamAuthUiState.accountListItems(context: Context): List<SteamAccountListItemUiState> =
     buildList {
         add(
             SteamAccountListItemUiState(
-                accountName = "匿名",
+                accountName = "anonymous",
                 isActive = activeAccountId == null,
-                statusText = if (activeAccountId == null) "当前浏览账号" else "匿名浏览",
+                statusText = if (activeAccountId == null) {
+                    context.getString(R.string.account_status_active)
+                } else {
+                    context.getString(R.string.account_anonymous_browsing)
+                },
                 canManage = false,
             ),
         )
@@ -428,9 +428,9 @@ fun SteamAuthUiState.accountListItems(): List<SteamAccountListItemUiState> =
                     isActive = account.isActive,
                     statusText = when {
                         account.requiresReauthentication ->
-                            "需要重新认证，浏览会回退到匿名，新下载也会被阻止。"
-                        account.isActive -> "当前浏览账号"
-                        else -> "已保存账号"
+                            context.getString(R.string.account_status_need_reauth)
+                        account.isActive -> context.getString(R.string.account_status_active)
+                        else -> context.getString(R.string.account_status_saved)
                     },
                     canManage = true,
                 ),

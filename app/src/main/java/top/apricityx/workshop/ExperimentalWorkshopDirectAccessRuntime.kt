@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import java.io.File
 import javax.net.ssl.HostnameVerifier
 import okhttp3.CookieJar
@@ -116,10 +117,17 @@ internal data class ExperimentalWorkshopDirectAccessRuntime(
 )
 
 internal fun createExperimentalWorkshopDirectAccessRuntime(
+    context: Context,
     filesDir: File,
     routeProfiles: List<WattToolkitRouteProfile> = defaultExperimentalWorkshopDirectAccessProfiles,
 ): ExperimentalWorkshopDirectAccessRuntime {
     val forwardDns = WattToolkitForwardDns()
+    val appContext = context.applicationContext
+    val captivePortalKeywords = listOf(
+        appContext.getString(R.string.portal_keyword_campus_network),
+        appContext.getString(R.string.portal_keyword_auth_page),
+        appContext.getString(R.string.portal_keyword_auth_login),
+    )
     val resolvers = routeProfiles.map { routeProfile ->
         WattToolkitWorkshopRouteResolver(
             routeProfile = routeProfile,
@@ -127,6 +135,7 @@ internal fun createExperimentalWorkshopDirectAccessRuntime(
                 filesDir = filesDir,
                 routeProfile = routeProfile,
             ),
+            captivePortalKeywords = captivePortalKeywords,
         )
     }
     val hostnameVerifier = WorkshopDirectHostnameVerifier { host ->

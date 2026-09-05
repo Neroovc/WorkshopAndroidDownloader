@@ -1,11 +1,12 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import java.net.URLConnection
 
 object WorkshopFileShareManager {
-    fun createShareFileIntent(file: ExportedDownloadFile): Intent? {
+    fun createShareFileIntent(context: Context, file: ExportedDownloadFile): Intent? {
         val uri = runCatching { Uri.parse(file.contentUri) }
             .getOrNull()
             ?.takeIf { it.toString().isNotBlank() }
@@ -18,7 +19,7 @@ object WorkshopFileShareManager {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        return Intent.createChooser(shareIntent, "分享文件").apply {
+        return Intent.createChooser(shareIntent, context.getString(R.string.chooser_share_file)).apply {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
     }

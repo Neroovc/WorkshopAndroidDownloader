@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import kotlinx.serialization.Serializable
 import kotlin.LazyThreadSafetyMode
 
@@ -21,7 +22,7 @@ data class DownloadedModEntry(
     val isTrackingOnly: Boolean = false,
 ) {
     internal val cachedVersionLabel: String by lazy(LazyThreadSafetyMode.NONE) {
-        formatModVersionLabel(
+        formatModVersionLabelNeutral(
             versionId = versionId,
             updatedAtMillis = versionUpdatedAtMillis,
         )
@@ -155,8 +156,12 @@ fun DownloadedModEntry.matches(other: DownloadedModEntry): Boolean =
         versionId = other.versionId,
     )
 
-fun DownloadedModEntry.versionLabel(): String =
-    cachedVersionLabel
+fun DownloadedModEntry.versionLabel(context: Context): String =
+    formatModVersionLabel(
+        versionId = versionId,
+        updatedAtMillis = versionUpdatedAtMillis,
+        context = context,
+    )
 
 fun List<DownloadedModEntry>.groupedForDisplay(): List<DownloadedModGroup> =
     groupBy(DownloadedModEntry::modGroupKey)

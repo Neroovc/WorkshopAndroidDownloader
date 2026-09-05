@@ -10,10 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import top.apricityx.workshop.R
 import top.apricityx.workshop.data.SteamGame
 
 @Composable
@@ -45,7 +47,7 @@ fun GameShowcaseCard(
             )
             MetricFlow(metrics = listOf("AppID ${game.appId}"))
             Text(
-                text = game.shortDescription.ifBlank { "这个游戏支持 Steam 创意工坊。" },
+                text = game.shortDescription.ifBlank { stringResource(R.string.common_no_description_period) },
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium,

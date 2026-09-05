@@ -382,43 +382,43 @@ private data class MetricPrefixIconRule(
 
 private val MetricPrefixIconRules = listOf(
     MetricPrefixIconRule(prefix = "AppID ", icon = Icons.Default.Dashboard, label = "AppID"),
-    MetricPrefixIconRule(prefix = "模组 ", icon = Icons.Default.Extension, label = "模组"),
-    MetricPrefixIconRule(prefix = "版本 ", icon = Icons.Default.Layers, label = "版本"),
-    MetricPrefixIconRule(prefix = "文件 ", icon = Icons.Default.Folder, label = "文件"),
-    MetricPrefixIconRule(prefix = "同步 ", icon = Icons.Default.Schedule, label = "同步"),
-    MetricPrefixIconRule(prefix = "可更新 ", icon = Icons.Default.Refresh, label = "可更新"),
-    MetricPrefixIconRule(prefix = "运行中 ", icon = Icons.Default.Sync, label = "运行中"),
-    MetricPrefixIconRule(prefix = "排队 ", icon = Icons.Default.Schedule, label = "排队"),
-    MetricPrefixIconRule(prefix = "暂停 ", icon = Icons.Default.Pause, label = "暂停"),
-    MetricPrefixIconRule(prefix = "历史 ", icon = Icons.Default.History, label = "历史"),
-    MetricPrefixIconRule(prefix = "阶段 ", icon = Icons.AutoMirrored.Filled.ViewList, label = "阶段"),
-    MetricPrefixIconRule(prefix = "账号 ", icon = Icons.Default.Person, label = "账号"),
-    MetricPrefixIconRule(prefix = "总进度 ", icon = Icons.Default.DonutLarge, label = "总进度"),
-    MetricPrefixIconRule(prefix = "数据 ", icon = Icons.Default.Storage, label = "数据"),
-    MetricPrefixIconRule(prefix = "分块 ", icon = Icons.Default.ViewModule, label = "分块"),
-    MetricPrefixIconRule(prefix = "速度 ", icon = Icons.Default.Speed, label = "速度"),
-    MetricPrefixIconRule(prefix = "更新 ", icon = Icons.Default.Update, label = "更新"),
-    MetricPrefixIconRule(prefix = "收藏 ", icon = Icons.Default.Favorite, label = "收藏"),
-    MetricPrefixIconRule(prefix = "标签 ", icon = Icons.AutoMirrored.Filled.Label, label = "标签"),
-    MetricPrefixIconRule(prefix = "作者 ", icon = Icons.Default.Person, label = "作者"),
-    MetricPrefixIconRule(prefix = "订阅 ", icon = Icons.Default.Download, label = "订阅"),
-    MetricPrefixIconRule(prefix = "浏览 ", icon = Icons.Default.Visibility, label = "浏览"),
-    MetricPrefixIconRule(prefix = "大小 ", icon = Icons.Default.Storage, label = "大小"),
-    MetricPrefixIconRule(prefix = "前置 ", icon = Icons.Default.Extension, label = "前置"),
-    MetricPrefixIconRule(prefix = "评论 ", icon = Icons.AutoMirrored.Filled.Comment, label = "评论"),
+    MetricPrefixIconRule(prefix = "Mod ", icon = Icons.Default.Extension, label = "Mod"),
+    MetricPrefixIconRule(prefix = "Version ", icon = Icons.Default.Layers, label = "Version"),
+    MetricPrefixIconRule(prefix = "File ", icon = Icons.Default.Folder, label = "File"),
+    MetricPrefixIconRule(prefix = "Synced ", icon = Icons.Default.Schedule, label = "Synced"),
+    MetricPrefixIconRule(prefix = "Updates ", icon = Icons.Default.Refresh, label = "Updates"),
+    MetricPrefixIconRule(prefix = "Running ", icon = Icons.Default.Sync, label = "Running"),
+    MetricPrefixIconRule(prefix = "Queued ", icon = Icons.Default.Schedule, label = "Queued"),
+    MetricPrefixIconRule(prefix = "Paused ", icon = Icons.Default.Pause, label = "Paused"),
+    MetricPrefixIconRule(prefix = "History ", icon = Icons.Default.History, label = "History"),
+    MetricPrefixIconRule(prefix = "Stage ", icon = Icons.AutoMirrored.Filled.ViewList, label = "Stage"),
+    MetricPrefixIconRule(prefix = "Account ", icon = Icons.Default.Person, label = "Account"),
+    MetricPrefixIconRule(prefix = "Total progress ", icon = Icons.Default.DonutLarge, label = "Total progress"),
+    MetricPrefixIconRule(prefix = "Data ", icon = Icons.Default.Storage, label = "Data"),
+    MetricPrefixIconRule(prefix = "Chunks ", icon = Icons.Default.ViewModule, label = "Chunks"),
+    MetricPrefixIconRule(prefix = "Speed ", icon = Icons.Default.Speed, label = "Speed"),
+    MetricPrefixIconRule(prefix = "Updated ", icon = Icons.Default.Update, label = "Updated"),
+    MetricPrefixIconRule(prefix = "Favorites ", icon = Icons.Default.Favorite, label = "Favorites"),
+    MetricPrefixIconRule(prefix = "Tags ", icon = Icons.AutoMirrored.Filled.Label, label = "Tags"),
+    MetricPrefixIconRule(prefix = "Author ", icon = Icons.Default.Person, label = "Author"),
+    MetricPrefixIconRule(prefix = "Subscriptions ", icon = Icons.Default.Download, label = "Subscriptions"),
+    MetricPrefixIconRule(prefix = "Views ", icon = Icons.Default.Visibility, label = "Views"),
+    MetricPrefixIconRule(prefix = "Size ", icon = Icons.Default.Storage, label = "Size"),
+    MetricPrefixIconRule(prefix = "Prerequisites ", icon = Icons.Default.Extension, label = "Prerequisites"),
+    MetricPrefixIconRule(prefix = "Comments ", icon = Icons.AutoMirrored.Filled.Comment, label = "Comments"),
 )
 
 private val MetricExactIconRules = mapOf(
-    "等待中" to Icons.Default.Schedule,
-    "排队中" to Icons.Default.Schedule,
-    "解析元数据" to Icons.Default.Info,
-    "连接内容服务器" to Icons.Default.Cloud,
-    "下载中" to Icons.Default.Sync,
-    "已暂停" to Icons.Default.Pause,
-    "已完成" to Icons.Default.CheckCircle,
-    "失败" to Icons.Default.ErrorOutline,
-    "已下载" to Icons.Default.CheckCircle,
-    "时间未知" to Icons.Default.Schedule,
+    "Waiting" to Icons.Default.Schedule,
+    "Queued" to Icons.Default.Schedule,
+    "Parsing metadata" to Icons.Default.Info,
+    "Connecting to content server" to Icons.Default.Cloud,
+    "Downloading" to Icons.Default.Sync,
+    "Paused" to Icons.Default.Pause,
+    "Completed" to Icons.Default.CheckCircle,
+    "Failed" to Icons.Default.ErrorOutline,
+    "Downloaded" to Icons.Default.CheckCircle,
+    "Time unknown" to Icons.Default.Schedule,
 )
 
 private val MetricTimestampRegex = Regex("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}(:\\d{2})?$")
@@ -463,21 +463,21 @@ private fun resolveMetricPillPresentation(
             MetricPillPresentation(
                 displayText = normalized,
                 icon = Icons.Default.Schedule,
-                contentDescription = "时间",
+                contentDescription = "Time",
             )
 
         MetricBinarySpeedRegex.matches(normalized) ->
             MetricPillPresentation(
                 displayText = normalized,
                 icon = Icons.Default.Speed,
-                contentDescription = "速度",
+                contentDescription = "Speed",
             )
 
         MetricBinaryProgressRegex.matches(normalized) || MetricBinarySizeRegex.matches(normalized) ->
             MetricPillPresentation(
                 displayText = normalized,
                 icon = Icons.Default.Storage,
-                contentDescription = "大小",
+                contentDescription = "Size",
             )
 
         else -> MetricPillPresentation(displayText = normalized)
@@ -485,7 +485,7 @@ private fun resolveMetricPillPresentation(
 }
 
 private fun looksLikeRelativeMetricTime(text: String): Boolean =
-    text.endsWith("前") ||
-        text.contains("刚刚") ||
-        text.contains("今天") ||
-        text.contains("昨天")
+    text.endsWith("ago") ||
+        text.startsWith("Just now") ||
+        text.contains("Today") ||
+        text.contains("Yesterday")

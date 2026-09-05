@@ -1,29 +1,32 @@
 package top.apricityx.workshop
 
+import android.content.Context
+
 private const val STEAM_CDN_UNAUTHORIZED_MESSAGE = "Steam CDN request failed: 401"
 
 internal fun formatDownloadFailureMessage(
+    context: Context,
     rawMessage: String,
     gameTitle: String,
     hasBoundAccount: Boolean,
     ownershipStatus: SteamAppOwnershipStatus,
 ): String {
-    val normalizedMessage = rawMessage.trim().ifBlank { "下载失败。" }
+    val normalizedMessage = rawMessage.trim().ifBlank { context.getString(R.string.download_failed_generic) }
     if (!normalizedMessage.contains(STEAM_CDN_UNAUTHORIZED_MESSAGE)) {
         return normalizedMessage
     }
 
     if (!hasBoundAccount) {
-        return "Steam CDN 返回 401，该内容可能需要登录购买过游戏的 Steam 账号才能下载。"
+        return context.getString(R.string.download_failed_401)
     }
 
     return when (ownershipStatus) {
         SteamAppOwnershipStatus.NotOwned -> {
-            val resolvedGameTitle = gameTitle.ifBlank { "对应游戏" }
-            "Steam CDN 返回 401，当前绑定账号未检测到拥有《$resolvedGameTitle》，该内容可能需要登录购买过游戏的 Steam 账号才能下载。"
+            val resolvedGameTitle = gameTitle.ifBlank { context.getString(R.string.download_failed_fallback_game) }
+            context.getString(R.string.download_failed_401_not_owned, resolvedGameTitle)
         }
 
         SteamAppOwnershipStatus.Owned -> normalizedMessage
-        SteamAppOwnershipStatus.Unknown -> "Steam CDN 返回 401，该内容可能需要登录购买过游戏的 Steam 账号才能下载。"
+        SteamAppOwnershipStatus.Unknown -> context.getString(R.string.download_failed_401)
     }
 }

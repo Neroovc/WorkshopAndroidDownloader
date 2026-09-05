@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -103,15 +104,15 @@ internal fun WorkshopItemDetailScreen(
         add(
             WorkshopItemSummaryMetric(
                 icon = Icons.Default.Person,
-                label = "作者",
-                value = detail?.authorName ?: state.item.authorName,
+                label = stringResource(R.string.metric_author),
+                value = (detail?.authorName ?: state.item.authorName).ifBlank { stringResource(R.string.common_unknown_author) },
             ),
         )
         detail?.subscriptions?.let {
             add(
                 WorkshopItemSummaryMetric(
                     icon = Icons.Default.Download,
-                    label = "订阅",
+                    label = stringResource(R.string.metric_subscriptions),
                     value = formatCount(it),
                 ),
             )
@@ -120,7 +121,7 @@ internal fun WorkshopItemDetailScreen(
             add(
                 WorkshopItemSummaryMetric(
                     icon = Icons.Default.Visibility,
-                    label = "浏览",
+                    label = stringResource(R.string.metric_views),
                     value = formatCount(it),
                 ),
             )
@@ -129,7 +130,7 @@ internal fun WorkshopItemDetailScreen(
             add(
                 WorkshopItemSummaryMetric(
                     icon = Icons.Default.Storage,
-                    label = "大小",
+                    label = stringResource(R.string.metric_size),
                     value = formatBinaryFileSize(it),
                 ),
             )
@@ -138,7 +139,7 @@ internal fun WorkshopItemDetailScreen(
             add(
                 WorkshopItemSummaryMetric(
                     icon = Icons.Default.Extension,
-                    label = "前置",
+                    label = stringResource(R.string.metric_prerequisites),
                     value = requiredItems.size.toString(),
                 ),
             )
@@ -147,7 +148,7 @@ internal fun WorkshopItemDetailScreen(
             add(
                 WorkshopItemSummaryMetric(
                     icon = Icons.AutoMirrored.Filled.Comment,
-                    label = "评论",
+                    label = stringResource(R.string.metric_comments),
                     value = formatCount(it),
                 ),
             )
@@ -156,10 +157,10 @@ internal fun WorkshopItemDetailScreen(
 
     if (state.showConnectionErrorState) {
         WorkshopCenteredState(
-            title = "啊哦，加载超时",
+            title = stringResource(R.string.error_load_timeout_title),
             message = state.message
-                ?: "啊哦，加载超时，您的网络环境可能不支持直连创意工坊，请开启加速器加速 steam 或科学上网后重试。",
-            actionLabel = "重试",
+                ?: stringResource(R.string.error_load_library_timeout_advice),
+            actionLabel = stringResource(R.string.btn_retry),
             onAction = onRetry,
             modifier = modifier.workshopChromePadding(topExtra = 24.dp, bottomExtra = 24.dp),
         )
@@ -191,7 +192,7 @@ internal fun WorkshopItemDetailScreen(
                     enabled = !isInModLibrary,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text(if (isInModLibrary) "已在模组库中" else "添加到库")
+                    Text(if (isInModLibrary) stringResource(R.string.status_in_mod_library) else stringResource(R.string.btn_add_to_mod_library))
                 }
 
                 WorkshopButton(
@@ -231,7 +232,7 @@ internal fun WorkshopItemDetailScreen(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = null,
                         )
-                        Text(" 重试加载详情")
+                        Text(stringResource(R.string.btn_retry_load_detail))
                     }
                 }
             }
@@ -245,14 +246,14 @@ internal fun WorkshopItemDetailScreen(
             ) {
                 WorkshopPanelCard {
                     Text(
-                        text = "简介",
+                        text = stringResource(R.string.section_description),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                     if (description.isNotBlank()) {
                         if (state.translatedDescription != null) {
                             Text(
-                                text = "原文",
+                                text = stringResource(R.string.text_original),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.primary,
                             )
@@ -277,13 +278,13 @@ internal fun WorkshopItemDetailScreen(
                                     modifier = Modifier.size(18.dp),
                                     strokeWidth = 2.dp,
                                 )
-                                Text(" 正在翻译描述…")
+                                Text(stringResource(R.string.text_translating_desc))
                             } else {
                                 Text(
                                     if (state.translatedDescription == null) {
-                                        "翻译描述"
+                                        stringResource(R.string.btn_translate_desc)
                                     } else {
-                                        "重新翻译描述"
+                                        stringResource(R.string.btn_retranslate_desc)
                                     },
                                 )
                             }
@@ -301,7 +302,7 @@ internal fun WorkshopItemDetailScreen(
                             },
                             modifier = Modifier.fillMaxWidth(),
                         ) {
-                            Text("查看更新日志")
+                            Text(stringResource(R.string.btn_view_change_notes))
                         }
                     }
 
@@ -314,7 +315,7 @@ internal fun WorkshopItemDetailScreen(
 
                     state.translatedDescription?.takeIf(String::isNotBlank)?.let { translatedDescription ->
                         Text(
-                            text = "译文",
+                            text = stringResource(R.string.text_translated),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary,
                         )
@@ -330,12 +331,12 @@ internal fun WorkshopItemDetailScreen(
             }
 
             if (state.isLoading) {
-                WorkshopLoadingBlock(label = "正在加载更完整的模组详情。")
+                WorkshopLoadingBlock(label = stringResource(R.string.workshop_loading_detail))
             }
 
             state.message?.let { message ->
                 WorkshopMessageBanner(
-                    message = "$message\n如果网络不稳定，可以稍后重试；下载功能仍可直接使用。",
+                    message = "$message\n${stringResource(R.string.detail_network_unstable_hint)}",
                     tone = MessageTone.Error,
                 )
             }
@@ -343,12 +344,12 @@ internal fun WorkshopItemDetailScreen(
             detail?.requiredItems?.takeIf { requiredItems -> requiredItems.isNotEmpty() }?.let { requiredItems ->
                 WorkshopPanelCard {
                     Text(
-                        text = "前置内容",
+                        text = stringResource(R.string.section_prerequisites),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                     Text(
-                        text = "下载这个内容前，建议先准备以下 ${requiredItems.size} 个前置工坊物品。",
+                        text = stringResource(R.string.detail_prerequisites_hint, requiredItems.size),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -365,24 +366,37 @@ internal fun WorkshopItemDetailScreen(
             detail?.let {
                 WorkshopPanelCard {
                     Text(
-                        text = "评论区",
+                        text = stringResource(R.string.section_comments),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                     Text(
                         text = when {
                             state.isLoadingComments && it.comments.isEmpty() ->
-                                "评论区加载中…"
+                                stringResource(R.string.comments_loading)
                             it.commentCount == 0L ->
-                                "这件模组目前没有公开评论。"
+                                stringResource(R.string.comments_none)
                             it.commentCount != null && it.commentTotalPages != null ->
-                                "当前第 ${it.commentPage} / ${it.commentTotalPages} 页，Steam 共 ${formatCount(it.commentCount)} 条评论。"
+                                stringResource(
+                                    R.string.comments_page_of_total,
+                                    it.commentPage,
+                                    it.commentTotalPages,
+                                    formatCount(it.commentCount),
+                                )
                             it.commentCount != null ->
-                                "当前第 ${it.commentPage} 页，Steam 共 ${formatCount(it.commentCount)} 条评论。"
+                                stringResource(
+                                    R.string.comments_page_total,
+                                    it.commentPage,
+                                    formatCount(it.commentCount),
+                                )
                             it.comments.isNotEmpty() ->
-                                "当前第 ${it.commentPage} 页，已加载 ${it.comments.size} 条公开评论。"
+                                stringResource(
+                                    R.string.comments_page_loaded,
+                                    it.commentPage,
+                                    it.comments.size,
+                                )
                             else ->
-                                "暂时没有读取到公开评论，你也可以直接打开 Steam 评论页查看。"
+                                stringResource(R.string.comments_none_fallback)
                         },
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -402,16 +416,16 @@ internal fun WorkshopItemDetailScreen(
                                 imageVector = Icons.Default.Refresh,
                                 contentDescription = null,
                             )
-                            Text(" 重试加载评论")
+                            Text(stringResource(R.string.btn_retry_load_comments))
                         }
                     }
 
                     if (state.isLoadingComments) {
                         CommentLoadingBlock(
                             message = if (it.comments.isEmpty()) {
-                                "加载中"
+                                stringResource(R.string.text_loading)
                             } else {
-                                "正在加载评论…"
+                                stringResource(R.string.comments_loading)
                             },
                         )
                     }
@@ -430,14 +444,14 @@ internal fun WorkshopItemDetailScreen(
                                 enabled = !state.isLoadingComments && it.hasPreviousCommentPage,
                                 modifier = Modifier.weight(1f),
                             ) {
-                                Text("上一页")
+                                Text(stringResource(R.string.btn_previous_page))
                             }
                             WorkshopOutlinedButton(
                                 onClick = onLoadNextCommentsPage,
                                 enabled = !state.isLoadingComments && it.hasNextCommentPage,
                                 modifier = Modifier.weight(1f),
                             ) {
-                                Text("下一页")
+                                Text(stringResource(R.string.btn_next_page))
                             }
                         }
                     }
@@ -451,35 +465,53 @@ internal fun WorkshopItemDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            "在 Steam 中打开对应评论页",
+                            stringResource(R.string.btn_open_comments_in_steam),
                         )
                     }
                 }
 
                 WorkshopPanelCard {
                     Text(
-                        text = "模组信息",
+                        text = stringResource(R.string.section_mod_info),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                     MetricFlow(
                         metrics = listOfNotNull(
-                            it.timeUpdatedEpochSeconds?.let(::formatUpdatedTime)?.let { value -> "更新 $value" },
-                            it.favorited?.let(::formatCount)?.let { value -> "收藏 $value" },
-                            it.tags.takeIf { tags -> tags.isNotEmpty() }?.let { tags -> "标签 ${tags.size}" },
+                            it.timeUpdatedEpochSeconds?.let(::formatUpdatedTime)?.let { value ->
+                                stringResource(R.string.metric_updated, value)
+                            },
+                            it.favorited?.let(::formatCount)?.let { value ->
+                                stringResource(R.string.metric_favorited, value)
+                            },
+                            it.tags.takeIf { tags -> tags.isNotEmpty() }?.let { tags ->
+                                stringResource(R.string.metric_tags, tags.size)
+                            },
                         ),
                     )
                     DetailLine(
-                        label = "文件大小",
-                        value = it.fileSizeBytes?.let(::formatBinaryFileSize) ?: "未知",
+                        label = stringResource(R.string.metric_file_size),
+                        value = it.fileSizeBytes?.let(::formatBinaryFileSize) ?: stringResource(R.string.common_unknown),
                     )
-                    DetailLine(label = "更新时间", value = it.timeUpdatedEpochSeconds?.let(::formatUpdatedTime) ?: "未知")
-                    DetailLine(label = "订阅数", value = it.subscriptions?.let(::formatCount) ?: "未知")
-                    DetailLine(label = "收藏数", value = it.favorited?.let(::formatCount) ?: "未知")
-                    DetailLine(label = "浏览量", value = it.views?.let(::formatCount) ?: "未知")
                     DetailLine(
-                        label = "标签",
-                        value = it.tags.takeIf { tags -> tags.isNotEmpty() }?.joinToString(" / ") ?: "暂无标签",
+                        label = stringResource(R.string.metric_last_updated),
+                        value = it.timeUpdatedEpochSeconds?.let(::formatUpdatedTime) ?: stringResource(R.string.common_unknown),
+                    )
+                    DetailLine(
+                        label = stringResource(R.string.metric_subscriptions),
+                        value = it.subscriptions?.let(::formatCount) ?: stringResource(R.string.common_unknown),
+                    )
+                    DetailLine(
+                        label = stringResource(R.string.metric_favorites),
+                        value = it.favorited?.let(::formatCount) ?: stringResource(R.string.common_unknown),
+                    )
+                    DetailLine(
+                        label = stringResource(R.string.metric_views),
+                        value = it.views?.let(::formatCount) ?: stringResource(R.string.common_unknown),
+                    )
+                    DetailLine(
+                        label = stringResource(R.string.metric_tags_label),
+                        value = it.tags.takeIf { tags -> tags.isNotEmpty() }?.joinToString(" / ") ?: stringResource(R.string.common_no_tags),
                     )
                 }
             }
@@ -553,7 +585,7 @@ private fun CommentLine(
                 MetricPill(
                     text = comment.postedEpochSeconds
                         ?.let(::formatUpdatedTime)
-                        ?: comment.postedDisplayText.ifBlank { "时间未知" },
+                        ?: comment.postedDisplayText.ifBlank { stringResource(R.string.status_time_unknown) },
                 )
             }
             SelectionContainer {
@@ -663,7 +695,7 @@ private fun RequiredItemLine(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = "暂无\n封面",
+                        text = stringResource(R.string.common_no_cover),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -689,11 +721,11 @@ private fun RequiredItemLine(
                         overflow = TextOverflow.Ellipsis,
                     )
                     if (isDownloaded) {
-                        MetricPill(text = "已下载")
+                        MetricPill(text = stringResource(R.string.status_downloaded))
                     }
                 }
                 Text(
-                    text = item.descriptionSnippet.ifBlank { "暂无描述" },
+                    text = item.descriptionSnippet.ifBlank { stringResource(R.string.common_no_description) },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,

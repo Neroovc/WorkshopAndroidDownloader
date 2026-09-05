@@ -25,7 +25,7 @@ class SteamAuthenticatedCleartextInterceptor(
 class SteamAuthenticatedCleartextBlockedException(
     host: String,
 ) : IOException(
-    "当前设置禁止带 Steam 登录态的明文 HTTP 请求：$host。可在设置里开启后重试。",
+    "Current settings block authenticated cleartext HTTP requests to $host. Enable it in settings and try again.",
 )
 
 internal fun String.isSteamWebAuthenticatedTrafficDomain(): Boolean {

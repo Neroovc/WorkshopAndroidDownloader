@@ -83,9 +83,9 @@ class DownloadCenterManager private constructor(
                 boundAccountName = target.boundAccountName,
                 status = DownloadCenterTaskStatus.Queued,
                 logs = listOf(
-                    "已加入下载队列。",
-                    "绑定账号：${target.boundAccountName}",
-                    "调试日志：${debugLogManager.logFilePath(taskId)}",
+                    application.getString(R.string.task_log_enqueued),
+                    application.getString(R.string.task_log_bound_account, target.boundAccountName),
+                    application.getString(R.string.task_log_debug_log, debugLogManager.logFilePath(taskId)),
                 ),
                 enqueuedAtMillis = now + index,
                 updatedAtMillis = now + index,
@@ -128,7 +128,7 @@ class DownloadCenterManager private constructor(
                 phase = DownloadState.Paused,
                 errorMessage = null,
                 progress = it.progress.copy(speedBytesPerSecond = null),
-                logs = (it.logs + "任务已暂停，可稍后继续下载。").takeLast(MAX_LOG_LINES),
+                logs = (it.logs + application.getString(R.string.task_log_paused)).takeLast(MAX_LOG_LINES),
                 updatedAtMillis = System.currentTimeMillis(),
             )
         }
@@ -159,14 +159,14 @@ class DownloadCenterManager private constructor(
                     task.boundAccountName != retryBinding.accountName
             )
         val retryBindingLog = if (bindingChanged) {
-            "重试时已切换为当前账号：${retryBinding.accountName}。"
+            application.getString(R.string.task_log_switched_account, retryBinding.accountName)
         } else {
             null
         }
         val queueResumeLog = if (task.status == DownloadCenterTaskStatus.Failed) {
-            "任务已重新加入队列，重试时会使用当前登录账号继续下载。"
+            application.getString(R.string.task_log_requeued_retry)
         } else {
-            "任务已重新加入队列，将从已缓存的进度继续。"
+            application.getString(R.string.task_log_requeued_resume)
         }
 
         clearProgressSample(taskId)
@@ -284,7 +284,7 @@ class DownloadCenterManager private constructor(
                 phase = DownloadState.Resolving,
                 errorMessage = null,
                 progress = it.progress.copy(speedBytesPerSecond = null),
-                logs = (it.logs + "开始下载。").takeLast(MAX_LOG_LINES),
+                logs = (it.logs + application.getString(R.string.task_log_started)).takeLast(MAX_LOG_LINES),
                 updatedAtMillis = System.currentTimeMillis(),
             )
         }
@@ -314,7 +314,7 @@ class DownloadCenterManager private constructor(
         var taskSucceeded = false
         val accountSession = steamAuthRepository.accountSessionFor(task.boundAccountId)
         if (task.boundAccountId != null && accountSession == null) {
-            val message = "绑定的 Steam 账号已失效，请到设置里重新认证后再重试。"
+            val message = application.getString(R.string.task_log_account_invalid)
             clearProgressSample(task.id)
             updateTask(task.id) {
                 it.copy(
@@ -421,7 +421,7 @@ class DownloadCenterManager private constructor(
                                 updatedAtMillis = System.currentTimeMillis(),
                             )
                         }
-                        appendTaskLog(task.id, "文件完成：${event.file.relativePath}")
+                        appendTaskLog(task.id, application.getString(R.string.task_log_file_completed, event.file.relativePath))
                     }
 
                     is DownloadEvent.Completed -> {
@@ -522,7 +522,7 @@ class DownloadCenterManager private constructor(
                     it.copy(
                         status = DownloadCenterTaskStatus.Failed,
                         phase = DownloadState.Failed,
-                        errorMessage = it.errorMessage ?: "下载失败。",
+                        errorMessage = it.errorMessage ?: application.getString(R.string.status_download_failed),
                         progress = it.progress.copy(speedBytesPerSecond = null),
                         updatedAtMillis = System.currentTimeMillis(),
                     )
@@ -610,7 +610,7 @@ class DownloadCenterManager private constructor(
                     phase = DownloadState.Idle,
                     errorMessage = null,
                     progress = task.progress.copy(speedBytesPerSecond = null),
-                    logs = (task.logs + "应用重启后已恢复任务，将从已缓存的下载进度继续。").takeLast(MAX_LOG_LINES),
+                    logs = (task.logs + application.getString(R.string.task_log_recovered)).takeLast(MAX_LOG_LINES),
                     updatedAtMillis = now + index,
                 )
             }
@@ -717,6 +717,7 @@ class DownloadCenterManager private constructor(
             SteamAppOwnershipStatus.Unknown
         }
         return formatDownloadFailureMessage(
+            context = application,
             rawMessage = rawMessage,
             gameTitle = task.gameTitle,
             hasBoundAccount = task.boundAccountId != null,
@@ -728,7 +729,7 @@ class DownloadCenterManager private constructor(
         val publishedFileId: ULong,
         val itemTitle: String,
         val boundAccountId: String? = null,
-        val boundAccountName: String = "匿名",
+        val boundAccountName: String = "anonymous",
     )
 
     companion object {

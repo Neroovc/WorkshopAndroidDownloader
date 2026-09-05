@@ -5,7 +5,7 @@ import java.io.File
 import top.apricityx.workshop.workshop.DownloadedFileInfo
 
 class DownloadCenterTaskFinalizer(
-    application: Application,
+    private val application: Application,
     private val publicExportManager: WorkshopPublicExportManager = WorkshopPublicExportManager(application),
     private val modLibraryRepository: ModLibraryRepository = ModLibraryRepository(application),
     private val previewImageCache: WorkshopPreviewImageCache = WorkshopPreviewImageCache(application),
@@ -16,11 +16,11 @@ class DownloadCenterTaskFinalizer(
         downloadedFiles: List<DownloadedFileInfo>,
         log: suspend (String) -> Unit,
     ): FinalizedDownloadArtifacts {
-        log("开始整理下载结果。stagingDir=${stagingDir.absolutePath} files=${downloadedFiles.size}")
+        log(application.getString(R.string.log_finalize_start, stagingDir.absolutePath, downloadedFiles.size))
         val metadata = readWorkshopDownloadMetadata(stagingDir)
         val resolvedItemTitle = metadata?.title?.takeIf(String::isNotBlank) ?: task.itemTitle
         val version = resolveWorkshopModVersion(metadata)
-        log("解析元数据完成。resolvedItemTitle=$resolvedItemTitle")
+        log(application.getString(R.string.log_metadata_done, resolvedItemTitle))
         val exportedFiles = publicExportManager.exportDownloadedFiles(
             gameTitle = task.gameTitle,
             itemTitle = resolvedItemTitle,
@@ -29,13 +29,13 @@ class DownloadCenterTaskFinalizer(
             files = downloadedFiles,
             log = log,
         )
-        log("公共导出完成。exportedFiles=${exportedFiles.size}")
+        log(application.getString(R.string.log_export_done, exportedFiles.size))
         val previewImagePath = cachePreviewImage(
             task = task,
             previewImageUrl = metadata?.previewImageUrl,
             log = log,
         )
-        log("封面缓存阶段结束。previewImagePath=${previewImagePath ?: "<none>"}")
+        log(application.getString(R.string.log_preview_phase_done, previewImagePath ?: "<none>"))
         syncModLibrary(
             task = task,
             itemTitle = resolvedItemTitle,
@@ -46,7 +46,7 @@ class DownloadCenterTaskFinalizer(
             exportedFiles = exportedFiles,
             log = log,
         )
-        log("模组库同步阶段结束。")
+        log(application.getString(R.string.log_library_sync_done))
         return FinalizedDownloadArtifacts(
             itemTitle = resolvedItemTitle,
             exportedFiles = exportedFiles,
@@ -58,7 +58,7 @@ class DownloadCenterTaskFinalizer(
         previewImageUrl: String?,
         log: suspend (String) -> Unit,
     ): String? {
-        log("开始缓存模组封面。previewImageUrl=${previewImageUrl ?: "<none>"}")
+        log(application.getString(R.string.log_preview_start, previewImageUrl ?: "<none>"))
         return runCatching {
             previewImageCache.cachePreviewImage(
                 appId = task.appId,
@@ -67,11 +67,11 @@ class DownloadCenterTaskFinalizer(
             )
         }.fold(
             onSuccess = { path ->
-                log("模组封面缓存完成。path=${path ?: "<none>"}")
+                log(application.getString(R.string.log_preview_done, path ?: "<none>"))
                 path
             },
             onFailure = { error ->
-            log("模组封面缓存失败：${error.summary()}")
+            log(application.getString(R.string.log_preview_failed, error.summary(application)))
             null
             },
         )
@@ -87,7 +87,7 @@ class DownloadCenterTaskFinalizer(
         exportedFiles: List<ExportedDownloadFile>,
         log: suspend (String) -> Unit,
     ) {
-        log("开始同步模组库索引。exportedFiles=${exportedFiles.size}")
+        log(application.getString(R.string.log_library_index_start, exportedFiles.size))
         val result = runCatching {
             modLibraryRepository.upsertDownloadedMod(
                 appId = task.appId,
@@ -103,9 +103,9 @@ class DownloadCenterTaskFinalizer(
             )
         }
         if (result.isSuccess) {
-            log("模组库索引更新完成。")
+            log(application.getString(R.string.log_library_index_done))
         } else {
-            log("模组库索引更新失败：${result.exceptionOrNull()?.summary() ?: "未知错误"}")
+            log(application.getString(R.string.log_library_index_failed, result.exceptionOrNull()?.summary(application) ?: application.getString(R.string.common_unknown_error)))
         }
     }
 }
@@ -115,5 +115,5 @@ data class FinalizedDownloadArtifacts(
     val exportedFiles: List<ExportedDownloadFile>,
 )
 
-private fun Throwable.summary(): String =
-    message ?: this::class.simpleName ?: "未知错误"
+private fun Throwable.summary(context: android.content.Context): String =
+    message ?: this::class.simpleName ?: context.getString(R.string.common_unknown_error)

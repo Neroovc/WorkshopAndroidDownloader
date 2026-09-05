@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Descargador de Taller</string>
+
+    <!-- Screens & navigation -->
+    <string name="screen_game_library">Biblioteca de juegos</string>
+    <string name="screen_mod_library">Biblioteca de mods</string>
+    <string name="screen_add_game">Añadir juego</string>
+    <string name="screen_workshop">Taller</string>
+    <string name="screen_mod_detail">Detalles del mod</string>
+    <string name="screen_download_center">Centro de descargas</string>
+    <string name="screen_task_detail">Detalles de la tarea</string>
+    <string name="screen_settings">Ajustes</string>
+    <string name="screen_baidu_translation_config">Configuración de traducción Baidu LLM</string>
+
+    <!-- Common actions -->
+    <string name="btn_confirm">Confirmar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_retry">Reintentar</string>
+    <string name="btn_close">Cerrar</string>
+    <string name="btn_got_it">Entendido</string>
+    <string name="btn_later">Más tarde</string>
+    <string name="btn_settings">Ajustes</string>
+    <string name="btn_previous_page">Página anterior</string>
+    <string name="btn_next_page">Página siguiente</string>
+    <string name="btn_original">Original</string>
+    <string name="btn_translated">Traducción</string>
+    <string name="btn_open_in_steam">Abrir en Steam</string>
+    <string name="btn_view_workshop">Ver taller</string>
+    <string name="btn_back">Atrás</string>
+    <string name="btn_more">Más</string>
+    <string name="btn_refresh_list">Actualizar lista</string>
+    <string name="btn_id_download">Descarga por ID</string>
+
+    <!-- Common statuses -->
+    <string name="status_queued">En cola</string>
+    <string name="status_running">En ejecución</string>
+    <string name="status_downloading">Descargando</string>
+    <string name="status_paused">En pausa</string>
+    <string name="status_completed">Completado</string>
+    <string name="status_failed">Fallido</string>
+    <string name="status_downloaded">Descargado</string>
+    <string name="status_waiting">Esperando</string>
+    <string name="phase_resolving">Analizando metadatos</string>
+    <string name="phase_connecting">Conectando al servidor de contenido</string>
+    <string name="status_retry_download">Reintentar descarga</string>
+    <string name="status_resume_download">Continuar descarga</string>
+    <string name="status_view">Ver</string>
+    <string name="status_download">Descargar</string>
+    <string name="status_update_to_latest">Actualizar a la última versión</string>
+    <string name="status_download_failed">Descarga fallida.</string>
+    <string name="status_time_unknown">Hora desconocida</string>
+
+    <!-- Common messages -->
+    <string name="common_unknown">Desconocido</string>
+    <string name="common_unknown_error">Error desconocido</string>
+    <string name="common_anonymous">Anónimo</string>
+    <string name="common_no_description">Sin descripción</string>
+    <string name="common_no_description_period">Sin descripción.</string>
+    <string name="common_no_tags">Sin etiquetas</string>
+    <string name="common_no_notes">Esta actualización no incluye notas.</string>
+    <string name="common_unknown_author">Autor desconocido</string>
+    <string name="common_unknown_user">Usuario desconocido</string>
+    <string name="common_no_cover">Sin\nportada</string>
+
+    <!-- Metrics -->
+    <string name="metric_mod">Mod %1$s</string>
+    <string name="metric_versions">Versiones %1$d</string>
+    <string name="metric_version_count">Versión %1$d</string>
+    <string name="metric_files">Archivos %1$d</string>
+    <string name="metric_synced">Sincronizado %1$s</string>
+    <string name="metric_updates_available">Actualizaciones %1$d</string>
+    <string name="metric_running">En ejecución %1$d</string>
+    <string name="metric_queued">En cola %1$d</string>
+    <string name="metric_paused">En pausa %1$d</string>
+    <string name="metric_history">Historial %1$d</string>
+    <string name="metric_phase">Fase %1$s</string>
+    <string name="metric_account">Cuenta %1$s</string>
+    <string name="metric_total_progress">Progreso total %1$s</string>
+    <string name="metric_data">Datos %1$s</string>
+    <string name="metric_chunks">Fragmentos %1$s</string>
+    <string name="metric_speed">Velocidad %1$s</string>
+    <string name="metric_file">Archivo %1$s</string>
+    <string name="metric_updated">Actualizado %1$s</string>
+    <string name="metric_favorited">Favoritos %1$s</string>
+    <string name="metric_tags">Etiquetas %1$d</string>
+    <string name="metric_author">Autor</string>
+    <string name="metric_subscriptions">Suscripciones</string>
+    <string name="metric_views">Visitas</string>
+    <string name="metric_size">Tamaño</string>
+    <string name="metric_prerequisites">Requisitos previos</string>
+    <string name="metric_comments">Comentarios</string>
+    <string name="metric_file_size">Tamaño del archivo</string>
+    <string name="metric_last_updated">Última actualización</string>
+    <string name="metric_favorites">Favoritos</string>
+    <string name="metric_tags_label">Etiquetas</string>
+    <string name="appid_metric">AppID %1$s</string>
+    <string name="by_author">por %1$s</string>
+
+    <!-- Prefixed metric rule labels (trailing space kept) -->
+    <string name="prefix_mod">Mod </string>
+    <string name="prefix_version">Versión </string>
+    <string name="prefix_file">Archivo </string>
+    <string name="prefix_synced">Sincronizado </string>
+    <string name="prefix_updates">Actualizaciones </string>
+    <string name="prefix_running">En ejecución </string>
+    <string name="prefix_queued">En cola </string>
+    <string name="prefix_paused">En pausa </string>
+    <string name="prefix_history">Historial </string>
+    <string name="prefix_phase">Fase </string>
+    <string name="prefix_account">Cuenta </string>
+    <string name="prefix_total_progress">Progreso total </string>
+    <string name="prefix_data">Datos </string>
+    <string name="prefix_chunks">Fragmentos </string>
+    <string name="prefix_speed">Velocidad </string>
+    <string name="prefix_updated">Actualizado </string>
+    <string name="prefix_favorited">Favoritos </string>
+    <string name="prefix_tags">Etiquetas </string>
+    <string name="prefix_author">Autor </string>
+    <string name="prefix_subscriptions">Suscripciones </string>
+    <string name="prefix_views">Visitas </string>
+    <string name="prefix_size">Tamaño </string>
+    <string name="prefix_prerequisites">Requisitos </string>
+    <string name="prefix_comments">Comentarios </string>
+
+    <!-- Content descriptions -->
+    <string name="cd_back">Atrás</string>
+    <string name="cd_download_center">Centro de descargas</string>
+    <string name="cd_add_game">Añadir juego</string>
+    <string name="cd_settings">Ajustes</string>
+    <string name="cd_more">Más</string>
+    <string name="cd_time">Hora</string>
+    <string name="cd_speed">Velocidad</string>
+    <string name="cd_size">Tamaño</string>
+
+    <!-- Game library (LibraryScreen) -->
+    <string name="library_load_failed_title">Error al cargar la biblioteca de juegos</string>
+    <string name="library_load_failed_advice">\n\nOh no, puede que tu red no admita el acceso directo al Taller. Activa un proxy o un acelerador y vuelve a intentarlo.</string>
+    <string name="library_empty_title">La biblioteca de juegos está vacía</string>
+    <string name="library_empty_message">Toca el icono + de la esquina superior derecha para añadir juegos compatibles con el Taller de Steam.</string>
+    <string name="library_refreshing">Actualizando biblioteca de juegos</string>
+    <string name="section_added_games">Juegos añadidos</string>
+    <string name="section_added_games_subtitle">Toca \"Ver taller\" para abrir la lista del Taller de ese juego.</string>
+
+    <!-- Download center (DownloadCenterScreen) -->
+    <string name="download_center_subtitle">Aquí se guardan el estado, el progreso y los registros de las tareas; los archivos exportados se gestionan en la biblioteca de mods.</string>
+    <string name="download_center_empty_title">El centro de descargas está vacío</string>
+    <string name="download_center_empty_message">Elige un mod en el Taller y las tareas aparecerán aquí.</string>
+    <string name="section_active">En curso</string>
+    <string name="section_active_subtitle">Incluye tareas en ejecución, en cola y en pausa.</string>
+    <string name="section_history">Historial</string>
+    <string name="section_history_subtitle">Las tareas completadas o fallidas se guardan aquí para revisar estado y registros.</string>
+
+    <!-- Download task detail (DownloadTaskDetailScreen) -->
+    <string name="btn_pause"> Pausa</string>
+    <string name="section_download_progress">Progreso de descarga</string>
+    <string name="task_detail_no_detailed_progress">Todavía no hay progreso detallado disponible.</string>
+    <string name="section_file_management">Gestión de archivos</string>
+    <string name="task_detail_success_files_synced">La tarea está completa; los resultados exportados se gestionan en la biblioteca de mods.</string>
+    <string name="task_detail_success_files">La tarea exportó %1$d archivos. Ábrelos, compártelos o elimínalos en la biblioteca de mods.</string>
+    <string name="task_detail_logs_hint">Registros de diagnóstico a nivel de sistema.</string>
+    <string name="btn_share_debug_log">Compartir registro de depuración</string>
+    <string name="btn_share_runtime_log">Compartir registro de ejecución</string>
+    <string name="task_detail_no_logs">Todavía no hay registros.</string>
+    <string name="task_detail_failed_title">Descarga fallida</string>
+
+    <!-- Download task summaries (DownloadCenterModels) -->
+    <string name="task_summary_queued">En cola, esperando a comenzar · Cuenta %1$s</string>
+    <string name="task_summary_paused">En pausa, puedes continuar más tarde</string>
+    <string name="task_summary_success">Completado; consulta los archivos en la biblioteca de mods · Cuenta %1$s</string>
+    <string name="task_summary_failed_retry">Descarga fallida, puedes reintentar</string>
+
+    <!-- Task logs (DownloadCenterManager) -->
+    <string name="task_log_enqueued">Añadida a la cola de descargas.</string>
+    <string name="task_log_bound_account">Cuenta vinculada: %1$s</string>
+    <string name="task_log_debug_log">Registro de depuración: %1$s</string>
+    <string name="task_log_paused">Tarea en pausa; puedes continuarla más tarde.</string>
+    <string name="task_log_switched_account">El reintento cambió a la cuenta actual: %1$s.</string>
+    <string name="task_log_requeued_retry">Tarea reencolada; el reintento usará la cuenta con la sesión iniciada.</string>
+    <string name="task_log_requeued_resume">Tarea reencolada; continuará desde el progreso en caché.</string>
+    <string name="task_log_started">Descarga iniciada.</string>
+    <string name="task_log_account_invalid">La cuenta de Steam vinculada ya no es válida; vuelve a autenticarla en ajustes e inténtalo de nuevo.</string>
+    <string name="task_log_file_completed">Archivo completado: %1$s</string>
+    <string name="task_log_recovered">Tarea recuperada tras reiniciar la app; continúa desde el progreso de descarga en caché.</string>
+
+    <!-- Finalizer logs -->
+    <string name="log_finalize_start">Inicio de la organización de resultados de descarga. stagingDir=%1$s files=%2$d</string>
+    <string name="log_metadata_done">Metadatos analizados. resolvedItemTitle=%1$s</string>
+    <string name="log_export_done">Exportación pública completada. exportedFiles=%1$d</string>
+    <string name="log_preview_phase_done">Fase de caché de vista previa terminada. previewImagePath=%1$s</string>
+    <string name="log_library_sync_done">Fase de sincronización de biblioteca de mods terminada.</string>
+    <string name="log_preview_start">Inicio de caché de vista previa del mod. previewImageUrl=%1$s</string>
+    <string name="log_preview_done">Vista previa del mod en caché. path=%1$s</string>
+    <string name="log_preview_failed">Error al guardar la vista previa del mod: %1$s</string>
+    <string name="log_library_index_start">Inicio de sincronización del índice de biblioteca de mods. exportedFiles=%1$d</string>
+    <string name="log_library_index_done">Índice de biblioteca de mods actualizado.</string>
+    <string name="log_library_index_failed">Error al actualizar el índice de biblioteca de mods: %1$s</string>
+
+    <!-- Public export manager logs -->
+    <string name="export_no_files">No hay archivos para exportar.</string>
+    <string name="export_plan_generated">Plan de exportación generado. files=%1$d sdk=%2$d release=%3$s</string>
+    <string name="export_strategy_mediastore">Estrategia: MediaStore.Downloads</string>
+    <string name="export_mediastore_fallback">La exportación MediaStore falló; se usará el directorio de descargas propio de la app. reason=%1$s</string>
+    <string name="export_strategy_legacy">Estrategia: directorio de descargas público heredado</string>
+    <string name="export_strategy_app_specific">Estrategia: directorio de descargas propio de la app</string>
+    <string name="export_mediastore_cleanup">Limpieza MediaStore del directorio antiguo: %1$s</string>
+    <string name="export_fs_root">Raíz de exportación en el sistema de archivos: %1$s</string>
+    <string name="export_legacy_root">Directorio de descargas público heredado: %1$s</string>
+    <string name="export_app_root">Directorio de descargas propio de la app: %1$s</string>
+    <string name="export_fs_write_start">Inicio de escritura en el sistema de archivos: %1$s</string>
+    <string name="export_fs_write_done">Escritura en el sistema de archivos completada: %1$s bytes=%2$d</string>
+
+    <!-- Mod library (ModLibraryScreen / ModLibraryComponents) -->
+    <string name="mod_library_sync_title">Error al sincronizar la biblioteca de mods</string>
+    <string name="mod_library_syncing">Sincronizando biblioteca de mods local</string>
+    <string name="mod_library_empty_title">La biblioteca de mods está vacía</string>
+    <string name="mod_library_empty_message">Descarga un mod y se sincronizará aquí automáticamente.</string>
+    <string name="mod_library_refreshing">Actualizando biblioteca de mods local</string>
+    <string name="btn_check_mod_updates">Comprobar actualizaciones de mods</string>
+    <string name="checking_mod_updates">Comprobando actualizaciones</string>
+    <string name="section_filter_sort">Filtrar y ordenar</string>
+    <string name="section_filter_sort_hint">Buscar, ordenar y filtrar por juego</string>
+    <string name="cd_collapse_filters">Contraer filtro y ordenación</string>
+    <string name="cd_expand_filters">Expandir filtro y ordenación</string>
+    <string name="search_mod_placeholder">Buscar mod / juego / ID</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="filter_by_game">Filtrar por juego</string>
+    <string name="all_games">Todos los juegos</string>
+    <string name="filter_result_count">Se muestran %1$d mods tras el filtrado.</string>
+    <string name="clear_filters">Limpiar filtros</string>
+    <string name="section_downloaded_mods">Mods descargados</string>
+    <string name="no_matching_mods_title">No hay mods que coincidan</string>
+    <string name="no_matching_mods_message">Ajusta las palabras clave o el filtro de juego e inténtalo de nuevo.</string>
+    <string name="btn_clear_filters">Limpiar filtros</string>
+    <string name="checking_updates_count">Comprobando actualizaciones del Taller para %1$d mods.</string>
+    <string name="update_card_normal">Resultado de la comprobación</string>
+    <string name="update_card_checking">Comprobando</string>
+    <string name="update_card_failed">Comprobación fallida</string>
+    <string name="latest_main_file">Archivo principal más reciente: %1$s</string>
+    <string name="main_file">Archivo principal: %1$s</string>
+    <string name="saved_versions_summary">%1$d versiones guardadas; la más reciente es %2$s.</string>
+    <string name="tracking_only_no_version">Actualmente en la biblioteca de mods; todavía no se ha descargado ninguna versión.</string>
+    <string name="btn_view_details">Ver detalles</string>
+    <string name="error_comments_unavailable_steam_hint">Ahora mismo no se pueden cargar los comentarios. Puedes abrir la página de comentarios correspondiente directamente en Steam.</string>
+    <string name="btn_view_change_notes">Ver notas de la versión</string>
+    <string name="btn_open_latest">Abrir la más reciente</string>
+    <string name="btn_share_latest">Compartir la más reciente</string>
+    <string name="btn_open_latest_main_file">Abrir el archivo principal más reciente</string>
+    <string name="btn_share_latest_main_file">Compartir el archivo principal más reciente</string>
+    <string name="mod_count_versions">%1$d versiones</string>
+    <string name="group_header_subtitle">%1$s · %2$d versiones · %3$d archivos</string>
+    <string name="latest_version_label">Versión más reciente: %1$s</string>
+    <string name="tracking_only_no_version_short">Solo añadido a la biblioteca de mods; sin versión descargada</string>
+    <string name="overview_badge_update">Actualizar</string>
+    <string name="overview_badge_failed">Error</string>
+    <string name="overview_badge_checking">Comprobando</string>
+    <string name="overview_versions_badge">%1$d versiones</string>
+    <string name="version_count_metric">Versión %1$d</string>
+    <string name="btn_checking_updates">Comprobando actualización</string>
+    <string name="btn_update_available">Actualizar</string>
+
+    <!-- Mod update check -->
+    <string name="mod_update_checking">Comprobando actualizaciones del Taller…</string>
+    <string name="mod_update_up_to_date_at">Ya está actualizado; el Taller se actualizó %1$s</string>
+    <string name="mod_update_up_to_date">Ya está actualizado</string>
+    <string name="mod_update_available_at">Hay actualizaciones; el Taller se actualizó %1$s</string>
+    <string name="mod_update_available">Hay actualizaciones</string>
+    <string name="mod_update_check_failed">Error en la comprobación de actualizaciones</string>
+    <string name="mod_update_no_mods">No hay mods que comprobar.</string>
+    <string name="mod_update_summary">Comprobación de actualización de mods completada: %1$d mods actualizables, %2$d ya actualizados, %3$d fallidos.</string>
+
+    <!-- Mod detail (ModDetailScreen) -->
+    <string name="btn_rename_mod">Renombrar mod</string>
+    <string name="mod_detail_versions_info">Este mod tiene %1$d versiones guardadas; a continuación puedes ver, actualizar o eliminar cada una.</string>
+    <string name="mod_detail_tracking_only">Este mod solo está añadido a la biblioteca y todavía no tiene versiones guardadas. Puedes comprobar actualizaciones o descargar la última versión.</string>
+    <string name="btn_download_latest">Descargar la última versión</string>
+    <string name="btn_delete_mod">Eliminar este mod</string>
+    <string name="section_description">Descripción</string>
+    <string name="text_translating_desc"> Traduciendo descripción…</string>
+    <string name="btn_translate_desc">Traducir descripción</string>
+    <string name="btn_retranslate_desc">Volver a traducir descripción</string>
+    <string name="text_translating_intro"> Traduciendo resumen…</string>
+    <string name="btn_translate_intro">Traducir resumen</string>
+    <string name="btn_retranslate_intro">Volver a traducir resumen</string>
+    <string name="text_original">Texto original</string>
+    <string name="text_translated">Traducción</string>
+    <string name="error_load_timeout_title">Oh no, se agotó el tiempo de carga</string>
+    <string name="detail_network_unstable_hint">Si tu red es inestable, inténtalo de nuevo más tarde; la descarga sigue funcionando.</string>
+    <string name="detail_prerequisites_hint">Antes de descargar este contenido, se recomienda preparar los siguientes %1$d elementos del Taller.</string>
+    <string name="section_stored_files">Archivos guardados</string>
+    <string name="no_operable_files">No hay archivos disponibles.</string>
+    <string name="file_pagination">Página de archivos %1$d / %2$d, %3$d archivos por página.</string>
+    <string name="btn_delete_version">Eliminar esta versión</string>
+    <string name="btn_open">Abrir</string>
+    <string name="btn_share">Compartir</string>
+    <string name="btn_update_to_latest">Actualizar a la última versión</string>
+
+    <!-- Workshop item detail (WorkshopItemDetailScreen) -->
+    <string name="error_timeout_title">Oh no, se agotó el tiempo de carga</string>
+    <string name="error_timeout_message">Oh no, se agotó el tiempo de carga. Puede que tu red no admita el acceso directo al Taller. Activa la aceleración de Steam o usa un proxy e inténtalo de nuevo.</string>
+    <string name="status_in_mod_library">Ya está en la biblioteca de mods</string>
+    <string name="btn_add_to_mod_library">Añadir a la biblioteca de mods</string>
+    <string name="btn_retry_load_detail"> Reintentar carga de detalles</string>
+    <string name="section_prerequisites">Contenido previo</string>
+    <string name="prerequisites_body">Antes de descargar este contenido, se recomienda preparar los siguientes %1$d elementos previos del Taller.</string>
+    <string name="dialog_dependencies_title">Faltan requisitos previos</string>
+    <string name="dialog_dependencies_body">"%1$s" tiene %2$d elementos previos del Taller sin descargar.</string>
+    <string name="dialog_dependencies_hint">Puedes descargar primero todos los requisitos previos o solo el mod actual.</string>
+    <string name="btn_download_all_with_dependencies">Descargar todos los requisitos previos y el mod</string>
+    <string name="btn_download_only_current">Descargar solo el mod</string>
+    <string name="loading_changelog">Cargando notas de actualización…</string>
+    <string name="changelog_title">Notas de actualización</string>
+    <string name="no_changelog">Aún no hay notas de actualización.</string>
+    <string name="section_comments">Comentarios</string>
+    <string name="comments_loading">Cargando comentarios…</string>
+    <string name="comments_none">Este mod no tiene comentarios públicos.</string>
+    <string name="comments_none_fallback">Ahora mismo no se pudieron leer comentarios públicos. También puedes abrir la página de comentarios de Steam directamente.</string>
+    <string name="comments_page_of_total">Actualmente en la página %1$d / %2$d, con %3$s comentarios en Steam.</string>
+    <string name="comments_page_total">Actualmente en la página %1$d, con %2$s comentarios en Steam.</string>
+    <string name="comments_page_loaded">Actualmente en la página %1$d, se cargaron %2$d comentarios públicos.</string>
+    <string name="comments_page_info_total">Página %1$d de %2$d; Steam tiene %3$s comentarios en total.</string>
+    <string name="comments_page_info_single">Página %1$d; Steam tiene %2$s comentarios en total.</string>
+    <string name="comments_page_info_loaded">Página %1$d; %2$d comentarios públicos cargados hasta ahora.</string>
+    <string name="comments_unavailable_read">No se pudieron leer comentarios públicos; abre directamente la página de comentarios en Steam.</string>
+    <string name="btn_retry_load_comments"> Reintentar carga de comentarios</string>
+    <string name="text_loading">Cargando…</string>
+    <string name="btn_open_comments_in_steam">Abrir la página de comentarios en Steam</string>
+    <string name="section_mod_info">Información del mod</string>
+    <string name="detail_error_retry_hint">Si la red es inestable, puedes reintentar más tarde; la descarga sigue funcionando directamente.</string>
+    <string name="workshop_loading_detail">Cargando detalles más completos del mod.</string>
+
+    <!-- Workshop browse (WorkshopBrowseOptions) -->
+    <string name="sort_popular">Popular</string>
+    <string name="sort_recent">Más nuevos</string>
+    <string name="sort_updated">Actualizados recientemente</string>
+    <string name="sort_most_subscribed">Más suscritos</string>
+    <string name="time_today">Hoy</string>
+    <string name="time_week">Esta semana</string>
+    <string name="time_30d">30 días</string>
+    <string name="time_3mo">3 meses</string>
+    <string name="time_6mo">6 meses</string>
+    <string name="time_1y">1 año</string>
+    <string name="time_all">Todo el tiempo</string>
+
+    <!-- Game workshop (GameWorkshopScreen) -->
+    <string name="game_short_desc_fallback">Este juego es compatible con el Taller de Steam.</string>
+    <string name="loaded_mod_count">%1$d mods cargados</string>
+    <string name="sort_metric">Orden %1$s</string>
+    <string name="range_metric">Rango %1$s</string>
+    <string name="searching_metric">Buscando</string>
+    <string name="search_mod_placeholder_short">Buscar mods</string>
+    <string name="not_logged_in">Actualmente sin sesión iniciada</string>
+    <string name="not_logged_in_hint">Solo se garantizan los resultados públicos; algunos resultados pueden no aparecer. Algunos mods requieren iniciar sesión con una cuenta de Steam que posea el juego antes de poder descargarlos.</string>
+    <string name="section_workshop_items">Elementos del Taller</string>
+    <string name="section_workshop_items_hint">Explora los elementos públicos del Taller de este juego.</string>
+    <string name="current_search">Búsqueda actual: %1$s</string>
+    <string name="loading_workshop_list">Cargando la lista del Taller.</string>
+    <string name="no_visible_mods">No hay mods para mostrar</string>
+    <string name="no_results">Sin resultados</string>
+    <string name="no_public_mods">Este juego no tiene mods públicos obtenidos actualmente.</string>
+    <string name="browse_no_filtered_mods">No hay mods en los resultados filtrados actuales para este juego.</string>
+    <string name="try_different_keywords">Prueba con otras palabras clave.</string>
+    <string name="refreshing_list">Actualizando la lista actual; se conserva tu última posición.</string>
+    <string name="loading_more_mods">Cargando más mods.</string>
+    <string name="btn_load_more">Cargar más</string>
+    <string name="dialog_direct_download_title">Introduce un publishedID o un enlace del Taller directamente</string>
+    <string name="dialog_direct_download_hint">Puedes pegar un publishedID o un enlace de la página de detalles del Taller de Steam.</string>
+    <string name="label_published_id">Introduce publishedID o enlace</string>
+    <string name="direct_download_example">Ejemplo: https://steamcommunity.com/sharedfiles/filedetails/?id=3657277146</string>
+    <string name="invalid_published_id">No se detectó un publishedID válido.</string>
+    <string name="already_downloading">Este mod ya se está descargando.</string>
+    <string name="latest_downloaded_status">La última versión de este mod ya está en local.</string>
+    <string name="update_available_status">Existe una versión anterior local; puedes actualizar a la última versión.</string>
+    <string name="sort_by_short">Ordenar por</string>
+    <string name="popular_range">Rango popular</string>
+    <string name="items_size">Tamaño %1$s</string>
+    <string name="cd_speed_short">Velocidad</string>
+
+    <!-- Workshop screen sections / common dialogs -->
+    <string name="screen_usage_notice">Aviso de uso</string>
+    <string name="screen_usage_notice_message">¡Bienvenido a Descargador de Taller! Si los mods no se navegan o descargan correctamente, usa un acelerador para Steam o una VPN/proxy.</string>
+    <string name="dialog_steam_accel_unavailable_title">Enlace de aceleración de Steam no disponible</string>
+    <string name="dialog_choose_download_method">Elige el método de descarga</string>
+    <string name="download_method_direct">Descarga por enlace directo</string>
+    <string name="download_method_quark">Descarga Quark</string>
+    <string name="download_direct_description">Los enlaces directos descargan desde la versión de GitHub y la velocidad no está garantizada. Para apoyar el desarrollo, usa la descarga Quark; el desarrollador recibe beneficios por cada transferencia 😋</string>
+    <string name="download_source">Fuente de descarga</string>
+    <string name="dialog_new_version_title">Nueva versión disponible</string>
+    <string name="btn_go_download">Descargar</string>
+    <string name="update_current_version">Versión actual: %1$s</string>
+    <string name="update_latest_version">Última versión: %1$s</string>
+    <string name="update_published_date">Fecha de publicación: %1$s</string>
+    <string name="update_download_source">Fuente de descarga: %1$s</string>
+    <string name="update_notes_title">Notas de la versión</string>
+    <string name="dialog_rename_mod_title">Renombrar mod</string>
+    <string name="rename_mod_hint">Solo cambia el nombre mostrado dentro de la app; los archivos exportados no se renombran.</string>
+    <string name="label_mod_name">Nombre del mod</string>
+    <string name="dialog_remove_game_title">Quitar de la biblioteca de juegos</string>
+    <string name="btn_remove_from_game_library">Quitar de la biblioteca de juegos</string>
+    <string name="dialog_remove_game_body">¿Quitar \"%1$s\" de la biblioteca?</string>
+    <string name="action_remove_from_mod_library">Quitar de la biblioteca de mods</string>
+    <string name="action_delete_local_mod">Eliminar mod local</string>
+    <string name="dialog_remove_mod_body">¿Quitar \"%1$s\" de la biblioteca de mods? Ya no recibirá comprobaciones de actualización.</string>
+    <string name="dialog_delete_mod_body">¿Eliminar los archivos locales de \"%1$s\" (%2$s)? Se conservará el historial de descargas.</string>
+
+    <!-- Add game (AddGameScreen) -->
+    <string name="add_game_subtitle">Busca por nombre de juego, introduce un GameID directamente o añade rápidamente desde los juegos populares del Taller.</string>
+    <string name="search_game">Buscar juegos</string>
+    <string name="btn_search">Buscar</string>
+    <string name="direct_game_id">Introduce GameID directamente</string>
+    <string name="btn_add">Añadir</string>
+    <string name="loading_workshop_games">Buscando juegos compatibles con el Taller de Steam.</string>
+    <string name="section_search_results">Resultados de la búsqueda</string>
+    <string name="search_results_hint">Al encontrarlo, puedes añadirlo a la biblioteca de juegos o abrir su Taller de inmediato.</string>
+    <string name="btn_add_to_library">Añadir a la biblioteca de juegos</string>
+    <string name="btn_open_directly">Abrir directamente</string>
+    <string name="no_results_title">No se encontraron resultados</string>
+    <string name="no_results_message">Prueba con palabras clave más cortas o introduce el AppID del juego directamente.</string>
+    <string name="section_featured_games">Juegos populares del Taller</string>
+    <string name="loading_featured_games">Cargando juegos populares del Taller.</string>
+    <string name="load_failed_title">Error de carga</string>
+    <string name="no_featured_games_title">No hay recomendaciones populares por ahora</string>
+    <string name="no_featured_games_message">Vuelve a intentarlo más tarde, o añade un juego mediante búsqueda / GameID.</string>
+
+    <!-- Settings (SettingsScreen) -->
+    <string name="section_steam_accounts">Cuentas de Steam</string>
+    <string name="btn_add_account">Añadir cuenta</string>
+    <string name="current_account">Cuenta actual</string>
+    <string name="no_saved_accounts">No hay cuentas de Steam guardadas.</string>
+    <string name="anonymous_browsing_hint">Estás navegando de forma anónima; parte del contenido que requiere inicio de sesión, confirmación de edad o tiene restricciones de visibilidad puede no mostrarse.</string>
+    <string name="section_logs">Registros</string>
+    <string name="logs_support_hint">Si el descargador tiene problemas, exporta el paquete de registros y envíalo a: Apricityx@qq.com</string>
+    <string name="btn_share_log_bundle">Compartir paquete de registros</string>
+    <string name="btn_view_latest_log">Ver el registro más reciente</string>
+    <string name="btn_export_log_bundle">Exportar paquete de registros</string>
+    <string name="section_translation_settings">Ajustes de traducción</string>
+    <string name="translation_settings_hint">La traducción de descripciones ahora solo usa la traducción de texto LLM de Baidu; se requieren AppID y API Key.</string>
+    <string name="baidu_configured_hint">AppID y API Key configurados; la traducción de descripciones llama directamente a la traducción de texto LLM de Baidu.</string>
+    <string name="baidu_not_configured_hint">AppID y API Key aún no están configurados. Si lo necesitas, configúralos siguiendo el tutorial.</string>
+    <string name="btn_configure_baidu">Configurar credenciales de traducción de texto LLM de Baidu</string>
+    <string name="btn_add_baidu">Añadir credenciales de traducción de texto LLM de Baidu</string>
+    <string name="section_appearance">Ajustes de apariencia</string>
+    <string name="appearance_hint">El nuevo frontend usa contenedores y navegación de cristal líquido de AndroidLiquidGlass; el frontend clásico conserva la interfaz original. Los cambios de tema se aplican al instante.</string>
+    <string name="frontend_style">Estilo del frontend</string>
+    <string name="color_theme">Tema de color</string>
+    <string name="section_language">Preferencia de idioma</string>
+    <string name="language_preference_hint">Afecta la búsqueda en la tienda de Steam al añadir juegos y el idioma de la lista del Taller al navegar mods. Chino simplificado por defecto.</string>
+    <string name="section_app_updates">Actualizaciones de la app</string>
+    <string name="auto_check_updates">Comprobar actualizaciones al iniciar</string>
+    <string name="auto_check_updates_hint">Comprueba la última versión en segundo plano al iniciar en frío; permanece en silencio si no hay novedades.</string>
+    <string name="preferred_update_source">Fuente de actualización preferida</string>
+    <string name="preferred_update_source_hint">Las descargas de APK prefieren la fuente seleccionada; las comprobaciones de metadatos recurren a otros espejos y, finalmente, al enlace directo oficial de GitHub.</string>
+    <string name="checking_updates">Comprobando actualizaciones…</string>
+    <string name="btn_check_updates_now">Comprobar actualizaciones ahora</string>
+    <string name="current_version">Versión actual: %1$s</string>
+    <string name="last_check_result">Último resultado de comprobación</string>
+    <string name="update_status_never_checked">Aún no se ha realizado ninguna comprobación de actualizaciones.</string>
+    <string name="section_download_settings">Ajustes de descarga y comprobación</string>
+    <string name="download_threads_hint">Cuantos más hilos, más rápida la descarga, pero mayor el impacto en el rendimiento del teléfono.</string>
+    <string name="allow_cleartext_http">Permitir solicitudes HTTP con sesión de Steam</string>
+    <string name="allow_cleartext_http_hint">La app permite HTTP sin cifrar de forma global para ser compatible con algunos CDN del Taller. Al desactivarlo, se bloquean las solicitudes HTTP vinculadas a una cuenta de Steam; activarlo expone el estado de la sesión por enlaces sin cifrar.</string>
+    <string name="experimental_direct_access">Acceso directo experimental al Taller</string>
+    <string name="experimental_direct_access_hint">Accede al Taller siguiendo reglas de reenvío de la comunidad de Steam para una experiencia directa sin acelerador.</string>
+    <string name="auto_rename_mod_files">Renombrar archivos de mod automáticamente</string>
+    <string name="auto_rename_mod_files_hint">Al activarlo, las futuras descargas de mods de un solo archivo renombran el archivo exportado al nombre del mod, conservando la extensión original. Si el nombre del mod no se resuelve, se mantiene el nombre original.</string>
+    <string name="thread_count_title">Hilos por tarea</string>
+    <string name="thread_range_hint">Rango %1$s - %2$s</string>
+    <string name="concurrent_tasks_title">Tareas de descarga simultáneas</string>
+    <string name="concurrent_checks_title">Comprobaciones de actualización simultáneas</string>
+    <string name="section_about">Acerca de</string>
+    <string name="developer_label">Desarrollador</string>
+    <string name="repo_url_label">URL del repositorio: </string>
+    <string name="about_sts">Este software se preparó originalmente para el puerto móvil del cargador de mods de Slay the Spire. Si te interesa Slay the Spire, echa un vistazo a mi otro proyecto:</string>
+    <string name="about_star">Si este proyecto te resulta útil, ¡dándole una estrella en GitHub me ayudas muchísimo! Ante cualquier problema, ¡abre un issue!</string>
+    <string name="cd_expand_options">Expandir opciones</string>
+    <string name="section_actions">Acciones</string>
+    <string name="btn_reauthenticate">Volver a autenticar</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="login_reauthenticate_title">Volver a autenticar Steam</string>
+    <string name="login_login_title">Iniciar sesión en Steam</string>
+    <string name="btn_import_token">Importar token</string>
+    <string name="btn_token_login">Iniciar sesión con token</string>
+    <string name="btn_submit_code">Enviar código</string>
+    <string name="btn_keep_waiting">Seguir esperando</string>
+    <string name="btn_reauthenticate_short">Reautenticar</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="token_reauth_hint">Pega un nuevo Steam Refresh Token para completar la reautenticación.</string>
+    <string name="token_import_hint">Si ya tienes un Steam Refresh Token, puedes importarlo directamente en lugar de esperar la confirmación del teléfono.</string>
+    <string name="label_account_display_name">Nombre visible de la cuenta</string>
+    <string name="label_account_display_name_optional">Nombre visible de la cuenta (opcional)</string>
+    <string name="steam_guard_prompt">Introduce el código de Steam Guard.</string>
+    <string name="label_code">Código</string>
+    <string name="steam_confirm_prompt">Confirma en la app móvil de Steam; la app seguirá esperando el resultado automáticamente.</string>
+    <string name="waiting_steam_confirm">Esperando confirmación de Steam…</string>
+    <string name="label_username">Usuario</string>
+    <string name="label_password">Contraseña</string>
+    <string name="btn_reauth_with_password">Reautenticar con contraseña</string>
+    <string name="btn_login_with_password">Iniciar sesión con usuario y contraseña</string>
+    <string name="btn_switch_to_token">Cambiar a inicio de sesión con token</string>
+    <string name="login_summary_hint">Los resúmenes del proceso de inicio de sesión se escriben en el registro de ejecución; exporta el paquete de registros desde el área de registros de la página de ajustes.</string>
+    <string name="update_source_gh_proxy_com">Fuente preferida por defecto, adecuada para descargar adjuntos de GitHub.</string>
+    <string name="update_source_gh_proxy_vip">Admite metadatos y proxy de descarga, adecuada como fuente de respaldo.</string>
+    <string name="update_source_gh_llkk">Admite metadatos y proxy de descarga, útil como otra ruta de contingencia.</string>
+    <string name="update_source_gh_proxy_net">Fuente de contingencia automática; no se selecciona manualmente en ajustes.</string>
+    <string name="update_source_official">Enlace directo oficial de GitHub.</string>
+    <string name="steam_lang_chinese_desc">La búsqueda de juegos y la navegación del Taller prefieren la interfaz y el idioma chino.</string>
+    <string name="steam_lang_english_desc">La búsqueda de juegos y la navegación del Taller prefieren la interfaz y el idioma inglés.</string>
+    <string name="update_status_last_check">Última comprobación: %1$s</string>
+    <string name="update_status_remote_version">Versión remota: %1$s</string>
+    <string name="update_status_metadata_source">Fuente de metadatos: %1$s</string>
+    <string name="update_status_result_failed">Resultado: comprobación fallida</string>
+    <string name="update_status_result_new_version">Resultado: nueva versión disponible</string>
+    <string name="update_status_result_latest">Resultado: ya está actualizado</string>
+    <string name="update_status_download_source">Fuente de descarga: %1$s</string>
+
+    <!-- Steam account state (WorkshopUiState) -->
+    <string name="auth_status_anonymous">Navegando de forma anónima. Sin sesión iniciada solo se garantiza el contenido público; algunos elementos para adultos o con confirmación de edad pueden no aparecer.</string>
+    <string name="auth_status_needs_reauth">Navegando como %1$s. Esta cuenta necesita reautenticación; la navegación volverá automáticamente a la visibilidad anónima.</string>
+    <string name="auth_status_active">Navegando como %1$s. La navegación del Taller proyecta automáticamente el estado de sesión de Steam y las tareas de descarga congelan la cuenta actual al encolarse.</string>
+    <string name="account_anonymous">Anónimo</string>
+    <string name="account_anonymous_browsing">Navegación anónima</string>
+    <string name="account_status_need_reauth">Necesita reautenticación; la navegación vuelve a anónimo y se bloquean nuevas descargas.</string>
+    <string name="account_status_active">Cuenta de navegación actual</string>
+    <string name="account_status_saved">Cuenta guardada</string>
+
+    <!-- Theme / frontend / language display names -->
+    <string name="theme_follow_system">Seguir sistema</string>
+    <string name="theme_light">Modo claro</string>
+    <string name="theme_dark">Modo oscuro</string>
+    <string name="frontend_liquid_glass">Cristal líquido</string>
+    <string name="frontend_lite_liquid_glass">Líquido ligero</string>
+    <string name="frontend_legacy">Clásico</string>
+    <string name="lang_simplified_chinese">Chino simplificado</string>
+    <string name="lang_english">Inglés</string>
+
+    <!-- Mod library display mode -->
+    <string name="mode_large_preview_desc">Modo tarjetas grandes; muestra los archivos de mod exportados a local, sincronizados al iniciar y tras descargas.</string>
+    <string name="mode_compact_list_desc">Modo lista compacta; muestra los archivos de mod exportados a local, sincronizados al iniciar y tras descargas.</string>
+    <string name="mode_overview_desc">Modo vista general; prioriza mostrar las imágenes de vista previa para navegar rápidamente los mods locales.</string>
+    <string name="mode_large_preview_section_hint">Las acciones de la lista se aplican al archivo principal por defecto; entra en los detalles para gestionar los archivos individualmente.</string>
+    <string name="mode_compact_list_section_hint">Toca un elemento para entrar en los detalles y luego abre, comparte o elimina archivos.</string>
+    <string name="mode_overview_section_hint">Toca una miniatura para entrar en los detalles; mantén pulsado para abrir el menú de acciones.</string>
+    <string name="mode_large_preview_toggle">Cambiar a tarjetas grandes</string>
+    <string name="mode_compact_list_toggle">Cambiar a lista compacta</string>
+    <string name="mode_overview_toggle">Cambiar a modo vista general</string>
+    <string name="sort_latest_synced">Sincronizados recientemente</string>
+    <string name="sort_mod_title">Nombre del mod</string>
+    <string name="sort_game_title">Nombre del juego</string>
+
+    <!-- Baidu translation (BaiduTranslationApiKeyScreen) -->
+    <string name="baidu_credentials_title">Credenciales de traducción de texto LLM de Baidu</string>
+    <string name="baidu_credentials_desc_saved">Las credenciales completas están guardadas. Guardar tras editar sobrescribe los valores antiguos; guardar tras limpiar elimina la configuración local.</string>
+    <string name="baidu_credentials_desc_needed">Se requieren tanto el AppID como la API Key de la traducción de texto LLM de Baidu. Guardar tras limpiar elimina la configuración local correspondiente.</string>
+    <string name="baidu_testing">Probando traducción…</string>
+    <string name="baidu_test_translation">Probar traducción</string>
+    <string name="baidu_sample_text">Texto de ejemplo</string>
+    <string name="baidu_test_result">Resultado de la prueba</string>
+    <string name="baidu_failure_reason">Motivo del fallo</string>
+    <string name="baidu_tutorial">Tutorial</string>
+    <string name="baidu_open_platform">Abrir la plataforma abierta de traducción de Baidu</string>
+    <string name="baidu_step_1">Entra en la plataforma abierta de traducción de Baidu.</string>
+    <string name="baidu_step_1_note">URL de acceso: `https://fanyi-api.baidu.com/product/13`</string>
+    <string name="baidu_step_2">Pulsa \"Usar ahora\".</string>
+    <string name="baidu_step_3">Completa tu información personal según las indicaciones.</string>
+    <string name="baidu_step_4">Completa la verificación de identidad.</string>
+    <string name="baidu_step_5">Tras la verificación, vuelve a la consola y pulsa \"Activar ahora\".</string>
+    <string name="baidu_step_6">Selecciona \"Traducción de texto LLM\".</string>
+    <string name="baidu_step_7">Rellena un poco de contenido de prueba y envía la solicitud.</string>
+    <string name="baidu_step_8">Vuelve a la página principal y pulsa \"Información del desarrollador\".</string>
+    <string name="baidu_step_9">Anota el AppID.</string>
+    <string name="baidu_step_10">Entra en \"Gestión de API Key\" y crea una nueva API Key; cualquier nombre sirve.</string>
+    <string name="baidu_step_11">Anota la nueva API Key.</string>
+    <string name="baidu_step_12">De vuelta en la app, introduce el AppID y la API Key en los campos de configuración de arriba y guarda para usarlos.</string>
+
+    <!-- Baidu translation helpers -->
+    <string name="baidu_ref_instruction">Traduce el contenido como la descripción de un mod del Taller de Steam.</string>
+    <string name="baidu_ref_mod_name">Nombre del mod:</string>
+    <string name="baidu_ref_game">Juego:</string>
+    <string name="baidu_ref_guidance">Mantén un tono natural y preciso en el contexto del juego y del mod; conserva nombres de juegos, nombres de mods, términos propios, nombres de personajes, objetos y habilidades, números de versión, rutas de archivo, código, enlaces y el formato original; no añadas información que no esté en el texto de origen.</string>
+    <string name="error_baidu_not_configured">Configura primero el AppID y la API Key de la traducción de texto LLM de Baidu en ajustes.</string>
+    <string name="error_baidu_missing_appid_api_key">No se han establecido el AppID y la API Key de la traducción de texto LLM de Baidu.</string>
+    <string name="error_baidu_missing_appid">No se ha establecido el AppID de la traducción de texto LLM de Baidu.</string>
+    <string name="error_baidu_missing_api_key">No se ha establecido la API Key de la traducción de texto LLM de Baidu.</string>
+    <string name="error_baidu_unrecognized">La traducción de texto LLM de Baidu devolvió un resultado no reconocido.</string>
+    <string name="error_baidu_empty_response">La traducción de texto LLM de Baidu devolvió una respuesta vacía.</string>
+    <string name="error_baidu_unparseable">La traducción de texto LLM de Baidu devolvió una respuesta no analizable.</string>
+    <string name="error_baidu_request_failed">Solicitud fallida</string>
+    <string name="error_baidu_translation_failed">La traducción de texto LLM de Baidu falló: %1$s.</string>
+    <string name="error_baidu_code_failed">La traducción de texto LLM de Baidu falló: %1$s (código de error: %2$d).</string>
+    <string name="baidu_reference_intro">Traduce el contenido como una descripción de mod del Taller de Steam.</string>
+    <string name="baidu_reference_mod_name_prefix">Nombre del mod:</string>
+    <string name="baidu_reference_game_name_prefix">Juego:</string>
+    <string name="baidu_reference_guideline">Mantén la traducción con el estilo de documentación del juego y el mod, precisa y natural en contexto. Conserva los nombres de juegos y mods, términos propios, nombres de personajes, objetos, habilidades, números de versión, rutas de archivo, código, enlaces y el formato original. No añadas información que no esté en el texto original.</string>
+
+    <!-- Download failure messages -->
+    <string name="download_failed_generic">Descarga fallida.</string>
+    <string name="download_failed_401">El CDN de Steam devolvió 401; este contenido puede requerir iniciar sesión con una cuenta de Steam que posea el juego.</string>
+    <string name="download_failed_401_not_owned">El CDN de Steam devolvió 401; no se detecta que la cuenta vinculada posea %1$s, por lo que este contenido puede requerir iniciar sesión con una cuenta de Steam que posea el juego.</string>
+    <string name="download_failed_fallback_game">el juego</string>
+
+    <!-- Foreground notification -->
+    <string name="notif_more_tasks">…y %1$d tareas más en espera</string>
+    <string name="notif_bg_downloading">Descarga en segundo plano en curso</string>
+    <string name="notif_bg_downloading_count">Descarga en segundo plano en curso (%1$d tareas)</string>
+    <string name="notif_running">En ejecución: %1$d</string>
+    <string name="notif_queued">En cola: %1$d</string>
+    <string name="notif_preparing">Preparando inicio de descarga</string>
+    <string name="notif_channel_name">Descargas en segundo plano</string>
+    <string name="notif_channel_description">Muestra el progreso de descargas del Taller y mantiene las descargas en segundo plano activas</string>
+
+    <!-- Version labels -->
+    <string name="version_updated_label">Taller actualizado %1$s</string>
+    <string name="version_legacy_import">Importación heredada</string>
+
+    <!-- Workshop update service -->
+    <string name="update_err_no_source_reachable">No se pudo alcanzar ninguna fuente de actualización.</string>
+    <string name="update_err_invalid_metadata">Formato de metadatos de actualización no válido.</string>
+    <string name="update_err_no_download_url">No se pudo resolver una dirección de descarga de APK accesible.</string>
+
+    <!-- Steam auth -->
+    <string name="steam_err_invalid_refresh_token">No se pudo analizar el Steam Refresh Token; asegúrate de pegar el token completo.</string>
+
+    <!-- Steam cleartext interceptor -->
+    <string name="cleartext_blocked_exception">Los ajustes actuales bloquean solicitudes HTTP sin cifrar autenticadas hacia %1$s. Actívalas en ajustes e inténtalo de nuevo.</string>
+
+    <!-- Mod library repository -->
+    <string name="mod_name_required">El nombre del mod no puede estar vacío.</string>
+    <string name="mod_not_found_to_rename">No se encontró el mod que se quiere renombrar.</string>
+
+    <!-- Mod library update check service -->
+    <string name="mod_update_no_time">El Taller no devolvió una hora de actualización.</string>
+
+    <!-- Share / open choosers -->
+    <string name="chooser_share_file">Compartir archivo</string>
+    <string name="chooser_open_file">Abrir archivo</string>
+
+    <!-- Main activity toasts -->
+    <string name="toast_storage_permission_denied">Permiso de almacenamiento no concedido; las descargas se exportarán al directorio propio de la app al completarse.</string>
+    <string name="toast_notification_permission_denied">Permiso de notificaciones no concedido; las notificaciones de descarga en segundo plano pueden no mostrarse.</string>
+    <string name="toast_no_file_to_open">Aún no hay archivo para abrir</string>
+    <string name="error_no_app_to_open_file">No se encontró ninguna app para abrir este archivo</string>
+    <string name="error_open_file_failed">Error al abrir el archivo</string>
+    <string name="toast_no_file_to_share">Aún no hay archivo para compartir</string>
+    <string name="error_no_app_to_share_file">No se encontró ninguna app para compartir este archivo</string>
+    <string name="error_share_file_failed">Error al compartir el archivo</string>
+    <string name="toast_debug_log_not_generated">El registro de depuración aún no se ha generado</string>
+    <string name="toast_no_debug_log_to_share">No hay registro de depuración para compartir</string>
+    <string name="error_no_app_to_share_debug_log">No se encontró ninguna app para compartir el registro de depuración</string>
+    <string name="error_share_debug_log_failed">Error al compartir el registro de depuración</string>
+    <string name="toast_runtime_log_not_generated">El registro de ejecución aún no se ha generado</string>
+    <string name="toast_no_runtime_log_to_share">No hay registro de ejecución para compartir</string>
+    <string name="error_no_app_to_share_runtime_log">No se encontró ninguna app para compartir el registro de ejecución</string>
+    <string name="error_share_runtime_log_failed">Error al compartir el registro de ejecución</string>
+    <string name="toast_no_runtime_log_to_open">Aún no hay registro de ejecución para abrir</string>
+    <string name="error_no_app_to_open_runtime_log">No se encontró ninguna app para abrir el registro de ejecución</string>
+    <string name="error_open_runtime_log_failed">Error al abrir el registro de ejecución</string>
+    <string name="toast_log_bundle_failed">Error al crear el paquete de registros</string>
+    <string name="toast_no_log_bundle_to_share">No hay paquete de registros para compartir</string>
+    <string name="error_no_app_to_share_log_bundle">No se encontró ninguna app para compartir el paquete de registros</string>
+    <string name="error_share_log_bundle_failed">Error al compartir el paquete de registros</string>
+    <string name="toast_export_log_bundle_failed">Error al exportar el paquete de registros</string>
+    <string name="toast_log_bundle_exported">Paquete de registros exportado a %1$s</string>
+    <string name="error_no_app_to_open_link">No se encontró ninguna app para abrir enlaces</string>
+    <string name="error_open_link_failed">Error al abrir el enlace</string>
+
+    <!-- WorkshopViewModel toasts -->
+    <string name="toast_mod_library_empty_no_mods">La biblioteca de mods está vacía; no hay mods que comprobar.</string>
+    <string name="toast_cleartext_allowed">Ahora se permiten solicitudes HTTP sin cifrar con estado de sesión de Steam. Úsalas solo en redes de confianza.</string>
+    <string name="toast_cleartext_disallowed">Se han bloqueado las solicitudes HTTP sin cifrar con estado de sesión de Steam.</string>
+    <string name="toast_direct_access_watt_off">Acceso directo experimental al Taller activado, pero el enlace Watt está desactivado en esta sesión; reinicia la app para aplicar el cambio.</string>
+    <string name="toast_direct_access_enabled">Acceso directo experimental al Taller activado. Si hay problemas, exporta un registro y envíalo al desarrollador.</string>
+    <string name="toast_direct_access_disabled">Acceso directo experimental al Taller desactivado.</string>
+    <string name="toast_auto_rename_enabled">Renombrado automático activado; las futuras descargas de mods de un solo archivo usarán el nombre del mod como nombre de archivo.</string>
+    <string name="toast_auto_rename_disabled">Renombrado automático de archivos de mod desactivado.</string>
+    <string name="toast_frontend_switched">Frontend cambiado a %1$s.</string>
+    <string name="toast_steam_language_switched">Preferencia de idioma de Steam cambiada: %1$s.</string>
+    <string name="baidu_credentials_saved_full">AppID y API Key de la traducción de texto LLM de Baidu guardados.</string>
+    <string name="baidu_credentials_cleared">AppID y API Key de la traducción de texto LLM de Baidu eliminados.</string>
+    <string name="baidu_credentials_saved_partial">Se ha guardado lo introducido, pero se necesitan tanto el AppID como la API Key para usar la traducción de texto LLM de Baidu.</string>
+    <string name="baidu_test_success">Prueba de traducción de texto LLM de Baidu correcta.</string>
+    <string name="baidu_test_failed">La prueba de traducción de texto LLM de Baidu falló. Inténtalo de nuevo más tarde.</string>
+    <string name="toast_switched_anonymous">Cambiado a navegación anónima.</string>
+    <string name="error_steam_login_failed">Error al iniciar sesión en Steam.</string>
+    <string name="toast_account_in_use_by_tasks">Esta cuenta todavía tiene tareas de descarga recuperables y no se puede eliminar aún.</string>
+    <string name="toast_account_deleted">Cuenta de Steam eliminada.</string>
+    <string name="settings_invalid">Introduce ajustes de descarga y comprobación válidos.</string>
+    <string name="add_game_hint">Introduce un nombre de juego o rellena el GameID directamente.</string>
+    <string name="error_search_game_failed">Error en la búsqueda de juegos.</string>
+    <string name="add_game_gamedid_positive">GameID debe ser un entero positivo.</string>
+    <string name="add_game_not_found">No se encontró el juego.</string>
+    <string name="no_workshop_games_found">No se encontraron juegos compatibles con el Taller de Steam.</string>
+    <string name="add_game_video_entry">Este AppID corresponde a un elemento de vídeo de Steam, no a un juego, por lo que no hay Taller que cargar.</string>
+    <string name="add_game_no_workshop">Este juego no tiene un Taller público de Steam por ahora.</string>
+    <string name="error_load_game_info_failed">Error al cargar la información del juego.</string>
+    <string name="toast_mod_not_downloaded">Este mod todavía no se ha descargado.</string>
+    <string name="error_load_changelog_failed">Error al cargar las notas de la versión.</string>
+    <string name="toast_mod_renamed">\"%1$s\" renombrado a \"%2$s\".</string>
+    <string name="error_rename_mod_failed">Error al renombrar el mod.</string>
+    <string name="toast_removed_from_library">%1$s eliminado de la biblioteca de mods.</string>
+    <string name="toast_deleted_local_files">Archivos locales de %1$s eliminados.</string>
+    <string name="error_delete_mod_failed">Error al eliminar el mod.</string>
+    <string name="error_load_mod_detail_failed">Error al cargar los detalles del mod.</string>
+    <string name="error_load_comments_failed">Error al cargar los comentarios.</string>
+    <string name="toast_no_translatable_description">No hay descripción traducible.</string>
+    <string name="error_translate_description_failed">Error en la traducción de la descripción. Inténtalo de nuevo más tarde.</string>
+    <string name="toast_no_translatable_intro">No hay resumen traducible.</string>
+    <string name="error_translate_intro_failed">Error en la traducción del resumen. Inténtalo de nuevo más tarde.</string>
+    <string name="baidu_credentials_missing_both">No se han rellenado el AppID y la API Key de la traducción de texto LLM de Baidu.</string>
+    <string name="baidu_credentials_missing_appid">No se ha rellenado el AppID de la traducción de texto LLM de Baidu.</string>
+    <string name="baidu_credentials_missing_apikey">No se ha rellenado la API Key de la traducción de texto LLM de Baidu.</string>
+    <string name="toast_mod_already_in_library">Este mod ya está en la biblioteca de mods.</string>
+    <string name="toast_added_to_mod_library">%1$s añadido a la biblioteca de mods.</string>
+    <string name="error_add_to_mod_library_failed">Error al añadir a la biblioteca de mods.</string>
+    <string name="toast_steam_reauth_required">La cuenta de Steam actual necesita reautenticación; las nuevas tareas de descarga no pueden comenzar todavía.</string>
+    <string name="toast_download_started">Descarga iniciada. Consulta el progreso en el centro de descargas.</string>
+    <string name="toast_downloads_started">Se iniciaron %1$d tareas de descarga. Consulta el progreso en el centro de descargas.</string>
+    <string name="error_load_library_timeout">Se agotó el tiempo de carga de la biblioteca de juegos.</string>
+    <string name="error_load_library_timeout_advice">Oh no, se agotó el tiempo de carga. Puede que tu red no admita el acceso directo al Taller. Activa la aceleración de Steam o usa un proxy e inténtalo de nuevo.</string>
+    <string name="error_load_game_library_failed">Error al cargar la biblioteca de juegos.</string>
+    <string name="error_sync_mod_library_failed">Error al sincronizar la biblioteca de mods.</string>
+    <string name="error_load_featured_games_failed">Error al cargar los juegos populares del Taller.</string>
+    <string name="no_mods_in_current_filters">No hay mods en los resultados filtrados actuales de este juego.</string>
+    <string name="error_load_workshop_failed">Error al cargar el Taller.</string>
+    <string name="toast_game_added">%1$s añadido.</string>
+    <string name="toast_logged_in">Sesión iniciada como %1$s.</string>
+    <string name="error_check_update_failed">Error en la comprobación de actualizaciones.</string>
+    <string name="error_check_update_failed_detail">Error en la comprobación de actualizaciones: %1$s</string>
+    <string name="timeout_request_retry_hint">Se agotó el tiempo de carga. Activa un acelerador o un proxy e inténtalo de nuevo.</string>
+    <string name="steam_accel_link_fallback_message">Tu entorno de red no admite el enlace de aceleración de Steam. Usa un acelerador e inténtalo de nuevo.\n\nLa app ha vuelto automáticamente al enlace original de Steam.</string>
+    <string name="update_latest_version_msg">Ya estás actualizado.</string>
+    <string name="update_source_github_direct">GitHub Release (enlace directo)</string>
+    <string name="update_no_change_notes">No hay notas de actualización para esta versión.</string>
+
+    <!-- Google quirk: keep format placeholders aligned -->
+    <string name="format_filtered_metric">%1$s</string>
+
+    <!-- Captive-portal detection keywords (literal HTML markers on portal networks) -->
+    <string name="portal_keyword_campus_network">校园网</string>
+    <string name="portal_keyword_auth_page">认证页面</string>
+    <string name="portal_keyword_auth_login">认证登录</string>
+</resources>

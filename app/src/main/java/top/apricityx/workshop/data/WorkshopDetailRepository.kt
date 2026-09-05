@@ -1,5 +1,6 @@
 package top.apricityx.workshop.data
 
+import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -14,15 +15,18 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import top.apricityx.workshop.R
 import top.apricityx.workshop.SteamLanguagePreference
 
 class WorkshopDetailRepository(
+    context: Context,
     private val client: OkHttpClient,
     private val json: Json = Json { ignoreUnknownKeys = true },
     private val baseUrl: HttpUrl = "https://api.steampowered.com/".toHttpUrl(),
     private val communityBaseUrl: HttpUrl = "https://steamcommunity.com/".toHttpUrl(),
     private val languagePreferenceProvider: () -> SteamLanguagePreference = { SteamLanguagePreference.SimplifiedChinese },
 ) {
+    private val context = context.applicationContext
     suspend fun loadWorkshopItemDetail(
         item: WorkshopBrowseItem,
         includeChangeNotes: Boolean = false,
@@ -46,7 +50,7 @@ class WorkshopDetailRepository(
         }
         val apiTitle = detail.stringValue("title")
         val apiDescription = SteamHtmlDecoder.decodeWorkshopApiDescription(detail.stringValue("description")).ifBlank {
-            item.descriptionSnippet.ifBlank { "暂无描述。" }
+            item.descriptionSnippet.ifBlank { context.getString(R.string.common_no_description_period) }
         }
         val requiredItems = runCatching {
             enrichRequiredItems(
@@ -374,7 +378,7 @@ class WorkshopDetailRepository(
                 }
                 WorkshopComment(
                     id = id,
-                    authorName = authorName.ifBlank { "未知用户" },
+                    authorName = authorName.ifBlank { context.getString(R.string.common_unknown_user) },
                     profileUrl = profileUrl,
                     content = content,
                     postedEpochSeconds = postedEpochSeconds,

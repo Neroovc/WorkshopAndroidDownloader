@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -38,10 +39,23 @@ fun normalizeModVersionId(versionId: String?): String =
 fun formatModVersionLabel(
     versionId: String,
     updatedAtMillis: Long?,
+    context: Context,
 ): String =
-    updatedAtMillis?.let { "工坊更新 ${formatModVersionTimestamp(it)}" }
+    updatedAtMillis?.let {
+        context.getString(R.string.version_updated_label, formatModVersionTimestamp(it))
+    } ?: if (normalizeModVersionId(versionId) == LEGACY_MOD_VERSION_ID) {
+        context.getString(R.string.version_legacy_import)
+    } else {
+        versionId
+    }
+
+fun formatModVersionLabelNeutral(
+    versionId: String,
+    updatedAtMillis: Long?,
+): String =
+    updatedAtMillis?.let { "Workshop updated ${formatModVersionTimestamp(it)}" }
         ?: if (normalizeModVersionId(versionId) == LEGACY_MOD_VERSION_ID) {
-            "旧版导入"
+            "Legacy import"
         } else {
             versionId
         }

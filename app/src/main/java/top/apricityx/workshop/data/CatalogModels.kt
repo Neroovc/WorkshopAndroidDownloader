@@ -98,7 +98,7 @@ data class WorkshopRequiredItem(
             appId = appId,
             publishedFileId = publishedFileId,
             title = title,
-            authorName = authorName.ifBlank { "未知作者" },
+            authorName = authorName,
             previewImageUrl = previewImageUrl,
             descriptionSnippet = descriptionSnippet,
         )

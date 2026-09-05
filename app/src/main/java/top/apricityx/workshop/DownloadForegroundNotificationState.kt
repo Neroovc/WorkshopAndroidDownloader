@@ -1,5 +1,6 @@
 package top.apricityx.workshop
 
+import android.content.Context
 import kotlin.math.roundToInt
 
 data class DownloadForegroundNotificationSnapshot(
@@ -13,7 +14,7 @@ data class DownloadForegroundNotificationSnapshot(
     val progressIndeterminate: Boolean = true,
 )
 
-fun DownloadCenterUiState.toForegroundNotificationSnapshot(): DownloadForegroundNotificationSnapshot {
+fun DownloadCenterUiState.toForegroundNotificationSnapshot(context: Context): DownloadForegroundNotificationSnapshot {
     val foregroundTasks = displayTasks.filter {
         it.status == DownloadCenterTaskStatus.Running || it.status == DownloadCenterTaskStatus.Queued
     }
@@ -30,23 +31,24 @@ fun DownloadCenterUiState.toForegroundNotificationSnapshot(): DownloadForeground
     }
     val lines = buildList {
         foregroundTasks.take(MAX_EXPANDED_LINES).forEach { task ->
-            add("${task.itemTitle} · ${task.summaryText()}")
+            add("${task.itemTitle} · ${task.summaryText(context)}")
         }
         val remaining = foregroundTasks.size - MAX_EXPANDED_LINES
         if (remaining > 0) {
-            add("还有 $remaining 个任务等待处理")
+            add(context.getString(R.string.notif_more_tasks, remaining))
         }
     }
 
     return DownloadForegroundNotificationSnapshot(
         isActive = true,
         title = if (foregroundTasks.size == 1) {
-            "后台下载中"
+            context.getString(R.string.notif_bg_downloading)
         } else {
-            "后台下载中（${foregroundTasks.size} 个任务）"
+            context.getString(R.string.notif_bg_downloading_count, foregroundTasks.size)
         },
         text = primaryTask.title,
         subText = buildForegroundCountSummary(
+            context = context,
             runningCount = foregroundTasks.count { it.status == DownloadCenterTaskStatus.Running },
             queuedCount = foregroundTasks.count { it.status == DownloadCenterTaskStatus.Queued },
         ),
@@ -57,12 +59,13 @@ fun DownloadCenterUiState.toForegroundNotificationSnapshot(): DownloadForeground
 }
 
 private fun buildForegroundCountSummary(
+    context: Context,
     runningCount: Int,
     queuedCount: Int,
 ): String =
     listOfNotNull(
-        runningCount.takeIf { it > 0 }?.let { "运行中 $it 个" },
-        queuedCount.takeIf { it > 0 }?.let { "排队 $it 个" },
-    ).joinToString(" · ").ifBlank { "准备开始下载" }
+        runningCount.takeIf { it > 0 }?.let { context.getString(R.string.notif_running, it) },
+        queuedCount.takeIf { it > 0 }?.let { context.getString(R.string.notif_queued, it) },
+    ).joinToString(" · ").ifBlank { context.getString(R.string.notif_preparing) }
 
 private const val MAX_EXPANDED_LINES = 4

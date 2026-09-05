@@ -2,6 +2,7 @@ package top.apricityx.workshop
 
 import android.app.Application
 import android.app.KeyguardManager
+import android.content.Context
 import android.os.UserManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -122,6 +123,7 @@ class WorkshopViewModel(
         languagePreferenceProvider = settingsRepository::getSteamLanguagePreference,
     )
     private val detailRepository = WorkshopDetailRepository(
+        context = application,
         client = httpClient,
         languagePreferenceProvider = settingsRepository::getSteamLanguagePreference,
     )
@@ -131,10 +133,11 @@ class WorkshopViewModel(
         ModLibraryUpdateStateStore(File(application.filesDir, "mod-library/update-state.json"))
     private val downloadCenterManager = DownloadCenterManager.getInstance(application)
     private val updateService = WorkshopUpdateService(
+        context = application,
         baseClient = httpClient,
         directAccessRuntime = experimentalGithubDirectAccessRuntime,
     )
-    private val baiduAiTextTranslationClient = BaiduAiTextTranslationClient()
+    private val baiduAiTextTranslationClient = BaiduAiTextTranslationClient(application)
 
     private val _uiState = MutableStateFlow(createInitialUiState())
     val uiState: StateFlow<WorkshopUiState> = _uiState.asStateFlow()
@@ -179,7 +182,7 @@ class WorkshopViewModel(
                     } else {
                         state.copy(
                             steamDirectAccessFallbackDialogState = SteamDirectAccessFallbackDialogUiState(
-                                message = STEAM_DIRECT_ACCESS_FALLBACK_DIALOG_MESSAGE,
+                                message = STEAM_DIRECT_ACCESS_FALLBACK_DIALOG_MESSAGE(application),
                             ),
                         )
                     }
@@ -264,6 +267,7 @@ class WorkshopViewModel(
         val autoRenameModFilesToModNameEnabled = settingsRepository.isAutoRenameModFilesToModNameEnabled()
         val application = getApplication<Application>()
         val currentSteamAuthState = steamAuthRepository.loadSnapshot().toUiState(
+            context = getApplication(),
             loginDialogState = _uiState.value.settingsState.steamAuthState.loginDialogState,
         )
         _uiState.update { state ->
@@ -340,7 +344,7 @@ class WorkshopViewModel(
         val entries = _uiState.value.modLibraryState.items.latestVersionsForUpdateCheck()
         if (entries.isEmpty()) {
             viewModelScope.launch {
-                _toastMessages.emit("模组库还是空的，没有可检查的模组。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_mod_library_empty_no_mods))
             }
             return
         }
@@ -380,6 +384,7 @@ class WorkshopViewModel(
                                         entry = entry,
                                         remoteUpdatedEpochSeconds = detail.timeUpdatedEpochSeconds,
                                         checkedAtMillis = checkedAtMillis,
+                                        context = getApplication(),
                                     )
                                 },
                                 onFailure = { error ->
@@ -387,9 +392,9 @@ class WorkshopViewModel(
                                         status = ModUpdateCheckStatus.Failed,
                                         checkedAtMillis = checkedAtMillis,
                                         message = if (error.isTimeoutRequestFailure()) {
-                                            REQUEST_TIMEOUT_MESSAGE
+                                            REQUEST_TIMEOUT_MESSAGE(application)
                                         } else {
-                                            error.message ?: "检查更新失败。"
+                                            error.message ?: getApplication<Application>().getString(R.string.error_check_update_failed)
                                         },
                                     )
                                 },
@@ -398,7 +403,7 @@ class WorkshopViewModel(
                             _uiState.update { state ->
                                 val nextUpdateCheckState = state.modLibraryState.updateCheckState.copy(
                                     results = state.modLibraryState.updateCheckState.results + (key to result),
-                                ).filterForEntries(state.modLibraryState.items.latestVersionsForUpdateCheck())
+                                ).filterForEntries(state.modLibraryState.items.latestVersionsForUpdateCheck(), getApplication())
                                 state.copy(
                                     modLibraryState = state.modLibraryState.copy(
                                         updateCheckState = nextUpdateCheckState,
@@ -411,7 +416,7 @@ class WorkshopViewModel(
                 }.awaitAll().toMap(linkedMapOf())
             }
 
-            val summaryMessage = buildModUpdateCheckSummary(results.values)
+            val summaryMessage = buildModUpdateCheckSummary(results.values, getApplication())
             val checkedAtMillis = System.currentTimeMillis()
             var persistedUpdateCheckState: ModLibraryUpdateCheckState? = null
             _uiState.update { state ->
@@ -420,7 +425,7 @@ class WorkshopViewModel(
                     summaryMessage = summaryMessage,
                     lastCheckedAtMillis = checkedAtMillis,
                     results = results,
-                ).filterForEntries(state.modLibraryState.items.latestVersionsForUpdateCheck())
+                ).filterForEntries(state.modLibraryState.items.latestVersionsForUpdateCheck(), getApplication())
                 persistedUpdateCheckState = nextUpdateCheckState
                 state.copy(
                     modLibraryState = state.modLibraryState.copy(
@@ -541,9 +546,9 @@ class WorkshopViewModel(
         viewModelScope.launch {
             _toastMessages.emit(
                 if (allowed) {
-                    "已允许带 Steam 登录态的 HTTP 请求，请仅在可信网络环境下使用。"
+                    getApplication<Application>().getString(R.string.toast_cleartext_allowed)
                 } else {
-                    "已禁止带 Steam 登录态的 HTTP 请求。"
+                    getApplication<Application>().getString(R.string.toast_cleartext_disallowed)
                 },
             )
         }
@@ -563,12 +568,12 @@ class WorkshopViewModel(
             _toastMessages.emit(
                 if (enabled) {
                     if (ExperimentalWorkshopDirectAccessFallbackNotifier.isDirectAccessDisabledForCurrentProcess()) {
-                        "已开启实验性创意工坊直连策略，但当前会话已禁用 Watt 链路，重启应用后生效。"
+                        getApplication<Application>().getString(R.string.toast_direct_access_watt_off)
                     } else {
-                        "已开启实验性创意工坊直连策略，如果存在问题，请导出一份日志发给开发者。"
+                        getApplication<Application>().getString(R.string.toast_direct_access_enabled)
                     }
                 } else {
-                    "已关闭实验性创意工坊直连策略。"
+                    getApplication<Application>().getString(R.string.toast_direct_access_disabled)
                 },
             )
         }
@@ -587,9 +592,9 @@ class WorkshopViewModel(
         viewModelScope.launch {
             _toastMessages.emit(
                 if (enabled) {
-                    "已开启自动重命名，之后下载的单文件模组会使用模组名作为文件名。"
+                    getApplication<Application>().getString(R.string.toast_auto_rename_enabled)
                 } else {
-                    "已关闭自动重命名模组文件。"
+                    getApplication<Application>().getString(R.string.toast_auto_rename_disabled)
                 },
             )
         }
@@ -620,7 +625,7 @@ class WorkshopViewModel(
             )
         }
         viewModelScope.launch {
-            _toastMessages.emit("已切换为${frontendMode.displayName()}前端。")
+            _toastMessages.emit(getApplication<Application>().getString(R.string.toast_frontend_switched, frontendMode.displayName(getApplication())))
         }
     }
 
@@ -630,7 +635,10 @@ class WorkshopViewModel(
             state.copy(
                 settingsState = state.settingsState.copy(
                     selectedSteamLanguagePreference = languagePreference,
-                    message = "已切换 Steam 语言偏好：${languagePreference.displayName()}。",
+                    message = getApplication<Application>().getString(
+                        R.string.toast_steam_language_switched,
+                        languagePreference.displayName(getApplication()),
+                    ),
                 ),
             )
         }
@@ -687,10 +695,10 @@ class WorkshopViewModel(
         val savedCredentials = baiduTranslationCredentialsRepository.getCredentials()
         val hasSavedCredentials = savedCredentials.isConfigured()
         val statusMessage = when {
-            hasSavedCredentials -> "已保存百度大模型文本翻译的 AppID 和 API Key。"
+            hasSavedCredentials -> getApplication<Application>().getString(R.string.baidu_credentials_saved_full)
             savedCredentials.appId.isBlank() && savedCredentials.apiKey.isBlank() ->
-                "已清除百度大模型文本翻译的 AppID 和 API Key。"
-            else -> "已保存当前填写内容，但要同时提供 AppID 和 API Key 才能调用百度大模型文本翻译。"
+                getApplication<Application>().getString(R.string.baidu_credentials_cleared)
+            else -> getApplication<Application>().getString(R.string.baidu_credentials_saved_partial)
         }
         _uiState.update { state ->
             state.copy(
@@ -760,7 +768,7 @@ class WorkshopViewModel(
                             isTesting = false,
                             testResultText = translatedText,
                             testFailureReason = null,
-                            message = "百度大模型文本翻译测试成功。",
+                            message = getApplication<Application>().getString(R.string.baidu_test_success),
                         ),
                     )
                 }
@@ -770,7 +778,7 @@ class WorkshopViewModel(
                         baiduTranslationApiKeyState = state.baiduTranslationApiKeyState.copy(
                             isTesting = false,
                             testResultText = null,
-                            testFailureReason = error.message ?: "百度大模型文本翻译测试失败，请稍后重试。",
+                            testFailureReason = error.message ?: getApplication<Application>().getString(R.string.baidu_test_failed),
                             message = null,
                         ),
                     )
@@ -994,14 +1002,14 @@ class WorkshopViewModel(
             result.onSuccess(::applySteamSignInStep)
                 .onFailure { error ->
                     appendSteamLoginFailure("UI: Steam login step failed.", error)
-                    setSteamLoginSubmitting(false, error.message ?: "Steam 登录失败。")
+                    setSteamLoginSubmitting(false, error.message ?: getApplication<Application>().getString(R.string.error_steam_login_failed))
                 }
         }
     }
 
     fun switchToAnonymousSteamAccount() {
         steamAuthRepository.setActiveAccount(null)
-        syncSteamAuthState(message = "已切换为匿名浏览。")
+        syncSteamAuthState(message = getApplication<Application>().getString(R.string.toast_switched_anonymous))
         primeSteamWebSessionAsync(force = true)
     }
 
@@ -1032,11 +1040,11 @@ class WorkshopViewModel(
 
     fun removeSteamAccount(accountId: String) {
         if (downloadCenterManager.hasRecoverableTasksForAccount(accountId)) {
-            syncSteamAuthState(message = "该账号仍绑定着可恢复的下载任务，暂时不能删除。")
+            syncSteamAuthState(message = getApplication<Application>().getString(R.string.toast_account_in_use_by_tasks))
             return
         }
         steamAuthRepository.removeAccount(accountId)
-        syncSteamAuthState(message = "已删除 Steam 账号。")
+        syncSteamAuthState(message = getApplication<Application>().getString(R.string.toast_account_deleted))
     }
 
     fun saveDownloadSettings() {
@@ -1049,7 +1057,7 @@ class WorkshopViewModel(
             _uiState.update { state ->
                 state.copy(
                     settingsState = state.settingsState.copy(
-                        message = "请输入有效的下载与检查设置。",
+                        message = getApplication<Application>().getString(R.string.settings_invalid),
                     ),
                 )
             }
@@ -1118,7 +1126,8 @@ class WorkshopViewModel(
                         searchResults = emptyList(),
                         isSearching = false,
                         searchRequestFailed = false,
-                        message = "输入游戏名，或直接填写 GameID。",
+                        message = getApplication<Application>().getString(R.string.add_game_hint),
+                        messageIsError = false,
                     ),
                 )
             }
@@ -1148,7 +1157,8 @@ class WorkshopViewModel(
                             isSearching = false,
                             searchRequestFailed = false,
                             searchResults = results,
-                            message = if (results.isEmpty()) "没有找到支持创意工坊的游戏。" else null,
+                            message = if (results.isEmpty()) getApplication<Application>().getString(R.string.no_workshop_games_found) else null,
+                            messageIsError = false,
                         ),
                     )
                 }
@@ -1160,8 +1170,9 @@ class WorkshopViewModel(
                             searchRequestFailed = true,
                             message = addGameRequestFailureMessage(
                                 error = error,
-                                fallbackMessage = error.message ?: "搜索游戏失败。",
+                                fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_search_game_failed),
                             ),
+                            messageIsError = true,
                         ),
                     )
                 }
@@ -1176,7 +1187,8 @@ class WorkshopViewModel(
             _uiState.update { state ->
                 state.copy(
                     addGameState = state.addGameState.copy(
-                        message = "GameID 必须是正整数。",
+                        message = getApplication<Application>().getString(R.string.add_game_gamedid_positive),
+                        messageIsError = true,
                     ),
                 )
             }
@@ -1190,12 +1202,12 @@ class WorkshopViewModel(
                 }
             }.onSuccess { game ->
                 when {
-                    game == null -> showAddGameMessage("没有找到这个游戏。")
+                    game == null -> showAddGameMessage(getApplication<Application>().getString(R.string.add_game_not_found))
                     !game.supportsWorkshop -> showAddGameMessage(
                         if (game.storeType.equals("video", ignoreCase = true)) {
-                            "这个 AppID 对应的是 Steam 视频条目，不是游戏，因此没有可加载的创意工坊。"
+                            getApplication<Application>().getString(R.string.add_game_video_entry)
                         } else {
-                            "这个游戏当前没有公开 Steam 创意工坊。"
+                            getApplication<Application>().getString(R.string.add_game_no_workshop)
                         },
                     )
                     else -> addGameAndOpen(game)
@@ -1204,7 +1216,7 @@ class WorkshopViewModel(
                 showAddGameMessage(
                     addGameRequestFailureMessage(
                         error = error,
-                        fallbackMessage = error.message ?: "加载游戏信息失败。",
+                        fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_game_info_failed),
                     ),
                 )
             }
@@ -1228,7 +1240,7 @@ class WorkshopViewModel(
                 val remaining = state.libraryGames.filterNot { it.appId == game.appId }
                 state.copy(
                     libraryGames = remaining,
-                    libraryMessage = if (remaining.isEmpty()) "游戏库还是空的，点右上角 + 添加支持创意工坊的游戏。" else null,
+                    libraryMessage = if (remaining.isEmpty()) getApplication<Application>().getString(R.string.library_empty_message) else null,
                 )
             }
         }
@@ -1267,7 +1279,7 @@ class WorkshopViewModel(
         }
         if (entry == null) {
             viewModelScope.launch {
-                _toastMessages.emit("这个模组还没有下载完成。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_mod_not_downloaded))
             }
             refreshModLibrary(showLoading = false)
             return
@@ -1349,7 +1361,7 @@ class WorkshopViewModel(
                                 isLoading = false,
                                 errorMessage = workshopRequestFailureMessage(
                                     error = error,
-                                    fallbackMessage = error.message ?: "加载更新日志失败。",
+                                    fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_changelog_failed),
                                 ),
                             ),
                         ),
@@ -1480,9 +1492,9 @@ class WorkshopViewModel(
                     nextState
                 }
                 persistedUpdateCheckState?.let(::persistModLibraryUpdateStateIfStable)
-                _toastMessages.emit("已将「${entry.itemTitle}」重命名为「$newTitle」。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_mod_renamed, entry.itemTitle, newTitle))
             }.onFailure { error ->
-                _toastMessages.emit(error.message ?: "重命名模组失败。")
+                _toastMessages.emit(error.message ?: getApplication<Application>().getString(R.string.error_rename_mod_failed))
                 refreshModLibrary(showLoading = false)
             }
         }
@@ -1502,9 +1514,9 @@ class WorkshopViewModel(
                 downloadCenterManager.clearExportedFilesForMod(entry)
                 _toastMessages.emit(
                     if (entry.isTrackingOnly) {
-                        "已从模组库移除 ${entry.itemTitle}。"
+                        getApplication<Application>().getString(R.string.toast_removed_from_library, entry.itemTitle)
                     } else {
-                        "已删除 ${entry.itemTitle} 的本地文件。"
+                        getApplication<Application>().getString(R.string.toast_deleted_local_files, entry.itemTitle)
                     },
                 )
                 var persistedUpdateCheckState: ModLibraryUpdateCheckState? = null
@@ -1518,7 +1530,7 @@ class WorkshopViewModel(
                 }
                 persistedUpdateCheckState?.let(::persistModLibraryUpdateStateIfStable)
             }.onFailure { error ->
-                _toastMessages.emit(error.message ?: "删除模组失败。")
+                _toastMessages.emit(error.message ?: getApplication<Application>().getString(R.string.error_delete_mod_failed))
                 refreshModLibrary(showLoading = false)
             }
         }
@@ -1649,7 +1661,7 @@ class WorkshopViewModel(
                             detail = detail,
                             isLoading = false,
                             isLoadingComments = shouldLoadComments,
-                            commentErrorMessage = detail.commentUnavailableMessage(),
+                            commentErrorMessage = detail.commentUnavailableMessage(getApplication()),
                             message = null,
                             showConnectionErrorState = false,
                         )
@@ -1670,7 +1682,7 @@ class WorkshopViewModel(
                             isLoading = false,
                             message = workshopRequestFailureMessage(
                                 error = error,
-                                fallbackMessage = error.message ?: "加载模组详情失败。",
+                                fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_mod_detail_failed),
                             ),
                             showConnectionErrorState = showConnectionErrorState,
                         )
@@ -1742,7 +1754,7 @@ class WorkshopViewModel(
                 detail.appId == appId && detail.publishedFileId == publishedFileId
             }
             ?: return
-        val commentUnavailableMessage = detailSnapshot.commentUnavailableMessage()
+        val commentUnavailableMessage = detailSnapshot.commentUnavailableMessage(getApplication())
         if (!detailSnapshot.shouldLoadWorkshopComments()) {
             _uiState.update { state ->
                 state.updateWorkshopItemDetailState(appId, publishedFileId) { current ->
@@ -1800,7 +1812,7 @@ class WorkshopViewModel(
                             isLoadingComments = false,
                             commentErrorMessage = workshopRequestFailureMessage(
                                 error = error,
-                                fallbackMessage = error.message ?: "加载评论失败。",
+                                fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_comments_failed),
                             ),
                         )
                     }
@@ -1818,7 +1830,7 @@ class WorkshopViewModel(
         val description = detailState.detail?.description?.trim().orEmpty()
         if (description.isBlank()) {
             viewModelScope.launch {
-                _toastMessages.emit("当前没有可翻译的描述。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_no_translatable_description))
             }
             return
         }
@@ -1841,9 +1853,10 @@ class WorkshopViewModel(
                     text = description,
                     credentials = credentials,
                     reference = buildBaiduModDescriptionReference(
-                        modTitle = detailState.detail?.title ?: detailState.item.title,
-                        gameTitle = resolveGameTitleForTranslation(targetAppId).orEmpty(),
-                    ),
+                            context = getApplication(),
+                            modTitle = detailState.detail?.title ?: detailState.item.title,
+                            gameTitle = resolveGameTitleForTranslation(targetAppId).orEmpty(),
+                        ),
                 )
             }.onSuccess { translatedText ->
                 _uiState.update { state ->
@@ -1860,7 +1873,7 @@ class WorkshopViewModel(
                     state.updateWorkshopItemDetailState(targetAppId, targetPublishedFileId) { current ->
                         current.copy(
                             isTranslatingDescription = false,
-                            translationErrorMessage = error.message ?: "翻译描述失败，请稍后重试。",
+                            translationErrorMessage = error.message ?: getApplication<Application>().getString(R.string.error_translate_description_failed),
                         )
                     }
                 }
@@ -1878,7 +1891,7 @@ class WorkshopViewModel(
         val description = selectedEntry.description.trim()
         if (description.isBlank()) {
             viewModelScope.launch {
-                _toastMessages.emit("当前没有可翻译的简介。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_no_translatable_intro))
             }
             return
         }
@@ -1906,6 +1919,7 @@ class WorkshopViewModel(
                     text = description,
                     credentials = credentials,
                     reference = buildBaiduModDescriptionReference(
+                        context = getApplication(),
                         modTitle = selectedEntry.itemTitle,
                         gameTitle = selectedEntry.gameTitle,
                     ),
@@ -1936,7 +1950,7 @@ class WorkshopViewModel(
                         modLibraryState = state.modLibraryState.copy(
                             detailDescriptionTranslation = state.modLibraryState.detailDescriptionTranslation.copy(
                                 isTranslatingDescription = false,
-                                translationErrorMessage = error.message ?: "翻译简介失败，请稍后重试。",
+                                translationErrorMessage = error.message ?: getApplication<Application>().getString(R.string.error_translate_intro_failed),
                             ),
                         ),
                     )
@@ -1976,13 +1990,13 @@ class WorkshopViewModel(
     ): String? =
         when {
             credentials.appId.isBlank() && credentials.apiKey.isBlank() ->
-                "未填写百度大模型文本翻译的 AppID 和 API Key。"
+                getApplication<Application>().getString(R.string.error_baidu_missing_appid_api_key)
 
             credentials.appId.isBlank() ->
-                "未填写百度大模型文本翻译的 AppID。"
+                getApplication<Application>().getString(R.string.error_baidu_missing_appid)
 
             credentials.apiKey.isBlank() ->
-                "未填写百度大模型文本翻译的 API Key。"
+                getApplication<Application>().getString(R.string.error_baidu_missing_api_key)
 
             else -> null
         }
@@ -2091,7 +2105,7 @@ class WorkshopViewModel(
                 group.matches(item.appId, item.publishedFileId)
             }
             if (isAlreadyInLibrary) {
-                _toastMessages.emit("该模组已经在模组库中。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_mod_already_in_library))
                 return@launch
             }
 
@@ -2135,9 +2149,9 @@ class WorkshopViewModel(
                     nextState
                 }
                 persistedUpdateCheckState?.let(::persistModLibraryUpdateStateIfStable)
-                _toastMessages.emit("已将 ${item.title} 添加到模组库。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_added_to_mod_library, item.title))
             }.onFailure { error ->
-                _toastMessages.emit(error.message ?: "添加到模组库失败。")
+                _toastMessages.emit(error.message ?: getApplication<Application>().getString(R.string.error_add_to_mod_library_failed))
                 refreshModLibrary(showLoading = false)
             }
         }
@@ -2150,7 +2164,7 @@ class WorkshopViewModel(
         }
         if (steamAuthRepository.activeAccountRequiresReauthentication()) {
             viewModelScope.launch {
-                _toastMessages.emit("当前 Steam 账号需要重新认证，新的下载任务暂时不能开始。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_steam_reauth_required))
             }
             return false
         }
@@ -2181,9 +2195,9 @@ class WorkshopViewModel(
         viewModelScope.launch {
             _toastMessages.emit(
                 if (enqueuedCount == 1) {
-                    "已开始下载，可在下载中心查看进度。"
+                    getApplication<Application>().getString(R.string.toast_download_started)
                 } else {
-                    "已开始 $enqueuedCount 个下载任务，可在下载中心查看进度。"
+                    getApplication<Application>().getString(R.string.toast_downloads_started, enqueuedCount)
                 },
             )
         }
@@ -2363,7 +2377,7 @@ class WorkshopViewModel(
                         isLibraryLoading = false,
                         libraryError = null,
                         libraryMessage = if (games.isEmpty()) {
-                            "游戏库还是空的，点右上角 + 添加支持创意工坊的游戏。"
+                            getApplication<Application>().getString(R.string.library_empty_message)
                         } else {
                             null
                         },
@@ -2377,7 +2391,7 @@ class WorkshopViewModel(
                             isLibraryLoading = false,
                             libraryError = if (currentGames.isEmpty()) {
                                 LibraryErrorUiState(
-                                    reason = "加载游戏库超时。",
+                                    reason = getApplication<Application>().getString(R.string.error_load_library_timeout),
                                     showAcceleratorHint = true,
                                 )
                             } else {
@@ -2386,7 +2400,7 @@ class WorkshopViewModel(
                             libraryMessage = if (currentGames.isEmpty()) {
                                 null
                             } else {
-                                "啊哦，加载超时，您的网络环境可能不支持直连创意工坊，请开启加速器加速 steam 或科学上网后重试。"
+                                getApplication<Application>().getString(R.string.error_load_library_timeout_advice)
                             },
                         )
                     }
@@ -2398,7 +2412,7 @@ class WorkshopViewModel(
                         isLibraryLoading = false,
                         libraryError = if (currentGames.isEmpty()) {
                             LibraryErrorUiState(
-                                reason = error.message ?: "加载游戏库失败。",
+                                reason = error.message ?: getApplication<Application>().getString(R.string.error_load_game_library_failed),
                                 showAcceleratorHint = true,
                             )
                         } else {
@@ -2407,7 +2421,7 @@ class WorkshopViewModel(
                         libraryMessage = if (currentGames.isEmpty()) {
                             null
                         } else {
-                            error.message ?: "加载游戏库失败。"
+                            error.message ?: getApplication<Application>().getString(R.string.error_load_game_library_failed)
                         },
                     )
                 }
@@ -2448,7 +2462,7 @@ class WorkshopViewModel(
                     state.copy(
                         modLibraryState = state.modLibraryState.copy(
                             isLoading = false,
-                            errorMessage = error.message ?: "同步模组库失败。",
+                            errorMessage = error.message ?: getApplication<Application>().getString(R.string.error_sync_mod_library_failed),
                             message = if (state.modLibraryState.items.isEmpty()) null else state.modLibraryState.message,
                         ),
                     )
@@ -2489,7 +2503,7 @@ class WorkshopViewModel(
                             isLoadingFeatured = false,
                             featuredErrorMessage = addGameRequestFailureMessage(
                                 error = error,
-                                fallbackMessage = error.message ?: "加载热门工坊游戏失败。",
+                                fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_featured_games_failed),
                             ),
                         ),
                     )
@@ -2556,7 +2570,7 @@ class WorkshopViewModel(
                             isLoadingMore = false,
                             hasNextPage = result.hasNextPage,
                             page = result.page,
-                            message = if (nextItems.isEmpty()) "这个游戏的当前筛选结果里没有模组。" else null,
+                            message = if (nextItems.isEmpty()) getApplication<Application>().getString(R.string.no_mods_in_current_filters) else null,
                             showConnectionErrorState = false,
                             retryLoadMoreOnError = false,
                         ),
@@ -2580,7 +2594,7 @@ class WorkshopViewModel(
                             isLoadingMore = false,
                             message = workshopRequestFailureMessage(
                                 error = error,
-                                fallbackMessage = error.message ?: "加载创意工坊失败。",
+                                fallbackMessage = error.message ?: getApplication<Application>().getString(R.string.error_load_workshop_failed),
                             ),
                             showConnectionErrorState = showConnectionErrorState,
                             retryLoadMoreOnError = append && showConnectionErrorState,
@@ -2596,7 +2610,7 @@ class WorkshopViewModel(
         openAfterAdd: Boolean = true,
     ) {
         libraryRepository.addGame(game)
-        _toastMessages.emit("已添加 ${game.name}。")
+        _toastMessages.emit(getApplication<Application>().getString(R.string.toast_game_added, game.name))
         _uiState.update { state ->
             val updatedLibrary = (state.libraryGames + game).distinctBy(SteamGame::appId)
             state.copy(
@@ -2621,7 +2635,7 @@ class WorkshopViewModel(
     ): Boolean {
         if (steamAuthRepository.activeAccountRequiresReauthentication()) {
             viewModelScope.launch {
-                _toastMessages.emit("当前 Steam 账号需要重新认证，新的下载任务暂时不能开始。")
+                _toastMessages.emit(getApplication<Application>().getString(R.string.toast_steam_reauth_required))
             }
             return false
         }
@@ -2646,9 +2660,9 @@ class WorkshopViewModel(
         viewModelScope.launch {
             _toastMessages.emit(
                 if (enqueuedCount == 1) {
-                    "已开始下载，可在下载中心查看进度。"
+                    getApplication<Application>().getString(R.string.toast_download_started)
                 } else {
-                    "已开始 $enqueuedCount 个下载任务，可在下载中心查看进度。"
+                    getApplication<Application>().getString(R.string.toast_downloads_started, enqueuedCount)
                 },
             )
         }
@@ -2677,6 +2691,7 @@ class WorkshopViewModel(
             state.copy(
                 addGameState = state.addGameState.copy(
                     message = message,
+                    messageIsError = true,
                     isSearching = false,
                     isLoadingFeatured = false,
                 ),
@@ -2691,7 +2706,7 @@ class WorkshopViewModel(
         if (error is SteamAuthenticatedCleartextBlockedException) {
             error.message ?: fallbackMessage
         } else if (error.isTimeoutRequestFailure()) {
-            REQUEST_TIMEOUT_MESSAGE
+            REQUEST_TIMEOUT_MESSAGE(application)
         } else {
             fallbackMessage
         }
@@ -2703,7 +2718,7 @@ class WorkshopViewModel(
         if (error is SteamAuthenticatedCleartextBlockedException) {
             error.message ?: fallbackMessage
         } else if (error.isWorkshopConnectionFailure()) {
-            WORKSHOP_CONNECTION_FAILURE_MESSAGE
+            WORKSHOP_CONNECTION_FAILURE_MESSAGE(application)
         } else {
             fallbackMessage
         }
@@ -2730,7 +2745,7 @@ class WorkshopViewModel(
                 )
             }.getOrElse { error ->
                 UpdateCheckExecutionResult.Failure(
-                    errorSummary = error.message ?: "检查更新失败。",
+                    errorSummary = error.message ?: getApplication<Application>().getString(R.string.error_check_update_failed),
                 )
             }
 
@@ -2768,8 +2783,8 @@ class WorkshopViewModel(
         )
 
         return when (decision.message) {
-            UpdateUiMessage.LATEST -> "当前已是最新版本。"
-            UpdateUiMessage.FAILURE -> "检查更新失败。"
+            UpdateUiMessage.LATEST -> getApplication<Application>().getString(R.string.update_latest_version_msg)
+            UpdateUiMessage.FAILURE -> getApplication<Application>().getString(R.string.error_check_update_failed)
             null -> null
         }
     }
@@ -2793,8 +2808,8 @@ class WorkshopViewModel(
         )
 
         return when (decision.message) {
-            UpdateUiMessage.FAILURE -> "检查更新失败：${result.errorSummary}"
-            UpdateUiMessage.LATEST -> "当前已是最新版本。"
+            UpdateUiMessage.FAILURE -> getApplication<Application>().getString(R.string.error_check_update_failed_detail, result.errorSummary)
+            UpdateUiMessage.LATEST -> getApplication<Application>().getString(R.string.update_latest_version_msg)
             null -> null
         }
     }
@@ -2810,7 +2825,7 @@ class WorkshopViewModel(
             .map { source ->
                 UpdateDownloadOptionState(
                     label = if (source == UpdateSource.OFFICIAL) {
-                        "GitHub Release（直链）"
+                        getApplication<Application>().getString(R.string.update_source_github_direct)
                     } else {
                         source.displayName
                     },
@@ -2821,9 +2836,9 @@ class WorkshopViewModel(
         return UpdatePromptState(
             currentVersion = BuildConfig.VERSION_NAME,
             latestVersion = release.normalizedVersion,
-            publishedAtText = release.publishedAtDisplayText.ifBlank { "未知" },
+            publishedAtText = release.publishedAtDisplayText.ifBlank { getApplication<Application>().getString(R.string.common_unknown) },
             downloadSourceDisplayName = resolvedDownload.source.displayName,
-            notesText = release.notesText.ifBlank { "暂无更新说明。" },
+            notesText = release.notesText.ifBlank { getApplication<Application>().getString(R.string.update_no_change_notes) },
             downloadUrl = resolvedDownload.resolvedUrl,
             defaultDownloadSourceId = resolvedDownload.source.id,
             downloadOptions = downloadOptions,
@@ -2896,7 +2911,10 @@ class WorkshopViewModel(
         _uiState.update { state ->
             state.copy(
                 settingsState = state.settingsState.copy(
-                    steamAuthState = steamAuthRepository.loadSnapshot().toUiState(loginDialogState = loginDialogState),
+                    steamAuthState = steamAuthRepository.loadSnapshot().toUiState(
+                        context = getApplication(),
+                        loginDialogState = loginDialogState,
+                    ),
                     message = message,
                 ),
             )
@@ -2983,7 +3001,7 @@ class WorkshopViewModel(
                 )
                 finishSteamLoginAttempt("UI: Steam login flow finished successfully.")
                 syncSteamAuthState(
-                    message = "已登录 ${step.account.accountName}。",
+                    message = getApplication<Application>().getString(R.string.toast_logged_in, step.account.accountName),
                     loginDialogState = null,
                 )
                 primeSteamWebSessionAsync(force = true)
@@ -3290,7 +3308,7 @@ class WorkshopViewModel(
                                 steamAuthState = state.settingsState.steamAuthState.copy(
                                     loginDialogState = dialog.copy(
                                         isPollingConfirmation = false,
-                                        errorMessage = error.message ?: "Steam 登录失败。",
+                                        errorMessage = error.message ?: getApplication<Application>().getString(R.string.error_steam_login_failed),
                                     ),
                                 ),
                             ),
@@ -3321,25 +3339,25 @@ class WorkshopViewModel(
     private fun buildUpdateStatusSummary(): String {
         val lastCheckedAtMs = settingsRepository.getLastUpdateCheckAtMs()
         if (lastCheckedAtMs <= 0L) {
-            return "尚未执行过更新检查。"
+            return getApplication<Application>().getString(R.string.update_status_never_checked)
         }
 
         val lines = mutableListOf<String>()
-        lines += "最近检查：${formatUpdateCheckTime(lastCheckedAtMs)}"
+        lines += getApplication<Application>().getString(R.string.update_status_last_check, formatUpdateCheckTime(lastCheckedAtMs))
 
         val remoteTag = settingsRepository.getLastKnownRemoteTag()
         if (!remoteTag.isNullOrBlank()) {
-            lines += "远端版本：$remoteTag"
+            lines += getApplication<Application>().getString(R.string.update_status_remote_version, remoteTag)
         }
 
         val metadataSource = resolveUpdateSourceDisplayName(settingsRepository.getLastSuccessfulMetadataSourceId())
         if (metadataSource != null) {
-            lines += "元数据来源：$metadataSource"
+            lines += getApplication<Application>().getString(R.string.update_status_metadata_source, metadataSource)
         }
 
         val errorSummary = settingsRepository.getLastUpdateErrorSummary()
         if (!errorSummary.isNullOrBlank()) {
-            lines += "结果：检查失败"
+            lines += getApplication<Application>().getString(R.string.update_status_result_failed)
             lines += errorSummary
             return lines.joinToString("\n")
         }
@@ -3347,15 +3365,15 @@ class WorkshopViewModel(
         val hasUpdate = !remoteTag.isNullOrBlank() &&
             WorkshopUpdateVersioning.isRemoteNewer(BuildConfig.VERSION_NAME, remoteTag)
         lines += if (hasUpdate) {
-            "结果：发现新版本"
+            getApplication<Application>().getString(R.string.update_status_result_new_version)
         } else {
-            "结果：当前已是最新版本"
+            getApplication<Application>().getString(R.string.update_status_result_latest)
         }
 
         if (hasUpdate) {
             val downloadSource = resolveUpdateSourceDisplayName(settingsRepository.getLastSuccessfulDownloadSourceId())
             if (downloadSource != null) {
-                lines += "下载来源：$downloadSource"
+                lines += getApplication<Application>().getString(R.string.update_status_download_source, downloadSource)
             }
         }
 
@@ -3451,7 +3469,7 @@ class WorkshopViewModel(
             state.currentScreen
         }
         val updateCheckState = state.modLibraryState.updateCheckState
-            .filterForEntries(groupedEntries.latestVersionsForUpdateCheck())
+            .filterForEntries(groupedEntries.latestVersionsForUpdateCheck(), getApplication())
         val detailDescriptionTranslation = state.modLibraryState.detailDescriptionTranslation.takeIf {
             shouldPreserveModLibraryDescriptionTranslation(
                 previous = state.modLibraryState.selectedEntry,
@@ -3479,7 +3497,7 @@ class WorkshopViewModel(
                 isLoading = isLoading,
                 errorMessage = errorMessage,
                 message = if (groupedEntries.isEmpty()) {
-                    "模组库还是空的，下载一个模组后会自动同步到这里。"
+                    getApplication<Application>().getString(R.string.mod_library_empty_message)
                 } else {
                     null
                 },
@@ -3509,11 +3527,15 @@ class WorkshopViewModel(
         private const val WORKSHOP_COMMENTS_TIMEOUT_MS = DEFAULT_HTTP_TIMEOUT_SECONDS * 1_000L
         private const val WORKSHOP_ITEMS_PER_PAGE = 30
         private const val STEAM_WEB_SESSION_USER_AGENT = "WorkshopOnAndroid/1.0"
-        private const val REQUEST_TIMEOUT_MESSAGE = "加载超时，请开启加速器或科学上网后重试。"
-        private const val WORKSHOP_CONNECTION_FAILURE_MESSAGE =
-            "啊哦，加载超时，您的网络环境可能不支持直连创意工坊，请开启加速器加速 steam 或科学上网后重试。"
-        private const val STEAM_DIRECT_ACCESS_FALLBACK_DIALOG_MESSAGE =
-            "您的网络环境不支持使用 Steam 加速链路，请使用加速器后重试。\n\n当前已自动回退到 Steam 原始链路。"
+        private val REQUEST_TIMEOUT_MESSAGE: (android.app.Application) -> String = {
+            it.getString(R.string.timeout_request_retry_hint)
+        }
+        private val WORKSHOP_CONNECTION_FAILURE_MESSAGE: (android.app.Application) -> String = {
+            it.getString(R.string.error_load_library_timeout_advice)
+        }
+        private val STEAM_DIRECT_ACCESS_FALLBACK_DIALOG_MESSAGE: (android.app.Application) -> String = {
+            it.getString(R.string.steam_accel_link_fallback_message)
+        }
 
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -3559,7 +3581,7 @@ class WorkshopViewModel(
                 experimentalWorkshopDirectAccessEnabled = experimentalWorkshopDirectAccessEnabled,
                 autoRenameModFilesToModNameEnabled = autoRenameModFilesToModNameEnabled,
                 baiduTranslationApiKeyConfigured = hasSavedBaiduCredentials,
-                steamAuthState = steamAuthRepository.loadSnapshot().toUiState(),
+                steamAuthState = steamAuthRepository.loadSnapshot().toUiState(context = getApplication()),
                 autoCheckUpdatesEnabled = settingsRepository.isAutoCheckUpdatesEnabled(),
                 preferredUpdateSource = settingsRepository.getPreferredUpdateSource(),
                 availableUpdateSources = UpdateSource.userSelectableSources(),
@@ -3654,10 +3676,10 @@ private val WorkshopBrowseItem.downloadKey: Pair<UInt, ULong>
 private fun top.apricityx.workshop.data.WorkshopItemDetail.shouldLoadWorkshopComments(): Boolean =
     commentThreadContext != null && commentCount != 0L
 
-private fun top.apricityx.workshop.data.WorkshopItemDetail.commentUnavailableMessage(): String? =
+private fun top.apricityx.workshop.data.WorkshopItemDetail.commentUnavailableMessage(context: Context): String? =
     when {
         commentCount == 0L -> null
-        commentThreadContext == null -> "暂时无法读取评论内容，你可以直接在 Steam 中打开对应评论页查看。"
+        commentThreadContext == null -> context.getString(R.string.error_comments_unavailable_steam_hint)
         else -> null
     }
 

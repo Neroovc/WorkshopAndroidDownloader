@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import top.apricityx.workshop.DownloadCenterTaskStatus
@@ -53,6 +55,7 @@ fun DownloadTaskDetailScreen(
     onShareRuntimeLog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -62,10 +65,14 @@ fun DownloadTaskDetailScreen(
         ScreenSummaryCard(
             title = task.itemTitle,
             subtitle = task.gameTitle,
-            metrics = listOf(task.statusLabel(), "阶段 ${task.phaseLabel()}", "账号 ${task.boundAccountName}"),
+            metrics = listOf(
+                task.statusLabel(context),
+                stringResource(R.string.metric_phase, task.phaseLabel(context)),
+                stringResource(R.string.metric_account, task.boundAccountName),
+            ),
         ) {
             Text(
-                text = task.summaryText(),
+                text = task.summaryText(context),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -86,7 +93,7 @@ fun DownloadTaskDetailScreen(
                 )
             }
 
-            MetricFlow(metrics = task.progressDetails().take(4))
+            MetricFlow(metrics = task.progressDetails(context).take(4))
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -97,7 +104,7 @@ fun DownloadTaskDetailScreen(
                             imageVector = Icons.Default.Pause,
                             contentDescription = null,
                         )
-                        Text(" 暂停")
+                        Text(stringResource(R.string.btn_pause))
                     }
                 }
                 if (task.canResume()) {
@@ -106,11 +113,11 @@ fun DownloadTaskDetailScreen(
                             imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
                         )
-                        Text(" ${task.resumeActionLabel()}")
+                        Text(" ${task.resumeActionLabel(context)}")
                     }
                 }
                 WorkshopOutlinedButton(onClick = onRemoveTask) {
-                    Text(task.removeActionLabel())
+                    Text(task.removeActionLabel(context))
                 }
             }
         }
@@ -121,47 +128,47 @@ fun DownloadTaskDetailScreen(
             )
         }
 
-        SectionCard(title = "下载进度") {
-            task.progressDetails().forEach { line ->
+        SectionCard(title = stringResource(R.string.section_download_progress)) {
+            task.progressDetails(context).forEach { line ->
                 Text(
                     text = line,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
-            if (task.progressDetails().isEmpty()) {
-                Text("当前还没有可展示的详细进度。", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (task.progressDetails(context).isEmpty()) {
+                Text(stringResource(R.string.task_detail_no_detailed_progress), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
 
         if (task.status == DownloadCenterTaskStatus.Success) {
-            SectionCard(title = "文件管理") {
+            SectionCard(title = stringResource(R.string.section_file_management)) {
                 Text(
                     text = if (task.files.isEmpty()) {
-                        "任务已经完成，导出结果会同步到模组库统一管理。"
+                        stringResource(R.string.task_detail_success_files_synced)
                     } else {
-                        "任务已经导出 ${task.files.size} 个文件。打开、分享或删除请前往模组库。"
+                        stringResource(R.string.task_detail_success_files, task.files.size)
                     },
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
 
-        SectionCard(title = "日志") {
+        SectionCard(title = stringResource(R.string.section_logs)) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    text = "系统层面上的诊断日志。",
+                    text = stringResource(R.string.task_detail_logs_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 WorkshopOutlinedButton(onClick = onShareDebugLog) {
-                    Text("分享调试日志")
+                    Text(stringResource(R.string.btn_share_debug_log))
                 }
                 WorkshopOutlinedButton(onClick = onShareRuntimeLog) {
-                    Text("分享运行日志")
+                    Text(stringResource(R.string.btn_share_runtime_log))
                 }
                 if (task.logs.isEmpty()) {
-                    Text("暂无日志。", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.task_detail_no_logs), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 } else {
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         task.logs.forEach { line ->
@@ -228,7 +235,7 @@ private fun DownloadTaskFailureCard(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = "下载失败",
+                text = stringResource(R.string.task_detail_failed_title),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = contentColor,

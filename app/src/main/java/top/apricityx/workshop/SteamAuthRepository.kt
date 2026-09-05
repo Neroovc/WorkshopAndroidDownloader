@@ -51,7 +51,7 @@ data class SteamAccountsSnapshot(
 
 data class SteamDownloadBinding(
     val accountId: String? = null,
-    val accountName: String = "匿名",
+    val accountName: String = "anonymous",
 )
 
 sealed interface SteamSignInStep {
@@ -239,7 +239,7 @@ class SteamAuthRepository(context: Context) {
         pendingReplaceAccountId = null
 
         val steamId = parseSteamJwtInfo(refreshToken).steamId
-            ?: throw IOException("无法解析 Steam Refresh Token，请确认粘贴的是完整令牌。")
+            ?: throw IOException(appContext.getString(R.string.steam_err_invalid_refresh_token))
         debugLogger.log("Repository: parsed Steam refresh token steamId=$steamId.")
         val state = loadState()
         val existing = state.accounts.firstOrNull {

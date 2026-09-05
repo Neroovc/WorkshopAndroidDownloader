@@ -21,6 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,7 @@ fun DownloadCenterScreen(
     onRemoveTask: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier,
         contentPadding = workshopListContentPadding(topExtra = 20.dp, bottomExtra = 16.dp),
@@ -57,13 +60,13 @@ fun DownloadCenterScreen(
     ) {
         item {
             ScreenSummaryCard(
-                title = "下载中心",
-                subtitle = "这里保留下载任务的状态、进度和日志；已导出的文件统一到模组库管理。",
+                title = stringResource(R.string.screen_download_center),
+                subtitle = stringResource(R.string.download_center_subtitle),
                 metrics = listOf(
-                    "运行中 ${state.runningCount}",
-                    "排队 ${state.queuedCount}",
-                    "暂停 ${state.pausedCount}",
-                    "历史 ${state.finishedCount}",
+                    stringResource(R.string.metric_running, state.runningCount),
+                    stringResource(R.string.metric_queued, state.queuedCount),
+                    stringResource(R.string.metric_paused, state.pausedCount),
+                    stringResource(R.string.metric_history, state.finishedCount),
                 ),
             )
         }
@@ -71,16 +74,16 @@ fun DownloadCenterScreen(
         if (state.tasks.isEmpty()) {
             item {
                 WorkshopCenteredState(
-                    title = "下载中心还是空的",
-                    message = "去创意工坊里选择模组后，任务会出现在这里。",
+                    title = stringResource(R.string.download_center_empty_title),
+                    message = stringResource(R.string.download_center_empty_message),
                 )
             }
         } else {
             if (state.activeTasks.isNotEmpty()) {
                 item {
                     SectionHeading(
-                        title = "正在进行",
-                        subtitle = "包含运行中、排队中和已暂停的任务。",
+                        title = stringResource(R.string.section_active),
+                        subtitle = stringResource(R.string.section_active_subtitle),
                     )
                 }
 
@@ -96,8 +99,8 @@ fun DownloadCenterScreen(
             if (state.historyTasks.isNotEmpty()) {
                 item {
                     SectionHeading(
-                        title = "历史记录",
-                        subtitle = "已完成或失败的任务会保留在这里，方便查看状态和日志。",
+                        title = stringResource(R.string.section_history),
+                        subtitle = stringResource(R.string.section_history_subtitle),
                     )
                 }
 
@@ -119,6 +122,7 @@ private fun DownloadTaskCard(
     onOpenTask: () -> Unit,
     onRemoveTask: () -> Unit,
 ) {
+    val context = LocalContext.current
     WorkshopPanelCard(
         modifier = Modifier.clickable(onClick = onOpenTask),
     ) {
@@ -155,7 +159,7 @@ private fun DownloadTaskCard(
                         overflow = TextOverflow.Ellipsis,
                     )
                     Text(
-                        text = task.summaryText(),
+                        text = task.summaryText(context),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = if (task.status == DownloadCenterTaskStatus.Failed) 3 else 2,
@@ -165,7 +169,7 @@ private fun DownloadTaskCard(
             }
 
             MetricFlow(
-                metrics = listOf(task.statusLabel()) + task.progressDetails().take(2),
+                metrics = listOf(task.statusLabel(context)) + task.progressDetails(context).take(2),
             )
 
             if (task.hasDeterminateProgress()) {
@@ -190,7 +194,7 @@ private fun DownloadTaskCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 WorkshopTextButton(onClick = onRemoveTask) {
-                    Text(task.removeActionLabel())
+                    Text(task.removeActionLabel(context))
                 }
             }
         }

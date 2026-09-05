@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import top.apricityx.workshop.LibraryErrorUiState
 import top.apricityx.workshop.data.SteamGame
@@ -38,21 +39,21 @@ fun LibraryScreen(
         )
 
         error != null && games.isEmpty() -> WorkshopCenteredState(
-            title = "游戏库加载失败",
+            title = stringResource(R.string.library_load_failed_title),
             message = buildString {
                 append(error.reason)
                 if (error.showAcceleratorHint) {
-                    append("\n\n啊哦，您的网络环境貌似不支持直连创意工坊，尝试开启科学上网或者开启加速器后重试。")
+                    append(stringResource(R.string.library_load_failed_advice))
                 }
             },
-            actionLabel = "重试",
+            actionLabel = stringResource(R.string.btn_retry),
             onAction = onRetry,
             modifier = modifier.workshopChromePadding(topExtra = 24.dp, bottomExtra = 24.dp),
         )
 
         games.isEmpty() -> WorkshopCenteredState(
-            title = "游戏库还是空的",
-            message = message ?: "点右上角 + 添加支持创意工坊的游戏。",
+            title = stringResource(R.string.library_empty_title),
+            message = message ?: stringResource(R.string.library_empty_message),
             modifier = modifier.workshopChromePadding(topExtra = 24.dp, bottomExtra = 24.dp),
         )
 
@@ -65,7 +66,7 @@ fun LibraryScreen(
             if (isLoading) {
                 item {
                     WorkshopMessageBanner(
-                        message = "正在刷新游戏库",
+                        message = stringResource(R.string.library_refreshing),
                         tone = MessageTone.Info,
                     )
                 }
@@ -82,17 +83,17 @@ fun LibraryScreen(
 
             item {
                 SectionHeading(
-                    title = "已添加的游戏",
-                    subtitle = "点击“查看工坊”进入该游戏的创意工坊列表。",
+                    title = stringResource(R.string.section_added_games),
+                    subtitle = stringResource(R.string.section_added_games_subtitle),
                 )
             }
 
             items(games, key = { it.appId.toString() }) { game ->
                 GameShowcaseCard(
                     game = game,
-                    primaryActionLabel = "查看工坊",
+                    primaryActionLabel = stringResource(R.string.btn_view_workshop),
                     onPrimaryAction = { onOpenGame(game) },
-                    secondaryActionLabel = "移出游戏库",
+                    secondaryActionLabel = stringResource(R.string.btn_remove_from_game_library),
                     onSecondaryAction = { onRemoveGame(game) },
                 )
             }
