@@ -735,8 +735,4 @@
     <!-- Google quirk: keep format placeholders aligned -->
     <string name="format_filtered_metric">%1$s</string>
 
-    <!-- Captive-portal detection keywords (literal HTML markers on portal networks) -->
-    <string name="portal_keyword_campus_network">校园网</string>
-    <string name="portal_keyword_auth_page">认证页面</string>
-    <string name="portal_keyword_auth_login">认证登录</string>
-</resources>
+    

@@ -70,6 +70,7 @@ import top.apricityx.workshop.ui.component.WorkshopMessageBanner
 import top.apricityx.workshop.ui.component.WorkshopOutlinedButton
 import top.apricityx.workshop.ui.component.WorkshopPanelCard
 import top.apricityx.workshop.ui.theme.workshopChromePadding
+import top.apricityx.workshop.R
 
 @Composable
 internal fun WorkshopItemDetailScreen(
@@ -814,3 +815,4 @@ private fun WorkshopItemSummaryMetricPill(
         }
     }
 }
+

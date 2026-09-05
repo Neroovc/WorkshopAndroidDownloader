@@ -69,6 +69,7 @@ import top.apricityx.workshop.ui.component.WorkshopOutlinedButton
 import top.apricityx.workshop.ui.component.WorkshopOutlinedTextField
 import top.apricityx.workshop.ui.component.WorkshopPanelCard
 import top.apricityx.workshop.ui.theme.workshopListContentPadding
+import top.apricityx.workshop.R
 
 @Composable
 fun GameWorkshopScreen(
@@ -572,3 +573,4 @@ private fun WorkshopDownloadActionButton(
         },
     )
 }
+

@@ -302,7 +302,7 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(this@MainActivity, getString(R.string.toast_log_bundle_failed), Toast.LENGTH_SHORT).show()
                 return@launch
             }
-            val intent = WorkshopFileShareManager.createShareFileIntent(this, file)
+val intent = WorkshopFileShareManager.createShareFileIntent(this@MainActivity, file)
             if (intent == null) {
                 Toast.makeText(this@MainActivity, getString(R.string.toast_no_log_bundle_to_share), Toast.LENGTH_SHORT).show()
                 return@launch

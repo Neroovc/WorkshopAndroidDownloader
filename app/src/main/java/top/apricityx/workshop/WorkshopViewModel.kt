@@ -392,7 +392,7 @@ class WorkshopViewModel(
                                         status = ModUpdateCheckStatus.Failed,
                                         checkedAtMillis = checkedAtMillis,
                                         message = if (error.isTimeoutRequestFailure()) {
-                                            REQUEST_TIMEOUT_MESSAGE(application)
+REQUEST_TIMEOUT_MESSAGE(getApplication<Application>())
                                         } else {
                                             error.message ?: getApplication<Application>().getString(R.string.error_check_update_failed)
                                         },
@@ -2706,7 +2706,7 @@ class WorkshopViewModel(
         if (error is SteamAuthenticatedCleartextBlockedException) {
             error.message ?: fallbackMessage
         } else if (error.isTimeoutRequestFailure()) {
-            REQUEST_TIMEOUT_MESSAGE(application)
+            REQUEST_TIMEOUT_MESSAGE(getApplication<Application>())
         } else {
             fallbackMessage
         }
@@ -2718,7 +2718,7 @@ class WorkshopViewModel(
         if (error is SteamAuthenticatedCleartextBlockedException) {
             error.message ?: fallbackMessage
         } else if (error.isWorkshopConnectionFailure()) {
-            WORKSHOP_CONNECTION_FAILURE_MESSAGE(application)
+            WORKSHOP_CONNECTION_FAILURE_MESSAGE(getApplication<Application>())
         } else {
             fallbackMessage
         }

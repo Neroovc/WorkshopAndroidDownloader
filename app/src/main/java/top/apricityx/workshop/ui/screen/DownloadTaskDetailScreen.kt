@@ -1,4 +1,5 @@
 package top.apricityx.workshop.ui.screen
+import top.apricityx.workshop.R
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -266,3 +267,4 @@ private fun SectionCard(
         }
     }
 }
+

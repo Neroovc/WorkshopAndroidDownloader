@@ -1,4 +1,5 @@
 package top.apricityx.workshop.ui.screen
+import top.apricityx.workshop.R
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -1073,3 +1074,4 @@ private const val primaryDeveloperUrl = "https://github.com/Apricityx"
 private const val secondaryDeveloperUrl = "https://github.com/ZJustin117"
 private const val slayTheAmethystModdedUrl =
     "https://github.com/ModinMobileSTS/SlayTheAmethystModded"
+

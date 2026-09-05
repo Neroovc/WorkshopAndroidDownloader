@@ -1,4 +1,5 @@
 package top.apricityx.workshop.ui.screen
+import top.apricityx.workshop.R
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -186,3 +187,4 @@ fun AddGameScreen(
         }
     }
 }
+

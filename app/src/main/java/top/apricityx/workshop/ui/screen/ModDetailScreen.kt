@@ -1,4 +1,5 @@
 package top.apricityx.workshop.ui.screen
+import top.apricityx.workshop.R
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -449,3 +450,4 @@ private class FileTreeNode(
 )
 
 private const val MOD_DETAIL_FILES_PER_PAGE = 5
+

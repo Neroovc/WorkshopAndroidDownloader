@@ -61,7 +61,9 @@ private fun ModLibraryUpdateCheckState.normalizedForPersistence(): ModLibraryUpd
     }
     return copy(
         isChecking = false,
-        summaryMessage = stableResults.values.takeIf { it.isNotEmpty() }?.let(::buildModUpdateCheckSummary),
+        summaryMessage = stableResults.values.takeIf { it.isNotEmpty() }?.let { results ->
+            buildModUpdateCheckSummary(results, WorkshopApplication.instance)
+        },
         results = stableResults,
     )
 }
