@@ -134,19 +134,28 @@ fun GameWorkshopScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
+            val appIdMetric = stringResource(R.string.appid_metric, state.game.appId)
+            val loadedModCountMetric = stringResource(R.string.loaded_mod_count, state.items.size)
+            val sortMetric = stringResource(R.string.sort_metric, state.selectedSortOption.displayName(context))
+            val rangeMetric = if (state.selectedSortOption.supportsTimeWindow) {
+                stringResource(R.string.range_metric, state.selectedTimeWindow.displayName(context))
+            } else {
+                null
+            }
+            val searchingMetric = if (state.searchQuery.isNotBlank()) {
+                stringResource(R.string.searching_metric)
+            } else {
+                null
+            }
             ScreenSummaryCard(
                 title = state.game.name,
                 subtitle = state.game.shortDescription.ifBlank { stringResource(R.string.game_short_desc_fallback) },
                 metrics = buildList {
-                    add(context.getString(R.string.appid_metric, state.game.appId))
-                    add(context.getString(R.string.loaded_mod_count, state.items.size))
-                    add(context.getString(R.string.sort_metric, state.selectedSortOption.displayName(context)))
-                    if (state.selectedSortOption.supportsTimeWindow) {
-                        add(context.getString(R.string.range_metric, state.selectedTimeWindow.displayName(context)))
-                    }
-                    if (state.searchQuery.isNotBlank()) {
-                        add(context.getString(R.string.searching_metric))
-                    }
+                    add(appIdMetric)
+                    add(loadedModCountMetric)
+                    add(sortMetric)
+                    rangeMetric?.let(::add)
+                    searchingMetric?.let(::add)
                 },
                 modifier = Modifier.padding(top = 8.dp),
             ) {
