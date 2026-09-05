@@ -480,7 +480,7 @@ fun SettingsScreen(
             }
 
             SettingsDiscreteSlider(
-                title = context.getString(R.string.thread_count_title),
+                title = stringResource(R.string.thread_count_title),
                 value = sliderSettingValue(
                     input = state.downloadThreadCountInput,
                     savedValue = state.savedDownloadThreadCount,
@@ -489,7 +489,7 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_DOWNLOAD_THREADS,
                 maxValue = DownloadSettingsRepository.MAX_DOWNLOAD_THREADS,
-                supportingText = context.getString(
+                supportingText = stringResource(
                     R.string.thread_range_hint,
                     DownloadSettingsRepository.MIN_DOWNLOAD_THREADS,
                     DownloadSettingsRepository.MAX_DOWNLOAD_THREADS,
@@ -500,7 +500,7 @@ fun SettingsScreen(
             )
 
             SettingsDiscreteSlider(
-                title = context.getString(R.string.concurrent_tasks_title),
+                title = stringResource(R.string.concurrent_tasks_title),
                 value = sliderSettingValue(
                     input = state.concurrentDownloadTaskCountInput,
                     savedValue = state.savedConcurrentDownloadTaskCount,
@@ -509,7 +509,7 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_CONCURRENT_DOWNLOAD_TASKS,
                 maxValue = DownloadSettingsRepository.MAX_CONCURRENT_DOWNLOAD_TASKS,
-                supportingText = context.getString(
+                supportingText = stringResource(
                     R.string.thread_range_hint,
                     DownloadSettingsRepository.MIN_CONCURRENT_DOWNLOAD_TASKS,
                     DownloadSettingsRepository.MAX_CONCURRENT_DOWNLOAD_TASKS,
@@ -520,7 +520,7 @@ fun SettingsScreen(
             )
 
             SettingsDiscreteSlider(
-                title = context.getString(R.string.concurrent_checks_title),
+                title = stringResource(R.string.concurrent_checks_title),
                 value = sliderSettingValue(
                     input = state.modUpdateConcurrentCheckCountInput,
                     savedValue = state.savedModUpdateConcurrentCheckCount,
@@ -529,7 +529,7 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_MOD_UPDATE_CONCURRENT_CHECKS,
                 maxValue = DownloadSettingsRepository.MAX_MOD_UPDATE_CONCURRENT_CHECKS,
-                supportingText = context.getString(
+                supportingText = stringResource(
                     R.string.thread_range_hint,
                     DownloadSettingsRepository.MIN_MOD_UPDATE_CONCURRENT_CHECKS,
                     DownloadSettingsRepository.MAX_MOD_UPDATE_CONCURRENT_CHECKS,
