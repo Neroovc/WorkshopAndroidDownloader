@@ -371,4 +371,30 @@
     <string name="update_available_with_date_format">发现更新，工坊更新于 %1$s</string>
     <string name="update_available">发现更新</string>
     <string name="update_check_failed">检查更新失败</string>
+
+    <!-- DownloadCenterScreen / DownloadTaskDetailScreen -->
+    <string name="download_center_subtitle">这里保留下载任务的状态、进度和日志；已导出的文件统一到模组库管理。</string>
+    <string name="running_metric_format">运行中 %1$d</string>
+    <string name="queued_metric_format">排队 %1$d</string>
+    <string name="paused_metric_format">暂停 %1$d</string>
+    <string name="history_metric_format">历史 %1$d</string>
+    <string name="download_center_empty">下载中心还是空的</string>
+    <string name="download_center_empty_hint">去创意工坊里选择模组后，任务会出现在这里。</string>
+    <string name="active_tasks_title">正在进行</string>
+    <string name="active_tasks_subtitle">包含运行中、排队中和已暂停的任务。</string>
+    <string name="history_records_title">历史记录</string>
+    <string name="history_records_subtitle">已完成或失败的任务会保留在这里，方便查看状态和日志。</string>
+    <string name="phase_metric_format">阶段 %1$s</string>
+    <string name="account_metric_format">账号 %1$s</string>
+    <string name="pause">暂停</string>
+    <string name="download_progress_title">下载进度</string>
+    <string name="no_detailed_progress_yet">当前还没有可展示的详细进度。</string>
+    <string name="file_management">文件管理</string>
+    <string name="files_synced_to_mod_library">任务已经完成，导出结果会同步到模组库统一管理。</string>
+    <string name="files_exported_count_format">任务已经导出 %1$d 个文件。打开、分享或删除请前往模组库。</string>
+    <string name="diagnostic_logs_description">系统层面上的诊断日志。</string>
+    <string name="share_debug_log">分享调试日志</string>
+    <string name="share_runtime_log">分享运行日志</string>
+    <string name="no_logs_yet">暂无日志。</string>
+    <string name="download_failed">下载失败</string>
 </resources>

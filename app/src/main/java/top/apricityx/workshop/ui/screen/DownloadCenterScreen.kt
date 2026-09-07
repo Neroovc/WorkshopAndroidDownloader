@@ -21,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import top.apricityx.workshop.R
 import top.apricityx.workshop.DownloadCenterTaskStatus
 import top.apricityx.workshop.DownloadCenterTaskUiState
 import top.apricityx.workshop.DownloadCenterUiState
@@ -50,6 +52,18 @@ fun DownloadCenterScreen(
     onRemoveTask: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val subtitle = stringResource(R.string.download_center_subtitle)
+    val runningMetric = stringResource(R.string.running_metric_format, state.runningCount)
+    val queuedMetric = stringResource(R.string.queued_metric_format, state.queuedCount)
+    val pausedMetric = stringResource(R.string.paused_metric_format, state.pausedCount)
+    val historyMetric = stringResource(R.string.history_metric_format, state.finishedCount)
+    val emptyTitle = stringResource(R.string.download_center_empty)
+    val emptyMessage = stringResource(R.string.download_center_empty_hint)
+    val activeTitle = stringResource(R.string.active_tasks_title)
+    val activeSubtitle = stringResource(R.string.active_tasks_subtitle)
+    val historyTitle = stringResource(R.string.history_records_title)
+    val historySubtitle = stringResource(R.string.history_records_subtitle)
+
     LazyColumn(
         modifier = modifier,
         contentPadding = workshopListContentPadding(topExtra = 20.dp, bottomExtra = 16.dp),
@@ -57,30 +71,25 @@ fun DownloadCenterScreen(
     ) {
         item {
             ScreenSummaryCard(
-                title = "下载中心",
-                subtitle = "这里保留下载任务的状态、进度和日志；已导出的文件统一到模组库管理。",
-                metrics = listOf(
-                    "运行中 ${state.runningCount}",
-                    "排队 ${state.queuedCount}",
-                    "暂停 ${state.pausedCount}",
-                    "历史 ${state.finishedCount}",
-                ),
+                title = stringResource(R.string.download_center),
+                subtitle = subtitle,
+                metrics = listOf(runningMetric, queuedMetric, pausedMetric, historyMetric),
             )
         }
 
         if (state.tasks.isEmpty()) {
             item {
                 WorkshopCenteredState(
-                    title = "下载中心还是空的",
-                    message = "去创意工坊里选择模组后，任务会出现在这里。",
+                    title = emptyTitle,
+                    message = emptyMessage,
                 )
             }
         } else {
             if (state.activeTasks.isNotEmpty()) {
                 item {
                     SectionHeading(
-                        title = "正在进行",
-                        subtitle = "包含运行中、排队中和已暂停的任务。",
+                        title = activeTitle,
+                        subtitle = activeSubtitle,
                     )
                 }
 
@@ -96,8 +105,8 @@ fun DownloadCenterScreen(
             if (state.historyTasks.isNotEmpty()) {
                 item {
                     SectionHeading(
-                        title = "历史记录",
-                        subtitle = "已完成或失败的任务会保留在这里，方便查看状态和日志。",
+                        title = historyTitle,
+                        subtitle = historySubtitle,
                     )
                 }
 
