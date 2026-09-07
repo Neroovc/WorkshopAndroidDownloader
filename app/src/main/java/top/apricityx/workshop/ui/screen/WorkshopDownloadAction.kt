@@ -21,14 +21,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.annotation.StringRes
+import top.apricityx.workshop.R
 import top.apricityx.workshop.WorkshopModStatus
 
-internal fun WorkshopModStatus.actionLabel(): String =
+@StringRes
+internal fun WorkshopModStatus.actionLabelRes(): Int =
     when (this) {
-        WorkshopModStatus.LatestDownloaded -> "查看"
-        WorkshopModStatus.UpdateAvailable -> "更新到最新版本"
-        WorkshopModStatus.NotDownloaded -> "下载"
-        WorkshopModStatus.Downloading -> "下载中"
+        WorkshopModStatus.LatestDownloaded -> R.string.view
+        WorkshopModStatus.UpdateAvailable -> R.string.update_to_latest_version
+        WorkshopModStatus.NotDownloaded -> R.string.download
+        WorkshopModStatus.Downloading -> R.string.downloading
     }
 
 internal fun WorkshopModStatus.actionIcon(): ImageVector =

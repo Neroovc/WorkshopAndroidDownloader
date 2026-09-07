@@ -230,7 +230,7 @@ internal fun WorkshopItemDetailScreen(
                             )
                         }
                         Text(
-                            text = " ${modStatus.actionLabel()}",
+                            text = " ${stringResource(modStatus.actionLabelRes())}",
                             color = Color.Black,
                         )
                     }

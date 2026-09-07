@@ -397,4 +397,47 @@
     <string name="share_runtime_log">分享运行日志</string>
     <string name="no_logs_yet">暂无日志。</string>
     <string name="download_failed">下载失败</string>
+
+    <!-- WorkshopDownloadAction -->
+    <string name="view">查看</string>
+    <string name="download">下载</string>
+    <string name="downloading">下载中</string>
+
+    <!-- BaiduTranslationApiKeyScreen -->
+    <string name="baidu_llm_credentials_title">百度大模型文本翻译凭据</string>
+    <string name="baidu_credentials_saved_hint">当前已经保存过完整凭据。修改后点保存会覆盖原值；清空后保存可移除本地配置。</string>
+    <string name="baidu_credentials_unsaved_hint">需要同时填写百度大模型文本翻译的 AppID 和 API Key。留空后保存会清除对应本地配置。</string>
+    <string name="testing_translation">正在测试翻译…</string>
+    <string name="test_translation">测试翻译</string>
+    <string name="sample_text">示例文本</string>
+    <string name="test_result">测试结果</string>
+    <string name="failure_reason">失败原因</string>
+    <string name="tutorial">教程</string>
+    <string name="open_baidu_translation_platform">打开百度翻译开放平台</string>
+    <string name="baidu_tutorial_step_01">进入百度翻译开放平台。</string>
+    <string name="baidu_tutorial_entry_note">入口地址：`https://fanyi-api.baidu.com/product/13`</string>
+    <string name="baidu_tutorial_step_02">点击“立即使用”。</string>
+    <string name="baidu_tutorial_step_03">根据提示填写个人信息。</string>
+    <string name="baidu_tutorial_step_04">完成实名认证。</string>
+    <string name="baidu_tutorial_step_05">认证完成后回到控制台，点击“立即开通”。</string>
+    <string name="baidu_tutorial_step_06">选择“大模型文本翻译”。</string>
+    <string name="baidu_tutorial_step_07">随便填一点测试内容后提交申请。</string>
+    <string name="baidu_tutorial_step_08">回到主界面，点击“开发者信息”。</string>
+    <string name="baidu_tutorial_step_09">把 AppID 记下来。</string>
+    <string name="baidu_tutorial_step_10">进入“API Key 管理”，创建一个新的 API Key，名称可以随便填。</string>
+    <string name="baidu_tutorial_step_11">把新建出来的 API Key 也记下来。</string>
+    <string name="baidu_tutorial_step_12">回到 App，把 AppID 和 API Key 填进上面的配置区后保存即可使用。</string>
+
+    <!-- DownloadDependencyWarningDialog -->
+    <string name="dependency_not_downloaded_title">还有前置未下载</string>
+    <string name="download_all_prerequisites_and_mod">下载所有前置并下载模组</string>
+    <string name="download_mod_only">只下载模组</string>
+    <string name="prerequisites_pending_format">「%1$s」还有 %2$d 个前置工坊物品未下载。</string>
+    <string name="prerequisites_choice_hint">你可以选择下载所有前置后再下载模组，或者只下载当前模组。</string>
+
+    <!-- WorkshopChangeNotesDialog -->
+    <string name="open_in_steam">在 Steam 中打开</string>
+    <string name="loading_change_notes">正在加载更新日志…</string>
+    <string name="change_notes">更新日志</string>
+    <string name="no_change_notes">暂无更新日志。</string>
 </resources>

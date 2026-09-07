@@ -322,7 +322,7 @@ private fun DirectPublishedIdDownloadDialog(
                 },
                 enabled = canDirectDownload && modStatus.isDownloadActionEnabled(),
             ) {
-                Text(modStatus.actionLabel())
+                Text(stringResource(modStatus.actionLabelRes()))
             }
         },
     ) {
@@ -553,7 +553,7 @@ private fun WorkshopDownloadActionButton(
     WorkshopGlassIconButton(
         onClick = onClick,
         imageVector = modStatus.actionIcon(),
-        contentDescription = modStatus.actionLabel(),
+        contentDescription = stringResource(modStatus.actionLabelRes()),
         modifier = modifier,
         enabled = modStatus.isDownloadActionEnabled(),
         content = when (modStatus) {

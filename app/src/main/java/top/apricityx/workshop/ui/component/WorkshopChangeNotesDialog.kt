@@ -13,8 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import top.apricityx.workshop.R
 
 @Composable
 fun WorkshopChangeNotesDialog(
@@ -26,12 +28,14 @@ fun WorkshopChangeNotesDialog(
     onDismissRequest: () -> Unit,
     onOpenExternalUrl: (() -> Unit)? = null,
 ) {
+    val openInSteamText = stringResource(R.string.open_in_steam)
+    val retryText = stringResource(R.string.retry)
     WorkshopDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(title) },
         buttons = {
             WorkshopOutlinedButton(onClick = onDismissRequest) {
-                Text("关闭")
+                Text(stringResource(R.string.close))
             }
             onOpenExternalUrl?.let { openExternalUrl ->
                 WorkshopButton(
@@ -40,7 +44,7 @@ fun WorkshopChangeNotesDialog(
                         openExternalUrl()
                     },
                 ) {
-                    Text("在 Steam 中打开")
+                    Text(openInSteamText)
                 }
             }
         },
@@ -66,7 +70,7 @@ fun WorkshopChangeNotesDialog(
                         ) {
                             CircularProgressIndicator(modifier = Modifier.size(28.dp), strokeWidth = 2.5.dp)
                             Text(
-                                text = "正在加载更新日志…",
+                                text = stringResource(R.string.loading_change_notes),
                                 textAlign = TextAlign.Center,
                             )
                         }
@@ -75,7 +79,7 @@ fun WorkshopChangeNotesDialog(
 
                 markdown.isNotBlank() -> {
                     SimpleMarkdownCard(
-                        title = "更新日志",
+                        title = stringResource(R.string.change_notes),
                         markdown = markdown,
                     )
                 }
@@ -88,7 +92,7 @@ fun WorkshopChangeNotesDialog(
                         )
                     }
                     Text(
-                        text = "暂无更新日志。",
+                        text = stringResource(R.string.no_change_notes),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                     )
@@ -98,7 +102,7 @@ fun WorkshopChangeNotesDialog(
                             onClick = onRetry,
                             modifier = Modifier.fillMaxWidth(),
                         ) {
-                            Text("重试")
+                            Text(retryText)
                         }
                     }
                     }

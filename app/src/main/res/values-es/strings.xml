@@ -398,4 +398,47 @@
     <string name="share_runtime_log">Compartir registro de ejecución</string>
     <string name="no_logs_yet">Aún no hay registros.</string>
     <string name="download_failed">Error en la descarga</string>
+
+    <!-- WorkshopDownloadAction -->
+    <string name="view">Ver</string>
+    <string name="download">Descargar</string>
+    <string name="downloading">Descargando</string>
+
+    <!-- BaiduTranslationApiKeyScreen -->
+    <string name="baidu_llm_credentials_title">Credenciales de traducción de texto Baidu LLM</string>
+    <string name="baidu_credentials_saved_hint">Ya hay credenciales completas guardadas. Modifícalas y pulsa Guardar para sobrescribir; bórralas y pulsa Guardar para quitar la configuración local.</string>
+    <string name="baidu_credentials_unsaved_hint">Debes completar tanto el AppID como la API Key de la traducción de texto Baidu LLM. Déjalos vacíos y pulsa Guardar para borrar la configuración local correspondiente.</string>
+    <string name="testing_translation">Probando traducción…</string>
+    <string name="test_translation">Probar traducción</string>
+    <string name="sample_text">Texto de ejemplo</string>
+    <string name="test_result">Resultado de la prueba</string>
+    <string name="failure_reason">Motivo del fallo</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="open_baidu_translation_platform">Abrir la plataforma de traducción de Baidu</string>
+    <string name="baidu_tutorial_step_01">Entra en la plataforma de traducción de Baidu.</string>
+    <string name="baidu_tutorial_entry_note">Dirección de acceso: `https://fanyi-api.baidu.com/product/13`</string>
+    <string name="baidu_tutorial_step_02">Pulsa en “Usar ahora”.</string>
+    <string name="baidu_tutorial_step_03">Rellena tus datos personales según las indicaciones.</string>
+    <string name="baidu_tutorial_step_04">Completa la verificación de identidad.</string>
+    <string name="baidu_tutorial_step_05">Vuelve a la consola y pulsa en “Activar ahora”.</string>
+    <string name="baidu_tutorial_step_06">Elige “Traducción de texto LLM”.</string>
+    <string name="baidu_tutorial_step_07">Rellena un contenido de prueba cualquiera y envía la solicitud.</string>
+    <string name="baidu_tutorial_step_08">Vuelve a la pantalla principal y pulsa en “Información del desarrollador”.</string>
+    <string name="baidu_tutorial_step_09">Anota el AppID.</string>
+    <string name="baidu_tutorial_step_10">Entra en “Gestión de API Key” y crea una nueva API Key; el nombre puede ser cualquiera.</string>
+    <string name="baidu_tutorial_step_11">Anota también la API Key recién creada.</string>
+    <string name="baidu_tutorial_step_12">Vuelve a la app, introduce el AppID y la API Key en la zona de configuración de arriba y pulsa Guardar.</string>
+
+    <!-- DownloadDependencyWarningDialog -->
+    <string name="dependency_not_downloaded_title">Aún hay requisitos sin descargar</string>
+    <string name="download_all_prerequisites_and_mod">Descargar todos los requisitos y el mod</string>
+    <string name="download_mod_only">Descargar solo el mod</string>
+    <string name="prerequisites_pending_format">«%1$s» aún tiene %2$d elementos de taller previos sin descargar.</string>
+    <string name="prerequisites_choice_hint">Puedes descargar todos los requisitos y luego el mod, o descargar solo el mod actual.</string>
+
+    <!-- WorkshopChangeNotesDialog -->
+    <string name="open_in_steam">Abrir en Steam</string>
+    <string name="loading_change_notes">Cargando notas de actualización…</string>
+    <string name="change_notes">Notas de actualización</string>
+    <string name="no_change_notes">No hay notas de actualización.</string>
 </resources>
