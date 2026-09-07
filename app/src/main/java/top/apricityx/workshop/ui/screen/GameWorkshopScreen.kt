@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -130,19 +131,29 @@ fun GameWorkshopScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
+            val defaultSubtitle = stringResource(R.string.game_supports_workshop)
+            val appIdMetric = stringResource(R.string.app_id_format, state.game.appId.toString())
+            val loadedModsMetric = stringResource(R.string.loaded_mods_metric, state.items.size)
+            val sortMetric = stringResource(R.string.sort_metric_format, state.selectedSortOption.displayName())
+            val timeWindowMetric = if (state.selectedSortOption.supportsTimeWindow) {
+                stringResource(R.string.workshop_time_window_format, state.selectedTimeWindow.displayName())
+            } else {
+                null
+            }
+            val searchingMetric = if (state.searchQuery.isNotBlank()) {
+                stringResource(R.string.searching)
+            } else {
+                null
+            }
             ScreenSummaryCard(
                 title = state.game.name,
-                subtitle = state.game.shortDescription.ifBlank { "这个游戏支持 Steam 创意工坊。" },
+                subtitle = state.game.shortDescription.ifBlank { defaultSubtitle },
                 metrics = buildList {
-                    add("AppID ${state.game.appId}")
-                    add("已加载 ${state.items.size} 个模组")
-                    add("排序 ${state.selectedSortOption.displayName()}")
-                    if (state.selectedSortOption.supportsTimeWindow) {
-                        add("范围 ${state.selectedTimeWindow.displayName()}")
-                    }
-                    if (state.searchQuery.isNotBlank()) {
-                        add("搜索中")
-                    }
+                    add(appIdMetric)
+                    add(loadedModsMetric)
+                    add(sortMetric)
+                    timeWindowMetric?.let { add(it) }
+                    searchingMetric?.let { add(it) }
                 },
                 modifier = Modifier.padding(top = 8.dp),
             ) {
@@ -162,7 +173,7 @@ fun GameWorkshopScreen(
                     WorkshopOutlinedTextField(
                         value = state.searchQuery,
                         onValueChange = onSearchQueryChange,
-                        label = { Text("搜索模组") },
+                        label = { Text(stringResource(R.string.search_mods)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                         modifier = Modifier.weight(1f),
@@ -184,12 +195,12 @@ fun GameWorkshopScreen(
             item {
                 WorkshopPanelCard {
                     Text(
-                        text = "当前处于未登录状态",
+                        text = stringResource(R.string.browsing_unauthenticated_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                     Text(
-                        text = "当前只能保证看到公开可见的搜索结果，部分搜索内容可能不会出现；部分模组需要先登录已购买该游戏的 Steam 账号后才能下载。",
+                        text = stringResource(R.string.browsing_unauthenticated_message),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -200,10 +211,10 @@ fun GameWorkshopScreen(
         if (state.showConnectionErrorState) {
             item {
                 WorkshopCenteredState(
-                    title = "啊哦，加载超时",
+                    title = stringResource(R.string.connection_timeout_title),
                     message = state.message
-                        ?: "啊哦，加载超时，您的网络环境可能不支持直连创意工坊，请开启加速器加速 steam 或科学上网后重试。",
-                    actionLabel = "重试",
+                        ?: stringResource(R.string.connection_timeout_default_message),
+                    actionLabel = stringResource(R.string.retry),
                     onAction = if (state.retryLoadMoreOnError) onLoadMore else onSearch,
                 )
             }
@@ -219,27 +230,31 @@ fun GameWorkshopScreen(
 
             item {
                 SectionHeading(
-                    title = "工坊模组",
+                    title = stringResource(R.string.workshop_mods_title),
                     subtitle = if (state.searchQuery.isBlank()) {
-                        "浏览当前游戏的公开创意工坊条目。"
+                        stringResource(R.string.browse_public_workshop)
                     } else {
-                        "当前搜索：${state.searchQuery}"
+                        stringResource(R.string.current_search_format, state.searchQuery)
                     },
                 )
             }
 
             if (state.isLoading && state.items.isEmpty()) {
                 item {
-                    WorkshopLoadingBlock(label = "正在加载创意工坊列表。")
+                    WorkshopLoadingBlock(label = stringResource(R.string.loading_workshop_list))
                 }
             } else if (state.items.isEmpty()) {
                 item {
                     WorkshopCenteredState(
-                        title = if (state.searchQuery.isBlank()) "没有可显示的模组" else "没有找到结果",
-                        message = if (state.searchQuery.isBlank()) {
-                            state.message ?: "这个游戏当前没有抓取到公开模组。"
+                        title = if (state.searchQuery.isBlank()) {
+                            stringResource(R.string.no_mods_available)
                         } else {
-                            state.message ?: "换个关键词再试试。"
+                            stringResource(R.string.no_results_found)
+                        },
+                        message = if (state.searchQuery.isBlank()) {
+                            state.message ?: stringResource(R.string.no_mods_message)
+                        } else {
+                            state.message ?: stringResource(R.string.try_different_keyword)
                         },
                     )
                 }
@@ -247,7 +262,7 @@ fun GameWorkshopScreen(
                 if (showingRefreshState) {
                     item {
                         WorkshopMessageBanner(
-                            message = "正在刷新当前列表，已保留你上一次浏览的位置。",
+                            message = stringResource(R.string.refreshing_list_message),
                             tone = MessageTone.Info,
                         )
                     }
@@ -266,7 +281,7 @@ fun GameWorkshopScreen(
 
             if (state.isLoadingMore) {
                 item {
-                    WorkshopLoadingBlock(label = "正在加载更多模组。")
+                    WorkshopLoadingBlock(label = stringResource(R.string.loading_more_mods))
                 }
             } else if (state.hasNextPage) {
                 item {
@@ -274,7 +289,7 @@ fun GameWorkshopScreen(
                         onClick = onLoadMore,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("加载更多")
+                        Text(stringResource(R.string.load_more))
                     }
                 }
             }
@@ -293,10 +308,10 @@ private fun DirectPublishedIdDownloadDialog(
 ) {
     WorkshopDialog(
         onDismissRequest = onDismiss,
-        title = { Text("直接填写 publishedID 或创意工坊链接") },
+        title = { Text(stringResource(R.string.direct_download_dialog_title)) },
         buttons = {
             WorkshopOutlinedButton(onClick = onDismiss) {
-                Text("取消")
+                Text(stringResource(R.string.cancel))
             }
             WorkshopButton(
                 onClick = {
@@ -311,15 +326,15 @@ private fun DirectPublishedIdDownloadDialog(
         },
     ) {
         Text(
-            text = "支持直接粘贴 publishedID，或 Steam 创意工坊详情页链接。",
+            text = stringResource(R.string.direct_download_hint),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         WorkshopOutlinedTextField(
             value = directPublishedFileIdText,
             onValueChange = onPublishedFileIdChange,
-            label = { Text("填写 publishedID 或链接") },
+            label = { Text(stringResource(R.string.enter_published_id_or_link)) },
             supportingText = {
-                Text("示例：https://steamcommunity.com/sharedfiles/filedetails/?id=3657277146")
+                Text(stringResource(R.string.published_id_example))
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
             singleLine = true,
@@ -327,7 +342,7 @@ private fun DirectPublishedIdDownloadDialog(
         )
         if (directPublishedFileIdText.isNotBlank() && !canDirectDownload) {
             Text(
-                text = "没有识别到有效的 publishedID。",
+                text = stringResource(R.string.invalid_published_id),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error,
             )
@@ -341,7 +356,7 @@ private fun DirectPublishedIdDownloadDialog(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     DownloadingAnimatedIcon()
-                    Text("这个模组已经在下载中。")
+                    Text(stringResource(R.string.mod_downloading))
                 }
             }
             else -> {
@@ -355,8 +370,8 @@ private fun DirectPublishedIdDownloadDialog(
                     )
                     Text(
                         when (modStatus) {
-                            WorkshopModStatus.LatestDownloaded -> "这个模组的最新版已经在本地。"
-                            WorkshopModStatus.UpdateAvailable -> "本地已有旧版本，可直接更新到最新版本。"
+                            WorkshopModStatus.LatestDownloaded -> stringResource(R.string.mod_latest_local)
+                            WorkshopModStatus.UpdateAvailable -> stringResource(R.string.mod_update_available)
                             WorkshopModStatus.NotDownloaded,
                             WorkshopModStatus.Downloading,
                             -> ""
@@ -377,7 +392,7 @@ private fun WorkshopBrowseSortControls(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
-            text = "排序方式",
+            text = stringResource(R.string.sort_by),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
         )
@@ -397,7 +412,7 @@ private fun WorkshopBrowseSortControls(
 
         if (state.selectedSortOption.supportsTimeWindow) {
             Text(
-                text = "热门范围",
+                text = stringResource(R.string.popular_range),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -466,8 +481,11 @@ private fun WorkshopItemCard(
     onOpenDetail: () -> Unit,
     onDownload: () -> Unit,
 ) {
-    val sizeLabel = item.fileSizeBytes?.let { sizeBytes ->
-        "大小 ${formatBinaryFileSize(sizeBytes)}"
+    val fileSizeBytes = item.fileSizeBytes
+    val sizeLabel = if (fileSizeBytes != null) {
+        stringResource(R.string.size_metric_format, formatBinaryFileSize(fileSizeBytes))
+    } else {
+        null
     }
 
     WorkshopPanelCard(
@@ -499,7 +517,7 @@ private fun WorkshopItemCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = "by ${item.authorName}",
+                    text = stringResource(R.string.by_author_format, item.authorName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

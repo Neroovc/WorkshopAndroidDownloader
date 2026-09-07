@@ -55,6 +55,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -185,14 +186,14 @@ private fun WorkshopDialogs(
     if (state.showUsageNoticeDialog) {
         WorkshopDialog(
             onDismissRequest = {},
-            title = { Text("使用须知") },
+            title = { Text(stringResource(R.string.usage_notice_title)) },
             buttons = {
                 WorkshopButton(onClick = actions.onDismissUsageNotice) {
-                    Text("我知道了")
+                    Text(stringResource(R.string.got_it))
                 }
             },
         ) {
-            Text("欢迎使用创意工坊下载器！如果出现模组无法正常浏览或正常下载的问题，请自备加速器加速 steam 或者使用科学上网。")
+            Text(stringResource(R.string.usage_notice_message, stringResource(R.string.app_name)))
         }
         return
     }
@@ -201,10 +202,10 @@ private fun WorkshopDialogs(
     if (steamDirectAccessFallbackDialogState != null) {
         WorkshopDialog(
             onDismissRequest = actions.onDismissSteamDirectAccessFallbackDialog,
-            title = { Text("Steam 加速链路不可用") },
+            title = { Text(stringResource(R.string.steam_accel_unavailable_title)) },
             buttons = {
                 WorkshopButton(onClick = actions.onDismissSteamDirectAccessFallbackDialog) {
-                    Text("我知道了")
+                    Text(stringResource(R.string.got_it))
                 }
             },
         ) {
@@ -256,7 +257,7 @@ private fun WorkshopDialogs(
                     downloadMenuExpanded = false
                     showDownloadChoiceDialog = false
                 },
-                title = { Text("选择下载方式") },
+                title = { Text(stringResource(R.string.choose_download_method)) },
                 buttons = {
                     WorkshopOutlinedButton(
                         onClick = {
@@ -266,7 +267,7 @@ private fun WorkshopDialogs(
                             actions.onDismissUpdatePrompt()
                         },
                     ) {
-                        Text("夸克下载")
+                        Text(stringResource(R.string.quark_download))
                     }
                     WorkshopButton(
                         onClick = {
@@ -277,7 +278,7 @@ private fun WorkshopDialogs(
                             actions.onDismissUpdatePrompt()
                         },
                     ) {
-                        Text("直链下载")
+                        Text(stringResource(R.string.direct_link_download))
                     }
                 },
             ) {
@@ -286,11 +287,11 @@ private fun WorkshopDialogs(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Text(
-                        text = "直链下载将从 GitHub Release 进行下载，不一定会有稳定的速度。如果想要支持开发，可以使用夸克下载。开发者会从每一次转存获得收益😋",
+                        text = stringResource(R.string.direct_link_download_hint),
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Text(
-                        text = "下载源",
+                        text = stringResource(R.string.download_source),
                         style = MaterialTheme.typography.bodyMedium,
                     )
                     Box(modifier = Modifier.fillMaxWidth()) {
@@ -336,15 +337,15 @@ private fun WorkshopDialogs(
         } else {
         WorkshopDialog(
             onDismissRequest = actions.onDismissUpdatePrompt,
-            title = { Text("发现新版本") },
+            title = { Text(stringResource(R.string.new_version_found)) },
             buttons = {
                 WorkshopOutlinedButton(onClick = actions.onDismissUpdatePrompt) {
-                    Text("稍后")
+                    Text(stringResource(R.string.later))
                 }
                 WorkshopButton(
                     onClick = { showDownloadChoiceDialog = true },
                 ) {
-                    Text("前往下载")
+                    Text(stringResource(R.string.go_to_download))
                 }
             },
         ) {
@@ -354,12 +355,12 @@ private fun WorkshopDialogs(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text("当前版本：${updatePrompt.currentVersion}")
-                Text("最新版本：${updatePrompt.latestVersion}")
-                Text("发布日期：${updatePrompt.publishedAtText}")
-                Text("下载来源：${updatePrompt.downloadSourceDisplayName}")
+                Text(stringResource(R.string.current_version_format, updatePrompt.currentVersion))
+                Text(stringResource(R.string.latest_version_format, updatePrompt.latestVersion))
+                Text(stringResource(R.string.published_date_format, updatePrompt.publishedAtText))
+                Text(stringResource(R.string.download_source_format, updatePrompt.downloadSourceDisplayName))
                 SimpleMarkdownCard(
-                    title = "更新说明",
+                    title = stringResource(R.string.update_notes_title),
                     markdown = updatePrompt.notesText,
                 )
             }
@@ -371,26 +372,26 @@ private fun WorkshopDialogs(
         val trimmedRenameTitle = state.renameModTitleInput.trim()
         WorkshopDialog(
             onDismissRequest = actions.onDismissRenameMod,
-            title = { Text("重命名模组") },
+            title = { Text(stringResource(R.string.rename_mod_title)) },
             buttons = {
                 WorkshopOutlinedButton(onClick = actions.onDismissRenameMod) {
-                    Text("取消")
+                    Text(stringResource(R.string.cancel))
                 }
                 WorkshopButton(
                     onClick = actions.onConfirmRenameMod,
                     enabled = trimmedRenameTitle.isNotBlank(),
                 ) {
-                    Text("保存")
+                    Text(stringResource(R.string.save))
                 }
             },
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("只修改应用内显示名称，不会重命名已经导出的文件。")
+                Text(stringResource(R.string.rename_mod_note))
                 WorkshopOutlinedTextField(
                     value = state.renameModTitleInput,
                     onValueChange = actions.onUpdateRenameModTitleInput,
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("模组名称") },
+                    label = { Text(stringResource(R.string.mod_name)) },
                     singleLine = true,
                 )
             }
@@ -400,17 +401,17 @@ private fun WorkshopDialogs(
     if (pendingRemoveGame != null && state.currentScreen == WorkshopScreenDestination.GameLibrary) {
         WorkshopDialog(
             onDismissRequest = actions.onDismissRemoveGame,
-            title = { Text("移出游戏库") },
+            title = { Text(stringResource(R.string.remove_from_library)) },
             buttons = {
                 WorkshopOutlinedButton(onClick = actions.onDismissRemoveGame) {
-                    Text("取消")
+                    Text(stringResource(R.string.cancel))
                 }
                 WorkshopOutlinedButton(onClick = actions.onConfirmRemoveGame) {
-                    Text("确定")
+                    Text(stringResource(R.string.confirm))
                 }
             },
         ) {
-            Text("确定要移除「${pendingRemoveGame.name}」吗？")
+            Text(stringResource(R.string.confirm_remove_game_format, pendingRemoveGame.name))
         }
     }
 
@@ -420,26 +421,33 @@ private fun WorkshopDialogs(
             title = {
                 Text(
                     if (pendingRemoveMod.isTrackingOnly) {
-                        "从模组库移除"
+                        stringResource(R.string.remove_from_mod_library)
                     } else {
-                        "删除本地模组"
+                        stringResource(R.string.delete_local_mod)
                     },
                 )
             },
             buttons = {
                 WorkshopOutlinedButton(onClick = actions.onDismissRemoveMod) {
-                    Text("取消")
+                    Text(stringResource(R.string.cancel))
                 }
                 WorkshopOutlinedButton(onClick = actions.onConfirmRemoveMod) {
-                    Text("确定")
+                    Text(stringResource(R.string.confirm))
                 }
             },
         ) {
             Text(
                 if (pendingRemoveMod.isTrackingOnly) {
-                    "确定要从模组库移除「${pendingRemoveMod.itemTitle}」吗？移除后将不再继续为它检查更新。"
+                    stringResource(
+                        R.string.confirm_remove_tracking_mod_format,
+                        pendingRemoveMod.itemTitle,
+                    )
                 } else {
-                    "确定要删除「${pendingRemoveMod.itemTitle}」的 ${pendingRemoveMod.versionLabel()} 本地文件吗？下载历史会保留。"
+                    stringResource(
+                        R.string.confirm_delete_mod_files_format,
+                        pendingRemoveMod.itemTitle,
+                        pendingRemoveMod.versionLabel(),
+                    )
                 },
             )
         }
@@ -704,25 +712,26 @@ private fun WorkshopScreenScene(
     }
 }
 
+@Composable
 private fun WorkshopUiState.titleForScreen(
     selectedTask: DownloadCenterTaskUiState?,
     selectedMod: DownloadedModGroup?,
 ): String =
     when (currentScreen) {
-        WorkshopScreenDestination.GameLibrary -> "游戏库"
-        WorkshopScreenDestination.ModLibrary -> "模组库"
-        WorkshopScreenDestination.AddGame -> "添加游戏"
-        WorkshopScreenDestination.GameWorkshop -> gameWorkshopState?.game?.name ?: "创意工坊"
+        WorkshopScreenDestination.GameLibrary -> stringResource(R.string.game_library)
+        WorkshopScreenDestination.ModLibrary -> stringResource(R.string.mod_library)
+        WorkshopScreenDestination.AddGame -> stringResource(R.string.add_game)
+        WorkshopScreenDestination.GameWorkshop -> gameWorkshopState?.game?.name ?: stringResource(R.string.workshop)
         WorkshopScreenDestination.WorkshopItemDetail ->
             workshopItemDetailState?.detail?.title
                 ?: workshopItemDetailState?.item?.title
-                ?: "模组详情"
+                ?: stringResource(R.string.mod_detail)
 
-        WorkshopScreenDestination.ModDetail -> selectedMod?.itemTitle ?: "模组详情"
-        WorkshopScreenDestination.DownloadCenter -> "下载中心"
-        WorkshopScreenDestination.DownloadTaskDetail -> selectedTask?.itemTitle ?: "任务详情"
-        WorkshopScreenDestination.Settings -> "设置"
-        WorkshopScreenDestination.BaiduTranslationApiKey -> "百度大模型翻译配置"
+        WorkshopScreenDestination.ModDetail -> selectedMod?.itemTitle ?: stringResource(R.string.mod_detail)
+        WorkshopScreenDestination.DownloadCenter -> stringResource(R.string.download_center)
+        WorkshopScreenDestination.DownloadTaskDetail -> selectedTask?.itemTitle ?: stringResource(R.string.task_detail)
+        WorkshopScreenDestination.Settings -> stringResource(R.string.settings)
+        WorkshopScreenDestination.BaiduTranslationApiKey -> stringResource(R.string.baidu_translation_config)
     }
 
 private const val baiduApiKeyGuideUrl = "https://fanyi-api.baidu.com/product/13"
@@ -786,7 +795,7 @@ private fun LegacyWorkshopTopBar(
                     IconButton(onClick = actions.onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "返回",
+                            contentDescription = stringResource(R.string.back),
                         )
                     }
                 }
@@ -805,7 +814,7 @@ private fun LegacyWorkshopTopBar(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Download,
-                                contentDescription = "下载中心",
+                                contentDescription = stringResource(R.string.download_center),
                             )
                         }
                     }
@@ -815,7 +824,7 @@ private fun LegacyWorkshopTopBar(
                     IconButton(onClick = actions.onNavigateToAddGame) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "添加游戏",
+                            contentDescription = stringResource(R.string.add_game),
                         )
                     }
                 }
@@ -849,7 +858,7 @@ private fun LegacyWorkshopTopBar(
                     IconButton(onClick = actions.onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "设置",
+                            contentDescription = stringResource(R.string.settings),
                         )
                     }
                 }
@@ -890,7 +899,7 @@ private fun WorkshopLiquidTopBar(
                 WorkshopLiquidTopBarActionButton(
                     onClick = actions.onNavigateBack,
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "返回",
+                    contentDescription = stringResource(R.string.back),
                 )
             }
 
@@ -917,7 +926,7 @@ private fun WorkshopLiquidTopBar(
                     WorkshopLiquidTopBarActionButton(
                         onClick = actions.onNavigateToDownloadCenter,
                         imageVector = Icons.Default.Download,
-                        contentDescription = "下载中心",
+                        contentDescription = stringResource(R.string.download_center),
                         badgeCount = state.downloadCenterState.activeCount,
                     )
                 }
@@ -926,7 +935,7 @@ private fun WorkshopLiquidTopBar(
                     WorkshopLiquidTopBarActionButton(
                         onClick = actions.onNavigateToAddGame,
                         imageVector = Icons.Default.Add,
-                        contentDescription = "添加游戏",
+                        contentDescription = stringResource(R.string.add_game),
                     )
                 }
 
@@ -956,7 +965,7 @@ private fun WorkshopLiquidTopBar(
                     WorkshopLiquidTopBarActionButton(
                         onClick = actions.onNavigateToSettings,
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "设置",
+                        contentDescription = stringResource(R.string.settings),
                     )
                 }
             }
@@ -973,7 +982,7 @@ private fun LegacyGameWorkshopMoreMenuButton(
         IconButton(onClick = actions.onToggleGameWorkshopMoreActions) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
-                contentDescription = "更多",
+                contentDescription = stringResource(R.string.more),
             )
         }
         GameWorkshopMoreDropdownMenu(
@@ -992,7 +1001,7 @@ private fun LiquidGameWorkshopMoreMenuButton(
         WorkshopLiquidTopBarActionButton(
             onClick = actions.onToggleGameWorkshopMoreActions,
             imageVector = Icons.Default.MoreVert,
-            contentDescription = "更多",
+            contentDescription = stringResource(R.string.more),
         )
         GameWorkshopMoreDropdownMenu(
             expanded = expanded,
@@ -1095,7 +1104,7 @@ private fun BoxScope.GameWorkshopMoreDropdownMenu(
         onDismissRequest = actions.onDismissGameWorkshopMoreActions,
     ) {
         WorkshopPopupMenuItem(
-            text = { Text("刷新列表") },
+            text = { Text(stringResource(R.string.refresh_list)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -1108,7 +1117,7 @@ private fun BoxScope.GameWorkshopMoreDropdownMenu(
             },
         )
         WorkshopPopupMenuItem(
-            text = { Text("ID 下载") },
+            text = { Text(stringResource(R.string.id_download)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Download,
@@ -1120,7 +1129,7 @@ private fun BoxScope.GameWorkshopMoreDropdownMenu(
             },
         )
         WorkshopPopupMenuItem(
-            text = { Text("设置") },
+            text = { Text(stringResource(R.string.settings)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Settings,
@@ -1154,7 +1163,7 @@ private fun LegacyWorkshopBottomBar(
                         contentDescription = null,
                     )
                 },
-                label = { Text("游戏库") },
+                label = { Text(stringResource(R.string.game_library)) },
                 modifier = Modifier.testTag("gameLibraryTab"),
             )
             NavigationBarItem(
@@ -1166,7 +1175,7 @@ private fun LegacyWorkshopBottomBar(
                         contentDescription = null,
                     )
                 },
-                label = { Text("模组库") },
+                label = { Text(stringResource(R.string.mod_library)) },
                 modifier = Modifier.testTag("modLibraryTab"),
             )
         }
@@ -1233,7 +1242,7 @@ private fun WorkshopLiquidBottomBar(
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = "游戏库",
+                    text = stringResource(R.string.game_library),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -1253,7 +1262,7 @@ private fun WorkshopLiquidBottomBar(
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = "模组库",
+                    text = stringResource(R.string.mod_library),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )

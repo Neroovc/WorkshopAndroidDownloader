@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -48,8 +49,8 @@ fun AddGameScreen(
     ) {
         item {
             ScreenSummaryCard(
-                title = "添加游戏",
-                subtitle = "你可以搜索游戏名、直接输入 GameID，或者从热门创意工坊游戏里快速加入。",
+                title = stringResource(R.string.add_game),
+                subtitle = stringResource(R.string.add_game_subtitle),
                 modifier = Modifier.padding(top = 8.dp),
             )
         }
@@ -57,7 +58,7 @@ fun AddGameScreen(
         item {
             WorkshopPanelCard {
                 Text(
-                    text = "搜索游戏",
+                    text = stringResource(R.string.search_game),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -68,12 +69,12 @@ fun AddGameScreen(
                     WorkshopOutlinedTextField(
                         value = state.searchQuery,
                         onValueChange = onSearchQueryChange,
-                        label = { Text("搜索游戏") },
+                        label = { Text(stringResource(R.string.search_game)) },
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                     )
                     WorkshopButton(onClick = onSearch, modifier = Modifier.padding(top = 8.dp)) {
-                        Text("搜索")
+                        Text(stringResource(R.string.search))
                     }
                 }
             }
@@ -82,7 +83,7 @@ fun AddGameScreen(
         item {
             WorkshopPanelCard {
                 Text(
-                    text = "直接填写 GameID",
+                    text = stringResource(R.string.direct_game_id),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -93,13 +94,13 @@ fun AddGameScreen(
                     WorkshopOutlinedTextField(
                         value = state.directAppIdText,
                         onValueChange = onDirectAppIdChange,
-                        label = { Text("直接填写 GameID") },
+                        label = { Text(stringResource(R.string.direct_game_id)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                     )
                     WorkshopButton(onClick = onAddById, modifier = Modifier.padding(top = 8.dp)) {
-                        Text("添加")
+                        Text(stringResource(R.string.add))
                     }
                 }
             }
@@ -116,69 +117,69 @@ fun AddGameScreen(
 
         if (state.isSearching) {
             item {
-                WorkshopLoadingBlock(label = "正在搜索支持创意工坊的游戏。")
+                WorkshopLoadingBlock(label = stringResource(R.string.searching_supported_workshop_games))
             }
         }
 
         if (state.searchResults.isNotEmpty()) {
             item {
                 SectionHeading(
-                    title = "搜索结果",
-                    subtitle = "找到后可以直接加入游戏库，或者马上打开它的创意工坊。",
+                    title = stringResource(R.string.search_results),
+                    subtitle = stringResource(R.string.search_results_subtitle),
                 )
             }
 
             items(state.searchResults, key = { "search-${it.appId}" }) { game ->
                 GameShowcaseCard(
                     game = game,
-                    primaryActionLabel = "加入游戏库",
+                    primaryActionLabel = stringResource(R.string.add_to_game_library),
                     onPrimaryAction = { onAddGame(game) },
-                    secondaryActionLabel = "直接打开",
+                    secondaryActionLabel = stringResource(R.string.open_directly),
                     onSecondaryAction = { onOpenGame(game) },
                 )
             }
         } else if (state.searchQuery.isNotBlank() && !state.isSearching && !state.searchRequestFailed) {
             item {
                 WorkshopCenteredState(
-                    title = "没有找到结果",
-                    message = "试试更短的关键字，或者直接填写游戏的 AppID。",
+                    title = stringResource(R.string.no_results_found),
+                    message = stringResource(R.string.no_results_hint),
                 )
             }
         }
 
         item {
             SectionHeading(
-                title = "热门创意工坊游戏",
+                title = stringResource(R.string.featured_workshop_games),
             )
         }
 
         if (state.isLoadingFeatured) {
             item {
-                WorkshopLoadingBlock(label = "正在加载热门创意工坊游戏。")
+                WorkshopLoadingBlock(label = stringResource(R.string.loading_featured_games))
             }
         } else if (state.featuredGames.isEmpty() && !state.featuredErrorMessage.isNullOrBlank()) {
             item {
                 WorkshopCenteredState(
-                    title = "加载失败",
+                    title = stringResource(R.string.load_failed),
                     message = state.featuredErrorMessage,
-                    actionLabel = "重试",
+                    actionLabel = stringResource(R.string.retry),
                     onAction = onRetryFeaturedLoad,
                 )
             }
         } else if (state.featuredGames.isEmpty()) {
             item {
                 WorkshopCenteredState(
-                    title = "暂时没有热门推荐",
-                    message = "稍后重试，或者直接使用搜索 / GameID 添加。",
+                    title = stringResource(R.string.no_featured_games),
+                    message = stringResource(R.string.no_featured_games_hint),
                 )
             }
         } else {
             items(state.featuredGames, key = { "featured-${it.appId}" }) { game ->
                 GameShowcaseCard(
                     game = game,
-                    primaryActionLabel = "加入游戏库",
+                    primaryActionLabel = stringResource(R.string.add_to_game_library),
                     onPrimaryAction = { onAddGame(game) },
-                    secondaryActionLabel = "直接打开",
+                    secondaryActionLabel = stringResource(R.string.open_directly),
                     onSecondaryAction = { onOpenGame(game) },
                 )
             }
