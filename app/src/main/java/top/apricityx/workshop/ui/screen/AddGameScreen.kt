@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import top.apricityx.workshop.R
 import top.apricityx.workshop.AddGameUiState
 import top.apricityx.workshop.data.SteamGame
 import top.apricityx.workshop.ui.component.GameShowcaseCard

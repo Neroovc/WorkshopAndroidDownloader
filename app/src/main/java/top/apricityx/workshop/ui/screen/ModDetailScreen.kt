@@ -23,10 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.util.ArrayDeque
+import top.apricityx.workshop.R
 import top.apricityx.workshop.DownloadedModEntry
 import top.apricityx.workshop.DownloadedModGroup
 import top.apricityx.workshop.ExportedDownloadFile
@@ -83,19 +85,20 @@ fun ModDetailScreen(
             title = group.itemTitle,
             subtitle = group.gameTitle,
             metrics = listOf(
-                "AppID ${group.appId}",
-                "模组 ${group.publishedFileId}",
-                "版本 ${group.versionCount()}",
-                "文件 ${group.totalFileCount()}",
+                stringResource(R.string.app_id_format, group.appId.toString()),
+                stringResource(R.string.mod_id_metric_format, group.publishedFileId.toString()),
+                stringResource(R.string.versions_count_metric_format, group.versionCount()),
+                stringResource(R.string.files_count_metric_format, group.totalFileCount()),
             ),
         ) {
             ModPreviewImage(
                 previewImagePath = group.previewImagePath,
                 contentDescription = group.itemTitle,
             )
-            latestVersion?.primaryFile()?.let { primaryFile ->
+            val latestPrimaryFile = latestVersion?.primaryFile()
+            if (latestPrimaryFile != null) {
                 Text(
-                    text = "最新主文件：${primaryFile.relativePath}",
+                    text = stringResource(R.string.latest_primary_file_format, latestPrimaryFile.relativePath),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -105,17 +108,17 @@ fun ModDetailScreen(
                 onClick = onRenameMod,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("重命名模组")
+                Text(stringResource(R.string.rename_mod_title))
             }
             if (group.versionCount() > 1) {
                 Text(
-                    text = "该模组共保存了 ${group.versionCount()} 个版本，下面可以分别查看、更新或删除。",
+                    text = stringResource(R.string.saved_versions_all_format, group.versionCount()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else if (group.versionCount() == 0) {
                 Text(
-                    text = "这个模组当前只加入了模组库，尚未保存任何版本。你仍然可以继续检查更新，或直接下载最新版本。",
+                    text = stringResource(R.string.tracking_only_no_versions),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -126,7 +129,7 @@ fun ModDetailScreen(
                     ) {
                         CompositionLocalProvider(LocalContentColor provides Color.Black) {
                             Text(
-                                text = "下载最新版本",
+                                text = stringResource(R.string.download_latest_version),
                                 color = Color.Black,
                             )
                         }
@@ -135,7 +138,7 @@ fun ModDetailScreen(
                         onClick = { onRemoveMod(entry) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Text("删除该模组")
+                        Text(stringResource(R.string.delete_this_mod))
                     }
                 }
             }
@@ -144,13 +147,13 @@ fun ModDetailScreen(
         if (group.description.isNotBlank() || group.changeNotesFetched || group.changeNotes.isNotBlank()) {
             WorkshopPanelCard {
                 Text(
-                    text = "简介",
+                    text = stringResource(R.string.description_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
                 if (descriptionTranslationState.translatedDescription != null) {
                     Text(
-                        text = "原文",
+                        text = stringResource(R.string.original_text),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
@@ -172,13 +175,13 @@ fun ModDetailScreen(
                             modifier = Modifier.size(18.dp),
                             strokeWidth = 2.dp,
                         )
-                        Text(" 正在翻译简介…")
+                        Text(stringResource(R.string.translating_introduction))
                     } else {
                         Text(
                             if (descriptionTranslationState.translatedDescription == null) {
-                                "翻译简介"
+                                stringResource(R.string.translate_introduction)
                             } else {
-                                "重新翻译简介"
+                                stringResource(R.string.retranslate_introduction)
                             },
                         )
                     }
@@ -187,7 +190,7 @@ fun ModDetailScreen(
                     onClick = { onViewChangeNotes(group) },
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("查看更新日志")
+                    Text(stringResource(R.string.view_change_notes))
                 }
                 descriptionTranslationState.translationErrorMessage?.let { translationErrorMessage ->
                     WorkshopMessageBanner(
@@ -195,9 +198,10 @@ fun ModDetailScreen(
                         tone = MessageTone.Error,
                     )
                 }
-                descriptionTranslationState.translatedDescription?.takeIf(String::isNotBlank)?.let { translatedDescription ->
+                val translatedDescription = descriptionTranslationState.translatedDescription?.takeIf(String::isNotBlank)
+                if (translatedDescription != null) {
                     Text(
-                        text = "译文",
+                        text = stringResource(R.string.translated_text),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
@@ -258,13 +262,14 @@ private fun ModVersionPanel(
         )
         MetricFlow(
             metrics = listOf(
-                "文件 ${entry.files.size}",
-                "同步 ${formatModLibraryTimestamp(entry.storedAtMillis)}",
+                stringResource(R.string.files_count_metric_format, entry.files.size),
+                stringResource(R.string.synced_metric_format, formatModLibraryTimestamp(entry.storedAtMillis)),
             ),
         )
-        entry.primaryFile()?.let { primaryFile ->
+        val primaryFile = entry.primaryFile()
+        if (primaryFile != null) {
             Text(
-                text = "主文件：${primaryFile.relativePath}",
+                text = stringResource(R.string.primary_file_format, primaryFile.relativePath),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
@@ -279,7 +284,7 @@ private fun ModVersionPanel(
             ) {
                 CompositionLocalProvider(LocalContentColor provides Color.Black) {
                     Text(
-                        text = "更新到最新版本",
+                        text = stringResource(R.string.update_to_latest_version),
                         color = Color.Black,
                     )
                 }
@@ -291,13 +296,13 @@ private fun ModVersionPanel(
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             if (orderedFiles.isEmpty()) {
                 Text(
-                    text = "暂无可操作文件。",
+                    text = stringResource(R.string.no_actionable_files),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
                 if (pagedFiles.size > 1) {
                     Text(
-                        text = "文件第 ${currentPageIndex + 1} / ${pagedFiles.size} 页，每页 ${MOD_DETAIL_FILES_PER_PAGE} 个文件。",
+                        text = stringResource(R.string.files_page_format, currentPageIndex + 1, pagedFiles.size, MOD_DETAIL_FILES_PER_PAGE),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -321,7 +326,7 @@ private fun ModVersionPanel(
                             enabled = currentPageIndex > 0,
                             modifier = Modifier.weight(1f),
                         ) {
-                            Text("上一页")
+                            Text(stringResource(R.string.previous_page))
                         }
                         WorkshopOutlinedButton(
                             onClick = {
@@ -331,7 +336,7 @@ private fun ModVersionPanel(
                             enabled = currentPageIndex < pagedFiles.lastIndex,
                             modifier = Modifier.weight(1f),
                         ) {
-                            Text("下一页")
+                            Text(stringResource(R.string.next_page))
                         }
                     }
                 }
@@ -342,7 +347,7 @@ private fun ModVersionPanel(
             onClick = onRemoveMod,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("删除这个版本")
+            Text(stringResource(R.string.delete_this_version))
         }
     }
 }
@@ -384,13 +389,13 @@ private fun FileRow(
                 onClick = onOpenFile,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("打开")
+                Text(stringResource(R.string.open))
             }
             WorkshopOutlinedButton(
                 onClick = onShareFile,
                 modifier = Modifier.weight(1f),
             ) {
-                Text("分享")
+                Text(stringResource(R.string.share))
             }
         }
     }

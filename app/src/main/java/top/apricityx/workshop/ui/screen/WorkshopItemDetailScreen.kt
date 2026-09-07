@@ -51,6 +51,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Visibility
+import top.apricityx.workshop.R
 import top.apricityx.workshop.WorkshopModStatus
 import top.apricityx.workshop.WorkshopItemDetailUiState
 import top.apricityx.workshop.formatBinaryFileSize

@@ -62,6 +62,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import top.apricityx.workshop.R
 import top.apricityx.workshop.DownloadCenterTaskUiState
 import top.apricityx.workshop.DownloadedModEntry
 import top.apricityx.workshop.DownloadedModGroup

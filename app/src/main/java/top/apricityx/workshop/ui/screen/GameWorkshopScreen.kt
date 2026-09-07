@@ -45,6 +45,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import top.apricityx.workshop.R
 import top.apricityx.workshop.GameWorkshopUiState
 import top.apricityx.workshop.WorkshopModStatus
 import top.apricityx.workshop.WorkshopModStatusResolver
