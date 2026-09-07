@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
             if (!granted) {
                 Toast.makeText(
                     this,
-                    "未授予存储权限，下载完成后将导出到应用专用目录。",
+                    getString(R.string.storage_permission_not_granted),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
             if (!granted) {
                 Toast.makeText(
                     this,
-                    "未授予通知权限，后台下载通知可能不会显示。",
+                    getString(R.string.notification_permission_not_granted),
                     Toast.LENGTH_LONG,
                 ).show()
             }
@@ -210,88 +210,88 @@ class MainActivity : ComponentActivity() {
     private fun openExportedFile(file: ExportedDownloadFile) {
         val intent = WorkshopFileOpenManager.createOpenFileIntent(file)
         if (intent == null) {
-            Toast.makeText(this, "暂无可打开文件", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.no_file_to_open), Toast.LENGTH_SHORT).show()
             return
         }
 
         launchIntent(
             intent = intent,
-            notFoundMessage = "没有找到可打开这个文件的应用",
-            failureMessage = "打开文件失败",
+            notFoundMessage = getString(R.string.no_app_to_open_file),
+            failureMessage = getString(R.string.open_file_failed),
         )
     }
 
     private fun shareExportedFile(file: ExportedDownloadFile) {
         val intent = WorkshopFileShareManager.createShareFileIntent(file)
         if (intent == null) {
-            Toast.makeText(this, "暂无可分享文件", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.no_file_to_share), Toast.LENGTH_SHORT).show()
             return
         }
 
         launchIntent(
             intent = intent,
-            notFoundMessage = "没有找到可分享这个文件的应用",
-            failureMessage = "分享文件失败",
+            notFoundMessage = getString(R.string.no_app_to_share_file),
+            failureMessage = getString(R.string.share_file_failed),
         )
     }
 
     private fun shareDownloadTaskDebugLog(task: DownloadCenterTaskUiState) {
         val file = downloadDebugLogManager.shareableFile(task)
         if (file == null) {
-            Toast.makeText(this, "调试日志还没有生成", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.debug_log_not_generated), Toast.LENGTH_SHORT).show()
             return
         }
 
         val intent = WorkshopFileShareManager.createShareFileIntent(file)
         if (intent == null) {
-            Toast.makeText(this, "暂无可分享调试日志", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.no_debug_log_to_share), Toast.LENGTH_SHORT).show()
             return
         }
 
         launchIntent(
             intent = intent,
-            notFoundMessage = "没有找到可分享调试日志的应用",
-            failureMessage = "分享调试日志失败",
+            notFoundMessage = getString(R.string.no_app_to_share_debug_log),
+            failureMessage = getString(R.string.share_debug_log_failed),
         )
     }
 
     private fun shareRuntimeAppLog() {
         val file = AppRuntimeLogManager.shareableLatestLogFile(application)
         if (file == null) {
-            Toast.makeText(this, "运行日志还没有生成", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.runtime_log_not_generated), Toast.LENGTH_SHORT).show()
             return
         }
 
         val intent = WorkshopFileShareManager.createShareFileIntent(file)
         if (intent == null) {
-            Toast.makeText(this, "暂无可分享运行日志", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.no_runtime_log_to_share), Toast.LENGTH_SHORT).show()
             return
         }
 
         launchIntent(
             intent = intent,
-            notFoundMessage = "没有找到可分享运行日志的应用",
-            failureMessage = "分享运行日志失败",
+            notFoundMessage = getString(R.string.no_app_to_share_runtime_log),
+            failureMessage = getString(R.string.share_runtime_log_failed),
         )
     }
 
     private fun openRuntimeAppLog() {
         val file = AppRuntimeLogManager.shareableLatestLogFile(application)
         if (file == null) {
-            Toast.makeText(this, "运行日志还没有生成", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.runtime_log_not_generated), Toast.LENGTH_SHORT).show()
             return
         }
 
         val intent = WorkshopFileOpenManager.createOpenFileIntent(file)
         if (intent == null) {
-            Toast.makeText(this, "暂无可打开运行日志", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.no_runtime_log_to_open), Toast.LENGTH_SHORT).show()
             return
         }
 
         launchIntent(
             intent = intent,
-            notFoundMessage = "没有找到可打开运行日志的应用",
-            failureMessage = "打开运行日志失败",
+            notFoundMessage = getString(R.string.no_app_to_open_runtime_log),
+            failureMessage = getString(R.string.open_runtime_log_failed),
         )
     }
 
@@ -299,18 +299,18 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val file = AppRuntimeLogManager.shareableLogBundle(application)
             if (file == null) {
-                Toast.makeText(this@MainActivity, "日志包生成失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, getString(R.string.log_bundle_generation_failed), Toast.LENGTH_SHORT).show()
                 return@launch
             }
             val intent = WorkshopFileShareManager.createShareFileIntent(file)
             if (intent == null) {
-                Toast.makeText(this@MainActivity, "暂无可分享日志包", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, getString(R.string.no_log_bundle_to_share), Toast.LENGTH_SHORT).show()
                 return@launch
             }
             launchIntent(
                 intent = intent,
-                notFoundMessage = "没有找到可分享日志包的应用",
-                failureMessage = "分享日志包失败",
+                notFoundMessage = getString(R.string.no_app_to_share_log_bundle),
+                failureMessage = getString(R.string.share_log_bundle_failed),
             )
         }
     }
@@ -319,12 +319,12 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val file = AppRuntimeLogManager.exportLogBundle(application)
             if (file == null) {
-                Toast.makeText(this@MainActivity, "导出日志包失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, getString(R.string.log_bundle_export_failed), Toast.LENGTH_SHORT).show()
                 return@launch
             }
             Toast.makeText(
                 this@MainActivity,
-                "日志包已导出到 ${file.userVisiblePath}",
+                getString(R.string.log_bundle_exported, file.userVisiblePath),
                 Toast.LENGTH_LONG,
             ).show()
         }
@@ -361,8 +361,8 @@ class MainActivity : ComponentActivity() {
     private fun openExternalUrl(url: String) {
         launchIntent(
             intent = Intent(Intent.ACTION_VIEW, url.toUri()),
-            notFoundMessage = "没有找到可打开链接的应用",
-            failureMessage = "打开链接失败",
+            notFoundMessage = getString(R.string.no_app_to_open_link),
+            failureMessage = getString(R.string.open_link_failed),
         )
     }
 

@@ -1,4 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Descargador de Workshop</string>
+    <!-- LibraryScreen -->
+    <string name="game_library_load_failed">Error al cargar la biblioteca de juegos</string>
+    <string name="library_accelerator_hint">Parece que tu red no admite conexión directa a Workshop. Intenta activar una VPN o un acelerador y vuelve a intentarlo.</string>
+    <string name="retry">Reintentar</string>
+    <string name="game_library_empty">La biblioteca de juegos está vacía</string>
+    <string name="game_library_empty_hint">Toca + arriba a la derecha para agregar juegos compatibles con Workshop.</string>
+    <string name="refreshing_game_library">Actualizando biblioteca de juegos</string>
+    <string name="added_games">Juegos agregados</string>
+    <string name="added_games_subtitle">Toca &#x201c;Ver Workshop&#x201d; para acceder a la lista de Workshop de este juego.</string>
+    <string name="view_workshop">Ver Workshop</string>
+    <string name="remove_from_library">Quitar de la biblioteca</string>
+
+    <!-- MainActivity — permission toasts -->
+    <string name="storage_permission_not_granted">Permiso de almacenamiento no concedido. Las descargas se exportarán al directorio de la aplicación.</string>
+    <string name="notification_permission_not_granted">Permiso de notificaciones no concedido. Es posible que no se muestren las notificaciones de descarga en segundo plano.</string>
+
+    <!-- MainActivity — open file -->
+    <string name="no_file_to_open">No hay archivos para abrir</string>
+    <string name="no_app_to_open_file">No se encontró ninguna aplicación para abrir este archivo</string>
+    <string name="open_file_failed">Error al abrir el archivo</string>
+
+    <!-- MainActivity — share file -->
+    <string name="no_file_to_share">No hay archivos para compartir</string>
+    <string name="no_app_to_share_file">No se encontró ninguna aplicación para compartir este archivo</string>
+    <string name="share_file_failed">Error al compartir el archivo</string>
+
+    <!-- MainActivity — debug log -->
+    <string name="debug_log_not_generated">El registro de depuración aún no se ha generado</string>
+    <string name="no_debug_log_to_share">No hay registros de depuración para compartir</string>
+    <string name="no_app_to_share_debug_log">No se encontró ninguna aplicación para compartir registros de depuración</string>
+    <string name="share_debug_log_failed">Error al compartir el registro de depuración</string>
+
+    <!-- MainActivity — runtime log -->
+    <string name="runtime_log_not_generated">El registro de ejecución aún no se ha generado</string>
+    <string name="no_runtime_log_to_share">No hay registros de ejecución para compartir</string>
+    <string name="no_app_to_share_runtime_log">No se encontró ninguna aplicación para compartir registros de ejecución</string>
+    <string name="share_runtime_log_failed">Error al compartir el registro de ejecución</string>
+    <string name="no_runtime_log_to_open">No hay registros de ejecución para abrir</string>
+    <string name="no_app_to_open_runtime_log">No se encontró ninguna aplicación para abrir registros de ejecución</string>
+    <string name="open_runtime_log_failed">Error al abrir el registro de ejecución</string>
+
+    <!-- MainActivity — log bundle -->
+    <string name="log_bundle_generation_failed">Error al generar el paquete de registros</string>
+    <string name="no_log_bundle_to_share">No hay paquetes de registros para compartir</string>
+    <string name="no_app_to_share_log_bundle">No se encontró ninguna aplicación para compartir paquetes de registros</string>
+    <string name="share_log_bundle_failed">Error al compartir el paquete de registros</string>
+    <string name="log_bundle_export_failed">Error al exportar el paquete de registros</string>
+    <string name="log_bundle_exported">Paquete de registros exportado a %1$s</string>
+
+    <!-- MainActivity — open URL -->
+    <string name="no_app_to_open_link">No se encontró ninguna aplicación para abrir el enlace</string>
+    <string name="open_link_failed">Error al abrir el enlace</string>
 </resources>
