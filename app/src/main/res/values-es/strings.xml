@@ -53,4 +53,108 @@
     <!-- MainActivity — open URL -->
     <string name="no_app_to_open_link">No se encontró ninguna aplicación para abrir el enlace</string>
     <string name="open_link_failed">Error al abrir el enlace</string>
+
+    <!-- SettingsScreen — Steam account -->
+    <string name="steam_section_title">Cuenta de Steam</string>
+    <string name="add_account">Agregar cuenta</string>
+    <string name="current_account">Cuenta actual</string>
+    <string name="no_saved_steam_account">No hay cuentas de Steam guardadas.</string>
+    <string name="anonymous_browsing_message">Actualmente estás en modo de navegación anónima. Es posible que parte del contenido que requiere inicio de sesión, confirmación de edad o está restringido por visibilidad no se muestre.</string>
+    <string name="expand_options">Expandir opciones</string>
+
+    <!-- SettingsScreen — logs -->
+    <string name="log_section_title">Registros</string>
+    <string name="log_section_description">Si el descargador no funciona correctamente, te recomendamos exportar el paquete de registros y enviarlo al correo: Apricityx@qq.com</string>
+    <string name="view_latest_log">Ver registro más reciente</string>
+    <string name="share_log_bundle">Compartir paquete de registros</string>
+    <string name="export_log_bundle">Exportar paquete de registros</string>
+
+    <!-- SettingsScreen — Baidu translation -->
+    <string name="translation_section_title">Configuración de traducción</string>
+    <string name="translation_section_description">La traducción de descripciones ahora solo usa el modelo de texto de Baidu; es necesario configurar AppID y API Key.</string>
+    <string name="baidu_translation_configured_hint">AppID y API Key ya configurados. La traducción de descripciones llamará directamente al modelo de texto de Baidu.</string>
+    <string name="baidu_translation_not_configured_hint">AppID y API Key aún no configurados. Si los necesitas, sigue el tutorial para configurarlos.</string>
+    <string name="configure_baidu_translation_credentials">Configurar credenciales de traducción de Baidu</string>
+    <string name="add_baidu_translation_credentials">Agregar credenciales de traducción de Baidu</string>
+
+    <!-- SettingsScreen — appearance -->
+    <string name="appearance_section_title">Configuración de apariencia</string>
+    <string name="appearance_section_description">La nueva interfaz usa los contenedores y la navegación de vidrio líquido de AndroidLiquidGlass; la versión anterior conserva la interfaz clásica actual. El cambio de tema se aplica de inmediato.</string>
+    <string name="frontend_style">Estilo de interfaz</string>
+    <string name="color_theme">Tema de color</string>
+
+    <!-- SettingsScreen — language preference -->
+    <string name="language_preference_section_title">Preferencia de idioma</string>
+    <string name="language_preference_description">Afecta la búsqueda en la tienda de Steam al agregar juegos y la preferencia de idioma de la lista del Workshop al explorar mods. Por defecto usa chino simplificado.</string>
+
+    <!-- SettingsScreen — app updates -->
+    <string name="app_update_section_title">Actualización de la aplicación</string>
+    <string name="auto_check_updates_on_startup">Comprobar actualizaciones automáticamente al iniciar</string>
+    <string name="auto_check_updates_description">Comprueba la última Release en segundo plano al arrancar; si no hay actualizaciones, permanece en silencio.</string>
+    <string name="preferred_update_source">Fuente de actualización preferida</string>
+    <string name="preferred_update_source_description">Al descargar el APK se prioriza la fuente seleccionada; la comprobación de metadatos recurre automáticamente a otras réplicas y, en último caso, usa el enlace directo oficial de GitHub.</string>
+    <string name="checking_updates">Comprobando actualizaciones…</string>
+    <string name="check_updates_now">Comprobar actualizaciones ahora</string>
+    <string name="current_version_format">Versión actual: %1$s</string>
+    <string name="latest_check_result">Resultado de la última comprobación</string>
+    <string name="update_never_checked">Aún no se ha realizado ninguna comprobación de actualizaciones.</string>
+
+    <!-- SettingsScreen — download settings -->
+    <string name="download_settings_section_title">Configuración de descarga y comprobación</string>
+    <string name="download_threads_description">Cuantos más hilos, más rápida es la descarga, pero mayor es el impacto en el rendimiento del teléfono.</string>
+    <string name="allow_steam_auth_cleartext_http">Permitir solicitudes HTTP con sesión de Steam</string>
+    <string name="allow_steam_auth_cleartext_http_description">La aplicación ya permite HTTP en texto plano a nivel global para ser compatible con algunos CDN del Workshop. Al desactivarlo se bloquean las solicitudes HTTP asociadas a una cuenta de Steam; al activarlo existe riesgo de que la sesión se filtre por una conexión sin cifrar.</string>
+    <string name="experimental_workshop_direct_access">Acceso directo experimental al Workshop</string>
+    <string name="experimental_workshop_direct_access_description">Accede al Workshop siguiendo algunas reglas de reenvío de la comunidad de Steam, para poder conectarte directamente al Workshop sin acelerador.</string>
+    <string name="auto_rename_mod_files">Renombrar automáticamente los archivos de mod</string>
+    <string name="auto_rename_mod_files_description">Si está activado, los mods de un solo archivo descargados después se renombrarán automáticamente del nombre de archivo exportado al nombre del mod, conservando la extensión original. Si no se detecta el nombre del mod, se usa el nombre de archivo original.</string>
+    <string name="download_threads">Hilos por tarea de descarga</string>
+    <string name="concurrent_download_tasks">Tareas de descarga simultáneas</string>
+    <string name="mod_update_concurrent_checks">Comprobaciones de actualización de mods simultáneas</string>
+    <string name="range_value_format">Rango %1$d - %2$d</string>
+
+    <!-- SettingsScreen — about -->
+    <string name="about_section_title">Acerca de</string>
+    <string name="developers">Desarrolladores</string>
+    <string name="repository_address">Dirección del repositorio:</string>
+    <string name="about_slay_the_spire_paragraph">Esta aplicación se creó inicialmente como una versión móvil del cargador de mods de Slay the Spire. Si te interesa Slay the Spire, bienvenido a seguir mi otro proyecto:</string>
+    <string name="about_star_support">Si este proyecto te resulta útil, ¡apóyalo dándole una estrella en GitHub, me ayuda muchísimo! Si tienes problemas, ¡no dudes en enviar un issue!</string>
+
+    <!-- SettingsScreen — steam account actions -->
+    <string name="account_actions">Acciones</string>
+    <string name="reauthenticate">Reautenticar</string>
+    <string name="delete">Eliminar</string>
+
+    <!-- SettingsScreen — steam login dialog -->
+    <string name="reauthenticate_steam">Reautenticar Steam</string>
+    <string name="login_steam">Iniciar sesión en Steam</string>
+    <string name="close">Cerrar</string>
+    <string name="import_token">Importar token</string>
+    <string name="token_login">Iniciar sesión con token</string>
+    <string name="submit_verification_code">Enviar código de verificación</string>
+    <string name="keep_waiting">Seguir esperando</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="reauthenticate_token_hint">Puedes pegar directamente un nuevo Steam Refresh Token para completar la reautenticación.</string>
+    <string name="token_import_hint">Si ya tienes un Steam Refresh Token, también puedes importarlo directamente sin esperar la confirmación del teléfono.</string>
+    <string name="account_display_name">Nombre de visualización de la cuenta</string>
+    <string name="account_display_name_optional">Nombre de visualización de la cuenta (opcional)</string>
+    <string name="enter_steam_guard_code">Introduce el código de Steam Guard.</string>
+    <string name="verification_code">Código de verificación</string>
+    <string name="confirmation_waiting_message">Completa la confirmación en la aplicación móvil de Steam; la aplicación seguirá esperando el resultado automáticamente.</string>
+    <string name="waiting_for_steam_confirmation">Esperando confirmación de Steam…</string>
+    <string name="account_name">Nombre de la cuenta</string>
+    <string name="password">Contraseña</string>
+    <string name="switch_to_password_reauthenticate">Cambiar a reautenticación con contraseña</string>
+    <string name="switch_to_credentials_login">Cambiar a inicio de sesión con cuenta y contraseña</string>
+    <string name="switch_to_token_login">Cambiar a inicio de sesión con token</string>
+    <string name="login_process_log_note">El resumen del proceso de inicio de sesión se escribe en el registro de ejecución; puedes exportar el paquete de registros desde la sección de registros de la página de configuración.</string>
+
+    <!-- SettingsScreen — dropdown option descriptions (unused helper) -->
+    <string name="update_source_gh_proxy_com">Fuente prioritaria por defecto, adecuada para descargar archivos adjuntos de GitHub.</string>
+    <string name="update_source_gh_proxy_vip">Compatible con proxy de metadatos y descargas, adecuada como fuente de respaldo.</string>
+    <string name="update_source_gh_llkk">Compatible con proxy de metadatos y descargas, puede servir como otra ruta de respaldo.</string>
+    <string name="update_source_gh_proxy_net">Fuente de respaldo automática, no se selecciona manualmente en la configuración.</string>
+    <string name="update_source_official">Dirección de conexión directa oficial de GitHub.</string>
+    <string name="steam_language_simplified_chinese">Al agregar juegos y navegar por el Workshop se priorizará la interfaz y preferencias en chino.</string>
+    <string name="steam_language_english">Al agregar juegos y navegar por el Workshop se priorizará la interfaz y preferencias en inglés.</string>
 </resources>

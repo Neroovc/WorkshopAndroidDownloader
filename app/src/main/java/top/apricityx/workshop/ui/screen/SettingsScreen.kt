@@ -38,9 +38,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import top.apricityx.workshop.AppFrontendMode
+import top.apricityx.workshop.R
 import top.apricityx.workshop.AppThemeMode
 import top.apricityx.workshop.DownloadSettingsRepository
 import top.apricityx.workshop.SettingsUiState
@@ -138,7 +140,7 @@ fun SettingsScreen(
             val steamAccountItems = state.steamAuthState.accountListItems()
             val selectedSteamAccount = steamAccountItems.firstOrNull { it.isActive } ?: steamAccountItems.first()
             SettingsSectionCard {
-                Text("Steam 账号", style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(R.string.steam_section_title), style = MaterialTheme.typography.titleLarge)
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -149,7 +151,7 @@ fun SettingsScreen(
                         onClick = onOpenSteamLoginDialog,
                         modifier = Modifier.weight(1f),
                     ) {
-                        Text("添加账号")
+                        Text(stringResource(R.string.add_account))
                     }
                     if (selectedSteamAccount.accountId != null) {
                         SteamAccountActionsButton(
@@ -167,7 +169,7 @@ fun SettingsScreen(
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(
-                        text = "当前账号",
+                        text = stringResource(R.string.current_account),
                         style = MaterialTheme.typography.titleMedium,
                     )
                     SettingsChoiceDropdown(
@@ -182,7 +184,7 @@ fun SettingsScreen(
 
                     if (state.steamAuthState.accounts.isEmpty()) {
                         Text(
-                            "当前没有已保存的 Steam 账号。",
+                            stringResource(R.string.no_saved_steam_account),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -190,7 +192,7 @@ fun SettingsScreen(
 
                     if (selectedSteamAccount.accountId == null) {
                         WorkshopMessageBanner(
-                            message = "当前处于匿名浏览状态，部分需要登录、年龄确认或受可见性限制的内容可能不会显示。",
+                            message = stringResource(R.string.anonymous_browsing_message),
                             tone = MessageTone.Info,
                         )
                     } else {
@@ -204,9 +206,9 @@ fun SettingsScreen(
             }
 
             SettingsSectionCard {
-            Text("日志", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.log_section_title), style = MaterialTheme.typography.titleLarge)
             Text(
-                "如果下载器工作时出现问题，建议导出日志包并发送到邮箱：Apricityx@qq.com",
+                stringResource(R.string.log_section_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -230,35 +232,35 @@ fun SettingsScreen(
                     onClick = onOpenRuntimeLog,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text("查看最新日志")
+                    Text(stringResource(R.string.view_latest_log))
                 }
                 WorkshopOutlinedButton(
                     onClick = onShareRuntimeLogBundle,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text("分享日志包")
+                    Text(stringResource(R.string.share_log_bundle))
                 }
             }
             WorkshopButton(
                 onClick = onExportRuntimeLogBundle,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("导出日志包")
+                Text(stringResource(R.string.export_log_bundle))
             }
             }
 
             SettingsSectionCard {
-            Text("翻译设置", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.translation_section_title), style = MaterialTheme.typography.titleLarge)
             Text(
-                "描述翻译现在只走百度大模型文本翻译；需要配置 AppID 和 API Key。",
+                stringResource(R.string.translation_section_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
                 text = if (state.baiduTranslationApiKeyConfigured) {
-                    "当前已配置 AppID 和 API Key，描述翻译会直接调用百度大模型文本翻译。"
+                    stringResource(R.string.baidu_translation_configured_hint)
                 } else {
-                    "当前尚未配置 AppID 和 API Key。如有需要，请按照教程配置。"
+                    stringResource(R.string.baidu_translation_not_configured_hint)
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -269,23 +271,23 @@ fun SettingsScreen(
             ) {
                 Text(
                     if (state.baiduTranslationApiKeyConfigured) {
-                        "配置百度大模型文本翻译凭据"
+                        stringResource(R.string.configure_baidu_translation_credentials)
                     } else {
-                        "添加百度大模型文本翻译凭据"
+                        stringResource(R.string.add_baidu_translation_credentials)
                     },
                 )
             }
             }
 
             SettingsSectionCard {
-            Text("外观设置", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.appearance_section_title), style = MaterialTheme.typography.titleLarge)
             Text(
-                "新版前端使用 AndroidLiquidGlass 的液态玻璃容器与导航，旧版保留当前经典界面；主题模式切换后会立即生效。",
+                stringResource(R.string.appearance_section_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Text("前端样式", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.frontend_style), style = MaterialTheme.typography.titleMedium)
 
             SettingsChoiceDropdown(
                 selectedOption = state.selectedFrontendMode,
@@ -294,7 +296,7 @@ fun SettingsScreen(
                 onOptionSelected = onFrontendModeSelected,
             )
 
-            Text("颜色主题", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.color_theme), style = MaterialTheme.typography.titleMedium)
 
             SettingsChoiceDropdown(
                 selectedOption = state.selectedThemeMode,
@@ -305,9 +307,9 @@ fun SettingsScreen(
             }
 
             SettingsSectionCard {
-            Text("语言偏好", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.language_preference_section_title), style = MaterialTheme.typography.titleLarge)
             Text(
-                "影响添加游戏时的 Steam 商店搜索，以及浏览模组时的工坊列表语言偏好。默认使用简体中文。",
+                stringResource(R.string.language_preference_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -321,7 +323,7 @@ fun SettingsScreen(
             }
 
             SettingsSectionCard {
-            Text("应用更新", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.app_update_section_title), style = MaterialTheme.typography.titleLarge)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -332,9 +334,9 @@ fun SettingsScreen(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    Text("启动时自动检查更新", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.auto_check_updates_on_startup), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        "冷启动时后台检查最新 Release；如果没有更新则保持静默。",
+                        stringResource(R.string.auto_check_updates_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -345,9 +347,9 @@ fun SettingsScreen(
                 )
             }
 
-            Text("首选更新源", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.preferred_update_source), style = MaterialTheme.typography.titleMedium)
             Text(
-                "下载 APK 时优先使用所选源；元数据检查会自动回退到其他镜像，最后使用官方 GitHub 直链。",
+                stringResource(R.string.preferred_update_source_description),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -376,28 +378,28 @@ fun SettingsScreen(
                     }
                     Text(
                         text = if (state.updateCheckInProgress) {
-                            "正在检查更新…"
+                            stringResource(R.string.checking_updates)
                         } else {
-                            "立即检查更新"
+                            stringResource(R.string.check_updates_now)
                         },
                     )
                 }
             }
 
-            Text("当前版本：${state.currentVersionText}", style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.current_version_format, state.currentVersionText), style = MaterialTheme.typography.bodyMedium)
 
-            Text("最近检查结果", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.latest_check_result), style = MaterialTheme.typography.titleMedium)
             Text(
-                text = state.updateStatusSummary.ifBlank { "尚未执行过更新检查。" },
+                text = state.updateStatusSummary.ifBlank { stringResource(R.string.update_never_checked) },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             }
 
             SettingsSectionCard {
-            Text("下载与检查设置", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.download_settings_section_title), style = MaterialTheme.typography.titleLarge)
             Text(
-                "线程数越大，下载速度越快，但对手机性能影响越大。",
+                stringResource(R.string.download_threads_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -411,9 +413,9 @@ fun SettingsScreen(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    Text("允许带 Steam 登录态的 HTTP 请求", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.allow_steam_auth_cleartext_http), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        "应用已全局放开明文 HTTP 以兼容部分工坊 CDN。关闭时会拦截绑定 Steam 账号的 HTTP 请求；开启存在登录态经明文链路泄露的风险。",
+                        stringResource(R.string.allow_steam_auth_cleartext_http_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -433,9 +435,9 @@ fun SettingsScreen(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    Text("实验性创意工坊直连", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.experimental_workshop_direct_access), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        "按一些 Steam 社区转发规则访问创意工坊，以实现无需加速器裸连创意工坊的体验。",
+                        stringResource(R.string.experimental_workshop_direct_access_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -455,9 +457,9 @@ fun SettingsScreen(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    Text("自动重命名模组文件", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.auto_rename_mod_files), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        "开启后，之后下载的单文件模组会自动将导出的文件名改为模组名，并保留原文件扩展名。若未解析到模组名则使用原文件名。",
+                        stringResource(R.string.auto_rename_mod_files_description),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -469,7 +471,7 @@ fun SettingsScreen(
             }
 
             SettingsDiscreteSlider(
-                title = "单任务线程数",
+                title = stringResource(R.string.download_threads),
                 value = sliderSettingValue(
                     input = state.downloadThreadCountInput,
                     savedValue = state.savedDownloadThreadCount,
@@ -478,14 +480,18 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_DOWNLOAD_THREADS,
                 maxValue = DownloadSettingsRepository.MAX_DOWNLOAD_THREADS,
-                supportingText = "范围 ${DownloadSettingsRepository.MIN_DOWNLOAD_THREADS} - ${DownloadSettingsRepository.MAX_DOWNLOAD_THREADS}",
+                supportingText = stringResource(
+                    R.string.range_value_format,
+                    DownloadSettingsRepository.MIN_DOWNLOAD_THREADS,
+                    DownloadSettingsRepository.MAX_DOWNLOAD_THREADS,
+                ),
                 onValueChange = { onThreadCountChange(it.toString()) },
                 onValueChangeFinished = onSave,
                 onInteractionActiveChange = { isSliderInteracting = it },
             )
 
             SettingsDiscreteSlider(
-                title = "同时下载任务数",
+                title = stringResource(R.string.concurrent_download_tasks),
                 value = sliderSettingValue(
                     input = state.concurrentDownloadTaskCountInput,
                     savedValue = state.savedConcurrentDownloadTaskCount,
@@ -494,14 +500,18 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_CONCURRENT_DOWNLOAD_TASKS,
                 maxValue = DownloadSettingsRepository.MAX_CONCURRENT_DOWNLOAD_TASKS,
-                supportingText = "范围 ${DownloadSettingsRepository.MIN_CONCURRENT_DOWNLOAD_TASKS} - ${DownloadSettingsRepository.MAX_CONCURRENT_DOWNLOAD_TASKS}",
+                supportingText = stringResource(
+                    R.string.range_value_format,
+                    DownloadSettingsRepository.MIN_CONCURRENT_DOWNLOAD_TASKS,
+                    DownloadSettingsRepository.MAX_CONCURRENT_DOWNLOAD_TASKS,
+                ),
                 onValueChange = { onConcurrentTaskCountChange(it.toString()) },
                 onValueChangeFinished = onSave,
                 onInteractionActiveChange = { isSliderInteracting = it },
             )
 
             SettingsDiscreteSlider(
-                title = "模组更新并发检查数",
+                title = stringResource(R.string.mod_update_concurrent_checks),
                 value = sliderSettingValue(
                     input = state.modUpdateConcurrentCheckCountInput,
                     savedValue = state.savedModUpdateConcurrentCheckCount,
@@ -510,7 +520,11 @@ fun SettingsScreen(
                 ),
                 minValue = DownloadSettingsRepository.MIN_MOD_UPDATE_CONCURRENT_CHECKS,
                 maxValue = DownloadSettingsRepository.MAX_MOD_UPDATE_CONCURRENT_CHECKS,
-                supportingText = "范围 ${DownloadSettingsRepository.MIN_MOD_UPDATE_CONCURRENT_CHECKS} - ${DownloadSettingsRepository.MAX_MOD_UPDATE_CONCURRENT_CHECKS}",
+                supportingText = stringResource(
+                    R.string.range_value_format,
+                    DownloadSettingsRepository.MIN_MOD_UPDATE_CONCURRENT_CHECKS,
+                    DownloadSettingsRepository.MAX_MOD_UPDATE_CONCURRENT_CHECKS,
+                ),
                 onValueChange = { onModUpdateConcurrentCheckCountChange(it.toString()) },
                 onValueChangeFinished = onSave,
                 onInteractionActiveChange = { isSliderInteracting = it },
@@ -526,9 +540,9 @@ fun SettingsScreen(
 
             SettingsSectionCard {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("关于", style = MaterialTheme.typography.titleLarge)
+                Text(stringResource(R.string.about_section_title), style = MaterialTheme.typography.titleLarge)
                 Text(
-                    "开发者",
+                    stringResource(R.string.developers),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -545,7 +559,7 @@ fun SettingsScreen(
                     modifier = Modifier.clickable { onOpenExternalUrl(secondaryDeveloperUrl) },
                 )
                 Text(
-                    "仓库地址：",
+                    stringResource(R.string.repository_address),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -556,7 +570,7 @@ fun SettingsScreen(
                     modifier = Modifier.clickable { onOpenExternalUrl(repositoryUrl) },
                 )
                 Text(
-                    "此软件最开始为《杀戮尖塔》模组加载器手机移植版准备，如果你对《杀戮尖塔》感兴趣，欢迎关注我的另一个项目：",
+                    stringResource(R.string.about_slay_the_spire_paragraph),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -567,7 +581,7 @@ fun SettingsScreen(
                     modifier = Modifier.clickable { onOpenExternalUrl(slayTheAmethystModdedUrl) },
                 )
                 Text(
-                    "如果这个项目对你有帮助，欢迎去 GitHub 给项目点个 Star 支持一下，这对我有很大帮助！如果有问题，欢迎提交 issue!",
+                    stringResource(R.string.about_star_support),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -750,7 +764,7 @@ private fun <T> SettingsChoiceDropdown(
             )
             Icon(
                 imageVector = Icons.Default.ArrowDropDown,
-                contentDescription = "展开选项",
+                contentDescription = stringResource(R.string.expand_options),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -793,14 +807,14 @@ private fun SteamAccountActionsButton(
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("操作")
+            Text(stringResource(R.string.account_actions))
         }
         WorkshopPopupMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
             WorkshopPopupMenuItem(
-                text = { Text("重新认证") },
+                text = { Text(stringResource(R.string.reauthenticate)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Refresh,
@@ -813,7 +827,7 @@ private fun SteamAccountActionsButton(
                 },
             )
             WorkshopPopupMenuItem(
-                text = { Text("删除") },
+                text = { Text(stringResource(R.string.delete)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -848,16 +862,16 @@ private fun SteamLoginDialog(
         title = {
             Text(
                 if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                    "重新认证 Steam"
+                    stringResource(R.string.reauthenticate_steam)
                 } else {
-                    "登录 Steam"
+                    stringResource(R.string.login_steam)
                 },
             )
         },
         dismissOnClickOutside = false,
         buttons = {
             WorkshopOutlinedButton(onClick = onDismiss, enabled = !state.isSubmitting) {
-                Text("关闭")
+                Text(stringResource(R.string.close))
             }
             WorkshopButton(
                 onClick = onSubmit,
@@ -872,21 +886,21 @@ private fun SteamLoginDialog(
                 Text(
                     when {
                         isTokenMode -> if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                            "导入令牌"
+                            stringResource(R.string.import_token)
                         } else {
-                            "令牌登录"
+                            stringResource(R.string.token_login)
                         }
 
                         state.challengeType == SteamGuardChallengeType.EmailCode ||
                             state.challengeType == SteamGuardChallengeType.DeviceCode ->
-                            "提交验证码"
+                            stringResource(R.string.submit_verification_code)
 
-                        isConfirmationChallenge -> "继续等待"
+                        isConfirmationChallenge -> stringResource(R.string.keep_waiting)
 
                         else -> if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                            "重新认证"
+                            stringResource(R.string.reauthenticate)
                         } else {
-                            "登录"
+                            stringResource(R.string.login)
                         }
                     },
                 )
@@ -897,9 +911,9 @@ private fun SteamLoginDialog(
             isTokenMode -> {
                 Text(
                     if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                        "可直接粘贴新的 Steam Refresh Token 完成重新认证。"
+                        stringResource(R.string.reauthenticate_token_hint)
                     } else {
-                        "如果你已经拿到 Steam Refresh Token，也可以直接导入，不必继续等待手机确认。"
+                        stringResource(R.string.token_import_hint)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -910,9 +924,9 @@ private fun SteamLoginDialog(
                     label = {
                         Text(
                             if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                                "账号显示名"
+                                stringResource(R.string.account_display_name)
                             } else {
-                                "账号显示名（可选）"
+                                stringResource(R.string.account_display_name_optional)
                             },
                         )
                     },
@@ -932,14 +946,14 @@ private fun SteamLoginDialog(
             state.challengeType == SteamGuardChallengeType.EmailCode ||
                 state.challengeType == SteamGuardChallengeType.DeviceCode -> {
                 Text(
-                    state.challengeMessage ?: "请输入 Steam Guard 验证码。",
+                    state.challengeMessage ?: stringResource(R.string.enter_steam_guard_code),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 WorkshopOutlinedTextField(
                     value = state.guardCode,
                     onValueChange = onGuardCodeChange,
-                    label = { Text("验证码") },
+                    label = { Text(stringResource(R.string.verification_code)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )
@@ -947,7 +961,7 @@ private fun SteamLoginDialog(
 
             isConfirmationChallenge -> {
                 Text(
-                    state.challengeMessage ?: "请在 Steam 手机 App 中完成确认，应用会自动继续等待结果。",
+                    state.challengeMessage ?: stringResource(R.string.confirmation_waiting_message),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -962,7 +976,7 @@ private fun SteamLoginDialog(
                             strokeWidth = 2.dp,
                         )
                         Text(
-                            "正在等待 Steam 确认…",
+                            stringResource(R.string.waiting_for_steam_confirmation),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -974,7 +988,7 @@ private fun SteamLoginDialog(
                 WorkshopOutlinedTextField(
                     value = state.username,
                     onValueChange = onUsernameChange,
-                    label = { Text("账号名") },
+                    label = { Text(stringResource(R.string.account_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     enabled = state.mode != SteamLoginDialogMode.Reauthenticate,
@@ -982,7 +996,7 @@ private fun SteamLoginDialog(
                 WorkshopOutlinedTextField(
                     value = state.password,
                     onValueChange = onPasswordChange,
-                    label = { Text("密码") },
+                    label = { Text(stringResource(R.string.password)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )
@@ -1004,12 +1018,12 @@ private fun SteamLoginDialog(
                 Text(
                     if (isTokenMode) {
                         if (state.mode == SteamLoginDialogMode.Reauthenticate) {
-                            "改用密码重新认证"
+                            stringResource(R.string.switch_to_password_reauthenticate)
                         } else {
-                            "改用账号密码登录"
+                            stringResource(R.string.switch_to_credentials_login)
                         }
                     } else {
-                        "改为输入令牌登录"
+                        stringResource(R.string.switch_to_token_login)
                     },
                 )
             }
@@ -1022,28 +1036,30 @@ private fun SteamLoginDialog(
             )
         }
         Text(
-            text = "登录过程摘要会写入运行日志，可在设置页日志区域导出日志包。",
+            text = stringResource(R.string.login_process_log_note),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
 
+@Composable
 private fun sourceDescription(source: UpdateSource): String =
     when (source) {
-        UpdateSource.GH_PROXY_COM -> "默认优先源，适合下载 GitHub 附件。"
-        UpdateSource.GH_PROXY_VIP -> "支持元数据和下载代理，适合作为备用源。"
-        UpdateSource.GH_LLKK -> "支持元数据和下载代理，可作为另一条回退线路。"
-        UpdateSource.GH_PROXY_NET -> "自动回退源，不在设置里手动选择。"
-        UpdateSource.OFFICIAL -> "官方 GitHub 直连地址。"
+        UpdateSource.GH_PROXY_COM -> stringResource(R.string.update_source_gh_proxy_com)
+        UpdateSource.GH_PROXY_VIP -> stringResource(R.string.update_source_gh_proxy_vip)
+        UpdateSource.GH_LLKK -> stringResource(R.string.update_source_gh_llkk)
+        UpdateSource.GH_PROXY_NET -> stringResource(R.string.update_source_gh_proxy_net)
+        UpdateSource.OFFICIAL -> stringResource(R.string.update_source_official)
     }
 
+@Composable
 private fun steamLanguagePreferenceDescription(
     preference: SteamLanguagePreference,
 ): String =
     when (preference) {
-        SteamLanguagePreference.SimplifiedChinese -> "添加游戏和工坊浏览会优先按中文界面与中文偏好请求。"
-        SteamLanguagePreference.English -> "添加游戏和工坊浏览会优先按英文界面与英文偏好请求。"
+        SteamLanguagePreference.SimplifiedChinese -> stringResource(R.string.steam_language_simplified_chinese)
+        SteamLanguagePreference.English -> stringResource(R.string.steam_language_english)
     }
 
 private const val repositoryUrl = "https://github.com/Apricityx/WorkshopAndroidDownloader"

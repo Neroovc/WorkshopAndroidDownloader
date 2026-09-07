@@ -52,4 +52,108 @@
     <!-- MainActivity — open URL -->
     <string name="no_app_to_open_link">没有找到可打开链接的应用</string>
     <string name="open_link_failed">打开链接失败</string>
+
+    <!-- SettingsScreen — Steam account -->
+    <string name="steam_section_title">Steam 账号</string>
+    <string name="add_account">添加账号</string>
+    <string name="current_account">当前账号</string>
+    <string name="no_saved_steam_account">当前没有已保存的 Steam 账号。</string>
+    <string name="anonymous_browsing_message">当前处于匿名浏览状态，部分需要登录、年龄确认或受可见性限制的内容可能不会显示。</string>
+    <string name="expand_options">展开选项</string>
+
+    <!-- SettingsScreen — logs -->
+    <string name="log_section_title">日志</string>
+    <string name="log_section_description">如果下载器工作时出现问题，建议导出日志包并发送到邮箱：Apricityx@qq.com</string>
+    <string name="view_latest_log">查看最新日志</string>
+    <string name="share_log_bundle">分享日志包</string>
+    <string name="export_log_bundle">导出日志包</string>
+
+    <!-- SettingsScreen — Baidu translation -->
+    <string name="translation_section_title">翻译设置</string>
+    <string name="translation_section_description">描述翻译现在只走百度大模型文本翻译；需要配置 AppID 和 API Key。</string>
+    <string name="baidu_translation_configured_hint">当前已配置 AppID 和 API Key，描述翻译会直接调用百度大模型文本翻译。</string>
+    <string name="baidu_translation_not_configured_hint">当前尚未配置 AppID 和 API Key。如有需要，请按照教程配置。</string>
+    <string name="configure_baidu_translation_credentials">配置百度大模型文本翻译凭据</string>
+    <string name="add_baidu_translation_credentials">添加百度大模型文本翻译凭据</string>
+
+    <!-- SettingsScreen — appearance -->
+    <string name="appearance_section_title">外观设置</string>
+    <string name="appearance_section_description">新版前端使用 AndroidLiquidGlass 的液态玻璃容器与导航，旧版保留当前经典界面；主题模式切换后会立即生效。</string>
+    <string name="frontend_style">前端样式</string>
+    <string name="color_theme">颜色主题</string>
+
+    <!-- SettingsScreen — language preference -->
+    <string name="language_preference_section_title">语言偏好</string>
+    <string name="language_preference_description">影响添加游戏时的 Steam 商店搜索，以及浏览模组时的工坊列表语言偏好。默认使用简体中文。</string>
+
+    <!-- SettingsScreen — app updates -->
+    <string name="app_update_section_title">应用更新</string>
+    <string name="auto_check_updates_on_startup">启动时自动检查更新</string>
+    <string name="auto_check_updates_description">冷启动时后台检查最新 Release；如果没有更新则保持静默。</string>
+    <string name="preferred_update_source">首选更新源</string>
+    <string name="preferred_update_source_description">下载 APK 时优先使用所选源；元数据检查会自动回退到其他镜像，最后使用官方 GitHub 直链。</string>
+    <string name="checking_updates">正在检查更新…</string>
+    <string name="check_updates_now">立即检查更新</string>
+    <string name="current_version_format">当前版本：%1$s</string>
+    <string name="latest_check_result">最近检查结果</string>
+    <string name="update_never_checked">尚未执行过更新检查。</string>
+
+    <!-- SettingsScreen — download settings -->
+    <string name="download_settings_section_title">下载与检查设置</string>
+    <string name="download_threads_description">线程数越大，下载速度越快，但对手机性能影响越大。</string>
+    <string name="allow_steam_auth_cleartext_http">允许带 Steam 登录态的 HTTP 请求</string>
+    <string name="allow_steam_auth_cleartext_http_description">应用已全局放开明文 HTTP 以兼容部分工坊 CDN。关闭时会拦截绑定 Steam 账号的 HTTP 请求；开启存在登录态经明文链路泄露的风险。</string>
+    <string name="experimental_workshop_direct_access">实验性创意工坊直连</string>
+    <string name="experimental_workshop_direct_access_description">按一些 Steam 社区转发规则访问创意工坊，以实现无需加速器裸连创意工坊的体验。</string>
+    <string name="auto_rename_mod_files">自动重命名模组文件</string>
+    <string name="auto_rename_mod_files_description">开启后，之后下载的单文件模组会自动将导出的文件名改为模组名，并保留原文件扩展名。若未解析到模组名则使用原文件名。</string>
+    <string name="download_threads">单任务线程数</string>
+    <string name="concurrent_download_tasks">同时下载任务数</string>
+    <string name="mod_update_concurrent_checks">模组更新并发检查数</string>
+    <string name="range_value_format">范围 %1$d - %2$d</string>
+
+    <!-- SettingsScreen — about -->
+    <string name="about_section_title">关于</string>
+    <string name="developers">开发者</string>
+    <string name="repository_address">仓库地址：</string>
+    <string name="about_slay_the_spire_paragraph">此软件最开始为《杀戮尖塔》模组加载器手机移植版准备，如果你对《杀戮尖塔》感兴趣，欢迎关注我的另一个项目：</string>
+    <string name="about_star_support">如果这个项目对你有帮助，欢迎去 GitHub 给项目点个 Star 支持一下，这对我有很大帮助！如果有问题，欢迎提交 issue!</string>
+
+    <!-- SettingsScreen — steam account actions -->
+    <string name="account_actions">操作</string>
+    <string name="reauthenticate">重新认证</string>
+    <string name="delete">删除</string>
+
+    <!-- SettingsScreen — steam login dialog -->
+    <string name="reauthenticate_steam">重新认证 Steam</string>
+    <string name="login_steam">登录 Steam</string>
+    <string name="close">关闭</string>
+    <string name="import_token">导入令牌</string>
+    <string name="token_login">令牌登录</string>
+    <string name="submit_verification_code">提交验证码</string>
+    <string name="keep_waiting">继续等待</string>
+    <string name="login">登录</string>
+    <string name="reauthenticate_token_hint">可直接粘贴新的 Steam Refresh Token 完成重新认证。</string>
+    <string name="token_import_hint">如果你已经拿到 Steam Refresh Token，也可以直接导入，不必继续等待手机确认。</string>
+    <string name="account_display_name">账号显示名</string>
+    <string name="account_display_name_optional">账号显示名（可选）</string>
+    <string name="enter_steam_guard_code">请输入 Steam Guard 验证码。</string>
+    <string name="verification_code">验证码</string>
+    <string name="confirmation_waiting_message">请在 Steam 手机 App 中完成确认，应用会自动继续等待结果。</string>
+    <string name="waiting_for_steam_confirmation">正在等待 Steam 确认…</string>
+    <string name="account_name">账号名</string>
+    <string name="password">密码</string>
+    <string name="switch_to_password_reauthenticate">改用密码重新认证</string>
+    <string name="switch_to_credentials_login">改用账号密码登录</string>
+    <string name="switch_to_token_login">改为输入令牌登录</string>
+    <string name="login_process_log_note">登录过程摘要会写入运行日志，可在设置页日志区域导出日志包。</string>
+
+    <!-- SettingsScreen — dropdown option descriptions (unused helper) -->
+    <string name="update_source_gh_proxy_com">默认优先源，适合下载 GitHub 附件。</string>
+    <string name="update_source_gh_proxy_vip">支持元数据和下载代理，适合作为备用源。</string>
+    <string name="update_source_gh_llkk">支持元数据和下载代理，可作为另一条回退线路。</string>
+    <string name="update_source_gh_proxy_net">自动回退源，不在设置里手动选择。</string>
+    <string name="update_source_official">官方 GitHub 直连地址。</string>
+    <string name="steam_language_simplified_chinese">添加游戏和工坊浏览会优先按中文界面与中文偏好请求。</string>
+    <string name="steam_language_english">添加游戏和工坊浏览会优先按英文界面与英文偏好请求。</string>
 </resources>
